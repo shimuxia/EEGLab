@@ -1,8 +1,8 @@
-# 当前视觉分支：新城效果参考试验
-本轮用户只授权学习新城黑金版和动效版的前端效果；不移植其业务、架构、文案、车辆素材、CMS或数据。分支为 feat/yanying-xincheng-visual-fusion，待用户实际审阅，未合并回原功能分支。
-原功能分支基线 01ee1066a898c1fd1f96549c77fa9fc1f913974e 已保存；不得再自行居中主标题或隐藏首屏视频。人物区域保持白底、原照自然色，避免大块黑白交替。
-本分支采用暖白/石墨文字/香槟金细节；左文右视频、16:9完整画幅、说明置于视频框外。只更新展示层，真实内容、路由、数据/API和生产配置不改。
-具体参考、取舍、测试和复现见 FUSION_REVIEW.md。更早的居中设计已被用户否定，仅可查Git历史，不能视为当前指令。
+# 当前基准：恢复原版，只修人物区域
+用户已明确：“就是我说那个背景和照片不搭配的那版”，对应405f7a9。当前分支 feat/yanying-original-people-fix。
+首页index.astro、Nav.astro与405f7a9字节一致；原深色首屏、左文右倾斜视频、轨道/波形及原动效恢复。仅人物区增加白底/深色文字，照片恢复自然色，不编辑原图。不要再把全站刷成浅色、居中标题或隐藏视频。
+新城融合分支 feat/yanying-xincheng-visual-fusion 已被用户否定，完整保留供历史追溯，不作为当前设计方向。本分支不加载SiteMotion实验控制器；恢复原动效实现。
+后端/数据/API客户端/素材/生产配置不变；正式上线与真实数据迁移仍需独立授权。
 
 # Claude Code 接手：严颖课题组统一官网
 本轮目标是可运行的单一课题组官网；脑机实验室为研究方向与平台，不再保留独立首页。后续以用户确认的左右视频首屏为基础局部精修，不改变学术事实或论文安全逻辑。
@@ -10,7 +10,7 @@
 ## 接手及权限
 - WSL 家目录：/mnt/d/AI-Agent-Workspace/Projects/YanYing-EEGLab-Merge
 - Git 工程：该目录下 repo/；只读原官网：../reference/original/
-- 当前分支：feat/yanying-xincheng-visual-fusion；原分支 feat/unify-yanying-group-site 保留恢复基线。
+- 当前分支：feat/yanying-original-people-fix；feat/unify-yanying-group-site与feat/yanying-xincheng-visual-fusion均保留。
 - 最终提交：执行 git log -1 --format=%H；精确 SHA 另见 ../FINAL_INTEGRATION_REPORT.md（报告在提交后生成，避免自引用）。
 - Fork：shimuxia/EEGLab，parent=buerka/EEGLab；upstream 和 origin push URL 均为 DISABLED。
 - 先按熔炉上下文门禁读取当前任务与锁；本次 Codex 释放锁后 Claude 才能接手。
@@ -20,7 +20,7 @@
 ## 路由与组件
 13页：/、/about、/research、/team、/achievements、/join、/contact、/research/brain-computer-interface，以及 /research/diagnosis、arm、drone、hand、glove。
 首页兼容 #about/#research/#team/#achievements/#papers/#admission/#contact；具体七方向锚点保留在研究卡片。旧 /index.html 由静态入口自然支持。
-GroupLayout → Layout（global.css/theme.css + SiteMotion）+ Nav + main + Footer；共享模块 Advisor、GroupResearch、GroupMembers、GroupHonors、Admission。
+GroupLayout → Layout（global.css/theme.css及原滚动显现）+ Nav + main + Footer；共享模块 Advisor、GroupResearch、GroupMembers、GroupHonors、Admission。
 成果页保留 PublicationsExplorer + PublicationCount + GalleryFilter；研究详情继续使用 RelatedPublications。
 首页七方向和团队页均使用 data/group.ts；不要另建第二份人员名单。
 
@@ -42,8 +42,8 @@ validate_recovery_rules 是离线备份预检函数，不是生产启动门禁�
 默认无后端时显示三篇静态代表论文和重试，不编造实时数量；请求8秒超时，拒绝明显无效API结构，不输出服务端错误详情。
 
 ## 设计与媒体
-global.css 统一暖白/石墨/金色token；theme.css负责焦点与声明式动效；group.css管理首页及共享内页布局；Nav.astro保留自身作用域样式。不加载旧CSS reset，不另建第二套主题。
-保留左右首屏视频、浅色背景、克制金色细节、自然导师肖像和留白。SiteMotion.astro只使用IntersectionObserver：title/image/cascade/line四种入场，700ms主节奏，手机缩短到480ms；默认内容可见，无JS/无Observer降级。实时减少动效会清除所有pending并暂停首页视频；键盘焦点立即显示所在段落。没有滚动劫持、外部动效库或新网络请求。
+global.css恢复405f7a9的深色/香槟金token；group.css保留原布局，仅在.people-surface、.home-advisor、.home-team覆盖白底、深色文字及深金链接，原照片无滤镜。about导师区及team人物区明确标记people-surface。不新增全站浅色主题。
+首页/导航保持原版；prefers-reduced-motion与无JS可读行为沿用原实现。不要移植被否定的新城效果试验。
 导航1100px以下折叠，aria-expanded/controls；页脚手机Logo可换行。
 BCI总览使用 /videos/promo-hero-v1.mp4（通用版本，带controls、muted、playsinline）；其余编码和poster、成果视频仍保留。实验室成果媒体完整清单见 frontend/public/images/achievements/README.md。
 统计原代码保留但默认关闭；没有本次批准不打开 PUBLIC_ENABLE_ANALYTICS。
@@ -72,7 +72,7 @@ python scripts/check_deployment.py
 python -m pip install -r scripts/requirements-qa.txt
 # 另开终端：npm --prefix frontend run preview -- --host 127.0.0.1 --port 4327
 CHROMIUM_PATH=/home/shimuxia/.cache/ms-playwright/chromium-1228/chrome-linux64/chrome python scripts/check_group_site.py
-CHROMIUM_PATH=/home/shimuxia/.cache/ms-playwright/chromium-1228/chrome-linux64/chrome python scripts/check_visual_fusion.py
+CHROMIUM_PATH=/home/shimuxia/.cache/ms-playwright/chromium-1228/chrome-linux64/chrome python scripts/check_original_people.py
 CHROMIUM_PATH=/home/shimuxia/.cache/ms-playwright/chromium-1228/chrome-linux64/chrome python scripts/check_adversarial_site.py
 git diff --check
 ```
@@ -80,7 +80,7 @@ QA脚本只访问本地，拦截合成API，阻断外站请求；截图和日志
 实际测试和失败修复记录见 ../FINAL_INTEGRATION_REPORT.md，不引用旧报告当新PASS。
 
 ## 视觉精修与已知边界
-下一步先让用户审阅本分支视觉；Claude可继续精修比例、留白、照片裁切、动效节奏和手机阅读层次。保留普通文档滚动、首屏视频和业务组件；不再引入亮暗大区块交替。
+后续以用户指定原版为基准，仅作明确的局部修正；人物白底与自然色已处理。不得借精修再次改换整体视觉、首屏构图或动效系统。
 人员当前状态与照片继续由老师确认；不凭肖像或同名推断。未迁移私有在线数据库和历史人工审核。
 真实设备Safari/iOS、媒体全部编码播放与线上跨网络均未验收；本轮仅本地Chromium。外部域名/备案归属及301重定向需要单独确认；/quiz/属于其他项目，绝不覆盖。
 

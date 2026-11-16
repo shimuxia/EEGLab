@@ -111,8 +111,6 @@
   object-fit: cover;
   object-position: top;
   filter: none;
-
-  background: #ffffff;
 }
 .group-advisor > div {
   min-width: 0;
@@ -138,8 +136,6 @@
   background: #ffffff;
   filter: none;
   transition: filter 0.4s;
-
-  border: 1px solid var(--border);
 }
 .group-people .group-card:hover img {
   filter: none;
@@ -217,33 +213,10 @@
   font-size: 13px;
   line-height: 1.3;
   text-decoration: none;
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
   transition:
-    background 250ms,
-    color 250ms,
-    border-color 250ms,
-    box-shadow 300ms;
-}
-.pill-link::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(
-    110deg,
-    transparent 10%,
-    #ffffff55,
-    transparent 70%
-  );
-  transform: translateX(-130%);
-  transition: transform 600ms var(--ease-settle);
-  pointer-events: none;
-}
-.pill-link:hover::before,
-.pill-link:focus-visible::before {
-  transform: translateX(130%);
+    background 0.3s,
+    color 0.3s,
+    border-color 0.3s;
 }
 .pill-link span {
   font-size: 21px;
@@ -253,8 +226,7 @@
 .pill-link:hover {
   background: var(--accent);
   border-color: var(--accent);
-  color: #ffffff;
-  box-shadow: 0 8px 24px #8061271a;
+  color: #121710;
 }
 .text-link {
   display: inline-flex;
@@ -264,28 +236,13 @@
   border-bottom: 1px solid var(--border-md);
   font-size: 13px;
   text-decoration: none;
-  transition:
-    border-color 250ms,
-    color 250ms;
+  transition: gap 0.3s;
 }
 .text-link:hover {
-  border-color: var(--accent);
+  gap: 48px;
 }
 .text-link > span {
   font-size: 21px;
-}
-.text-link > span,
-.quiet-link > span,
-.pill-link > span {
-  transition: transform 300ms var(--ease-settle);
-}
-.text-link:hover > span,
-.text-link:focus-visible > span,
-.quiet-link:hover > span,
-.quiet-link:focus-visible > span,
-.pill-link:hover > span,
-.pill-link:focus-visible > span {
-  transform: translate(3px, -2px);
 }
 .quiet-link {
   font-size: 13px;
@@ -331,7 +288,7 @@
   color: var(--text-3) !important;
 }
 
-/* A quiet editorial opening: group identity and immediately visible lab footage. */
+/* First screen: group identity, genuine lab footage, scientific instrument details. */
 .home-hero {
   overflow: clip;
   padding: 0 6vw;
@@ -340,13 +297,13 @@
   position: relative;
 }
 .home-hero-grid {
-  min-height: min(740px, calc(100svh - 166px));
+  min-height: calc(100svh - 166px);
   max-height: none;
   display: grid;
-  grid-template-columns: 0.92fr 1.08fr;
-  gap: clamp(32px, 5vw, 80px);
+  grid-template-columns: 1fr 1.1fr;
+  gap: 3vw;
   align-items: center;
-  padding: clamp(56px, 7vw, 112px) 0;
+  padding: 65px 0 70px;
 }
 .home-hero-copy {
   position: relative;
@@ -357,18 +314,18 @@
   font-size: 11px;
   letter-spacing: 2.5px;
   margin-bottom: 38px;
-  color: var(--text-2);
+  color: #bec6b6;
 }
 .home-hero h1 {
-  font-size: clamp(42px, 4.6vw, 72px);
+  font-size: clamp(42px, 5.4vw, 82px);
   line-height: 1.1;
   font-weight: 500;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.055em;
 }
 .home-hero h1 > span {
   display: block;
-  color: #887044;
-  font: 400 clamp(35px, 4.2vw, 64px)/1.1 var(--font-sans);
+  color: var(--accent);
+  font: 400 clamp(35px, 4.6vw, 70px)/1.08 var(--font-sans);
   letter-spacing: -0.055em;
   margin-top: 22px;
 }
@@ -386,54 +343,42 @@
   margin-top: 36px;
 }
 .hero-actions .pill-link {
-  background: #e8d9b6;
-  color: #362d1a;
-  border-color: #d0be96;
+  background: #d3bc8d;
+  color: #151b12;
+  border-color: #d3bc8d;
 }
 .hero-actions .pill-link:hover {
-  background: #dfcba2;
+  background: #ead9b7;
 }
 .hero-science {
   position: relative;
   width: 100%;
-  height: auto;
+  height: 520px;
   display: flex;
-  flex-direction: column;
-  gap: 18px;
-  min-width: 0;
   align-items: center;
   justify-content: center;
 }
 .science-film {
   position: relative;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
+  width: 94%;
+  height: 360px;
   overflow: hidden;
   background: #283027;
-  border: 1px solid #c5b58d;
-  border-radius: 12px;
-  box-shadow: 0 28px 64px -24px #3c35243b;
-  transform: none;
-
-  --accent: #e3c993;
-
-  --text: #f4f5ed;
-  color: #f4f5ed;
+  border-radius: 3px;
+  box-shadow: 0 20px 90px #0006;
+  transform: rotate(-3deg);
 }
 .science-film video {
   height: 100%;
   width: 100%;
   object-fit: cover;
-  filter: none;
-  transform: none;
-  display: block;
+  filter: saturate(0.5) brightness(0.68);
+  transform: scale(1.05);
 }
 .film-shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, #11131024, transparent 30%);
-  pointer-events: none;
+  background: linear-gradient(0deg, #0a130b 0%, #0a130be6 20%, transparent 72%);
 }
 .film-label {
   position: absolute;
@@ -441,34 +386,28 @@
   left: 24px;
   font: 9px var(--font-mono);
   letter-spacing: 1px;
-  color: #ffffff;
-  background: #181b17c7;
-  border: 1px solid #ffffff25;
-  border-radius: 20px;
-  padding: 7px 10px;
-  width: fit-content;
-  max-width: calc(100% - 94px);
+  color: #ecede4;
 }
 .film-label .status-dot {
   width: 4px;
   height: 4px;
 }
 .film-caption {
-  position: relative;
-  width: 100%;
-  padding-right: 48px;
-  color: var(--text);
+  position: absolute;
+  bottom: 28px;
+  left: 28px;
+  right: 28px;
 }
 .film-caption > span {
   display: block;
-  color: var(--text-2);
-  font-size: 11px;
-  margin-bottom: 5px;
+  font-size: 13px;
+  color: #c5cebe;
+  margin-bottom: 8px;
 }
 .film-caption strong {
-  font-size: clamp(15px, 1.25vw, 19px);
-  font-weight: 500;
-  letter-spacing: 0;
+  font-weight: 400;
+  font-size: clamp(18px, 1.6vw, 25px);
+  letter-spacing: 1px;
 }
 .film-caption > a {
   position: absolute;
@@ -476,18 +415,17 @@
   bottom: 0;
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--border-md);
+  width: 42px;
+  height: 42px;
+  border: 1px solid #ffffff50;
   border-radius: 50%;
   text-decoration: none;
-  color: var(--accent);
 }
 .film-pause {
   position: absolute;
   right: 20px;
   top: 18px;
-  background: #181b17b3;
+  background: #111b1260;
   border: 1px solid #ffffff40;
   color: #fff;
   border-radius: 50%;
@@ -496,20 +434,47 @@
   cursor: pointer;
   font-size: 12px;
 }
-
+.science-orbit {
+  position: absolute;
+  width: 90%;
+  aspect-ratio: 1;
+  border: 1px solid #d3bc8d22;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.orbit-one {
+  transform: rotate(-25deg) scaleX(1.15) scaleY(0.8);
+}
+.orbit-two {
+  width: 110%;
+  transform: rotate(20deg) scaleY(0.63);
+  border-style: dashed;
+  border-color: #d3bc8d15;
+}
+.science-orbit::before {
+  content: "";
+  position: absolute;
+  left: 18%;
+  top: 8%;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 18px #d3bc8d60;
+}
 .science-coordinate {
-  position: static;
-  width: 100%;
-
-  font: 9px/1.8 var(--font-mono);
+  position: absolute;
+  left: 5%;
+  right: 0;
+  font: 8px/1.8 var(--font-mono);
   letter-spacing: 1px;
   color: var(--text-3);
 }
 .coordinate-top {
-  border-bottom: 1px solid var(--border-md);
-  padding-bottom: 12px;
+  top: 12px;
 }
 .coordinate-bottom {
+  bottom: 0;
   display: flex;
   justify-content: space-between;
 }
@@ -517,7 +482,32 @@
   font-family: var(--font-sans);
   font-size: 10px;
 }
-
+.hero-signal {
+  position: absolute;
+  right: -5%;
+  bottom: -8px;
+  width: 100%;
+  pointer-events: none;
+  filter: drop-shadow(0 0 10px #d3bc8d30);
+}
+.hero-signal path {
+  stroke: var(--accent);
+  stroke-width: 1.2;
+  stroke-dasharray: 900;
+  animation: trace-signal 5s ease both;
+}
+.hero-signal .signal-ghost {
+  stroke: #829d7d;
+  opacity: 0.25;
+}
+@keyframes trace-signal {
+  from {
+    stroke-dashoffset: 900;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
 .hero-bottom {
   height: 88px;
   border-top: 1px solid var(--border);
@@ -581,13 +571,13 @@
 
 /* The seven-direction browser reuses original, source-reviewed SVG artwork. */
 .home-research {
-  background: #f3f1eb;
-  color: #242521;
+  background: #e8e9df;
+  color: #232d24;
   padding-block: 80px 100px;
-  --text: #242521;
-  --text-2: #50514b;
-  --text-3: #66675c;
-  --accent: #806127;
+  --text: #232d24;
+  --text-2: #5d675b;
+  --text-3: #586650;
+  --accent: #52613f;
   --border: #23351d20;
   --border-md: #23351d40;
 }
@@ -626,9 +616,9 @@
   line-height: 1.6;
 }
 .research-selector button[aria-selected="true"] {
-  background: #e3d0a54a;
-  border-left-color: #9c7c43;
-  color: #242521;
+  background: #cdd3bf60;
+  border-left-color: #687952;
+  color: #263222;
 }
 .research-tab-arrow {
   font-size: 21px;
@@ -742,7 +732,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: none;
+  filter: saturate(0.45) brightness(0.75);
   transition: transform 1s;
 }
 .lab-photograph:hover > img {
@@ -753,12 +743,10 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(0deg, #fafaf7, #fafaf7e6 30%, transparent);
+  background: linear-gradient(0deg, #101310, transparent);
   padding: 80px 25px 25px;
   font: 9px var(--font-mono);
   letter-spacing: 1px;
-
-  color: var(--text-2);
 }
 .lab-copy h2 {
   font-size: clamp(38px, 4.3vw, 64px);
@@ -796,7 +784,7 @@
   margin-top: 6px;
 }
 .home-advisor {
-  background: #ffffff;
+  background: #1b201a;
   padding-block: 95px;
 }
 .advisor-editorial {
@@ -809,7 +797,7 @@
   width: 100%;
   max-width: 400px;
   position: relative;
-  margin-left: 0;
+  margin-left: 3vw;
 }
 .advisor-portrait img {
   width: 100%;
@@ -892,14 +880,14 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: none;
+  filter: saturate(0.5);
   transition:
     transform 0.7s,
     filter 0.7s;
 }
 .evidence-item:hover img {
   transform: scale(1.04);
-  filter: none;
+  filter: saturate(0.95);
 }
 .image-arrow {
   position: absolute;
@@ -911,8 +899,7 @@
   height: 34px;
   border: 1px solid #fff8;
   border-radius: 50%;
-  background: #242521;
-  color: #ffffff;
+  background: #10131070;
 }
 .evidence-item .eyebrow {
   font-size: 8px;
@@ -943,7 +930,7 @@
   padding-top: 0;
 }
 .home-papers {
-  background: #f3f1eb;
+  background: #191d19;
   padding-block: 65px 80px;
 }
 .paper-editorial-list {
@@ -993,8 +980,6 @@
   gap: 10vw;
   padding-block: 120px;
   align-items: center;
-
-  background: #ffffff;
 }
 .team-story h2 {
   font-size: clamp(30px, 3.4vw, 50px);
@@ -1028,10 +1013,6 @@
   object-position: top;
   filter: none;
   transition: filter 0.4s;
-
-  background: #ffffff;
-
-  border: 1px solid var(--border);
 }
 .team-contact-sheet a:hover img {
   filter: none;
@@ -1053,10 +1034,10 @@
 .home-join {
   position: relative;
   overflow: hidden;
-  background: #f0ece3;
-  color: var(--text);
+  background: #cbd0be;
+  color: #20291e;
   padding-block: 80px 0;
-  --accent: #806127;
+  --accent: #4f6041;
   --border-md: #28382055;
 }
 .home-join > .home-wrap {
@@ -1074,7 +1055,7 @@
   margin: 35px 0;
 }
 .home-join h2 span {
-  color: #806127;
+  color: #68765a;
 }
 .join-bottom {
   display: flex;
@@ -1091,17 +1072,17 @@
 }
 .join-bottom .pill-link {
   color: #f2f2e9;
-  background: #292a25;
-  border-color: #292a25;
+  background: #263321;
+  border-color: #263321;
 }
 .join-bottom .pill-link:hover {
-  background: #806127;
+  background: #4f6041;
 }
 .join-contact {
   display: flex;
   justify-content: space-between;
   gap: 24px;
-  border-top: 1px solid #292a2530;
+  border-top: 1px solid #26332130;
   padding-block: 25px;
   font-size: 11px;
   color: #526148;
@@ -1113,13 +1094,13 @@
   position: absolute;
   width: 650px;
   height: 650px;
-  border: 1px solid #80612718;
+  border: 1px solid #4f604118;
   border-radius: 50%;
   right: -130px;
   top: -200px;
   box-shadow:
-    0 0 0 80px #80612708,
-    0 0 0 160px #80612705;
+    0 0 0 80px #4f604108,
+    0 0 0 160px #4f604105;
 }
 .research-overview {
   display: flex;
@@ -1151,8 +1132,14 @@
 }
 @media (max-width: 1100px) {
   .home-hero-grid {
-    gap: 32px;
-    min-height: 620px;
+    gap: 0;
+    min-height: 690px;
+  }
+  .hero-science {
+    height: 450px;
+  }
+  .science-film {
+    height: 310px;
   }
   .hero-bottom-note {
     display: none;
@@ -1195,8 +1182,8 @@
 }
 @media (max-width: 800px) {
   .home-hero-grid {
-    grid-template-columns: 1fr;
-    min-height: 580px;
+    grid-template-columns: 1fr 1fr;
+    min-height: 640px;
     padding-block: 50px;
   }
   .home-hero h1 {
@@ -1204,6 +1191,16 @@
   }
   .home-hero h1 > span {
     font-size: 40px;
+  }
+  .hero-science {
+    height: 390px;
+  }
+  .science-film {
+    height: 270px;
+  }
+  .film-caption {
+    left: 18px;
+    right: 18px;
   }
   .film-caption > span {
     font-size: 11px;
@@ -1216,17 +1213,19 @@
     height: 30px;
   }
   .film-label {
-    font-size: 8px;
+    font-size: 7px;
     left: 18px;
   }
   .hero-actions {
     align-items: flex-start;
-    flex-direction: row;
+    flex-direction: column;
     gap: 20px;
   }
-
+  .hero-signal {
+    bottom: 12px;
+  }
   .science-coordinate {
-    font-size: 9px;
+    font-size: 6px;
   }
   .coordinate-bottom > span:last-child {
     display: none;
@@ -1353,7 +1352,7 @@
   .home-hero-grid {
     grid-template-columns: 1fr;
     max-height: none;
-    padding-block: 42px 32px;
+    padding-block: 48px 30px;
     min-height: 0;
   }
   .home-hero-copy > .eyebrow {
@@ -1361,10 +1360,10 @@
     margin-bottom: 28px;
   }
   .home-hero h1 {
-    font-size: clamp(36px, 10.8vw, 48px);
+    font-size: 48px;
   }
   .home-hero h1 > span {
-    font-size: clamp(32px, 9.8vw, 44px);
+    font-size: 46px;
     margin-top: 16px;
   }
   .hero-statement {
@@ -1385,18 +1384,38 @@
     font-size: 11px;
   }
   .hero-science {
-    height: auto;
-    margin-top: 4px;
+    height: 335px;
+    margin-top: 38px;
   }
   .science-film {
-    height: auto;
-    width: 100%;
-    transform: none;
+    height: 245px;
+    width: 96%;
+    transform: rotate(-2deg);
+  }
+  .coordinate-top {
+    top: 0;
+  }
+  .coordinate-bottom {
+    bottom: 0;
+  }
+  .hero-signal {
+    bottom: 10px;
+  }
+  .film-caption {
+    bottom: 22px;
+  }
+  .film-caption strong {
+    font-size: 20px;
   }
   .film-label {
-    font-size: 8px;
+    font-size: 7px;
   }
-
+  .science-orbit {
+    width: 90%;
+  }
+  .orbit-two {
+    width: 100%;
+  }
   .hero-bottom {
     height: 70px;
     gap: 15px;
@@ -1791,7 +1810,7 @@
 .home-join .eyebrow,
 .join-bottom p,
 .join-contact {
-  color: #50514b;
+  color: #33432a;
 }
 
 .film-label {
@@ -1802,4 +1821,23 @@
 }
 .film-caption {
   padding-right: 45px;
+}
+
+
+/* Portraits retain their original white/blue backgrounds inside a light people section. */
+.people-surface,
+.home-advisor,
+.home-team {
+  --bg: #ffffff;
+  --bg-surface: #f5f5f2;
+  --bg-elevated: #eeeeea;
+  --text: #263024;
+  --text-2: #4b5547;
+  --text-3: #626d5d;
+  --accent: #806127;
+  --accent-dim: #80612712;
+  --border: #2630241c;
+  --border-md: #26302438;
+  background: #ffffff;
+  color: var(--text);
 }

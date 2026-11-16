@@ -1,3 +1,5 @@
+> 历史试验：已被用户否定，不作为当前方向。当前为feat/yanying-original-people-fix，详见CLAUDE_HANDOFF.md。
+
 # 新城视觉效果融合试验
 仅本地实验分支：feat/yanying-xincheng-visual-fusion。
 基线：01ee1066a898c1fd1f96549c77fa9fc1f913974e，保留于 feat/unify-yanying-group-site。

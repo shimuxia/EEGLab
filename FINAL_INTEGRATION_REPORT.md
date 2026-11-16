@@ -1,71 +1,66 @@
-# 统一官网本地验收报告
-2026-11-16；本次为用户指定的“只学新城前端效果”独立分支实验。状态：LOCAL_FUSION_VERIFIED，视觉待用户审阅。本地验证不等于生产验收。
+# 统一官网当前本地验收报告
+2026-11-16；当前状态LOCAL_ORIGINAL_PEOPLE_VERIFIED，视觉待用户审阅。
 
-## 位置、版本与权限
+## 当前版本与位置
 - Windows：D:/AI-Agent-Workspace/Projects/YanYing-EEGLab-Merge/repo
 - WSL：/mnt/d/AI-Agent-Workspace/Projects/YanYing-EEGLab-Merge/repo
-- 当前分支：feat/yanying-xincheng-visual-fusion
-- 原功能分支：feat/unify-yanying-group-site；恢复基线01ee1066a898c1fd1f96549c77fa9fc1f913974e已提交保留。
-- origin：shimuxia/EEGLab，fork parent=buerka/EEGLab；upstream：buerka/EEGLab；两个push URL保持DISABLED。
-- EEGLab工程来源：e3585f90fabec82f22cf4452e014b7769012a1f7。
-- 原私有官网内容来源：bbec06eba92ee19a004b7909c2eb3ecdb2cc07bf。
-- 新城仅为本地视觉参考，不成为工程/内容来源；准确历史快照哈希与取舍见 FUSION_REVIEW.md。
-- 最终本地commit：本报告所在提交，以 git rev-parse HEAD 查询；提交后 ../FINAL_INTEGRATION_REPORT.md 记录精确SHA，避免自引用。
-- 本地Git身份：He Qihan <heqihan6@gmail.com>，仅单次commit配置。
-- 是否推送：NO；是否创建PR：NO；是否merge：NO；是否部署：NO。
-- 本轮没有访问生产服务器、COS、SCF或修改DNS、证书、备案、部署任务；没有安装Claude Code。
+- 当前分支：feat/yanying-original-people-fix。
+- 用户明确指定基准：“我说那个背景和照片不搭配的那版”，对应405f7a9c7278ad43bc232bd5730c213de9011bcf。
+- feat/unify-yanying-group-site及feat/yanying-xincheng-visual-fusion均保留，未重写或合并。
+- EEGLab源版本e3585f90fabec82f22cf4452e014b7769012a1f7；原官网源版本bbec06eba92ee19a004b7909c2eb3ecdb2cc07bf。
+- origin=shimuxia/EEGLab（fork parent=buerka/EEGLab）；upstream=buerka/EEGLab；两者push URL仍为DISABLED。
+- 最终本地commit：本报告所在提交，git rev-parse HEAD查询；工作区根目录同名报告在提交后记录精确SHA，避免自引用。
+- Git身份He Qihan <heqihan6@gmail.com>，仅单次命令配置。
+- 是否push：NO；是否创建PR：NO；是否merge：NO；是否部署：NO。
 
-## 已实现的统一工程
-单一Astro前端、React论文/图库交互、原EEGLab Python架构；共享导师/团队/研究/荣誉内容数据，不运行第二生产论文后端。
-13路由正常构建：/、/about、/research、/team、/achievements、/join、/contact、/research/brain-computer-interface、/research/diagnosis、/research/arm、/research/drone、/research/hand、/research/glove。
-首页原锚点与原实验室研究详情、媒体和论文入口继续有效。备案保留展示，不代表域名切换获批。
-原私有官网只迁移已审阅公开内容和素材白名单，未复制完整源码、Git历史或数据库；许可证不变。
-既有只读/api/group/papers、研究者筛选、人工审核优先、误收排除和静态回退保留；本轮未改其实现、种子或同步任务。
+## 本轮完成
+首页index.astro、导航Nav.astro恢复到405f7a9字节一致版本。原深色首屏、左文右倾斜视频、轨道/波形及原动效全部恢复。
+只修复人物与背景搭配：首页导师/团队区域为白底；about导师区、team人物区增加people-surface局部浅色变量；文字/链接对比度适配；导师、学生、顾问照片取消滤镜且原文件不变。
+移除本分支未使用的SiteMotion实验控制器和仅针对被否定试验的专项脚本；对应实验仍完整保存在原分支。
+保留API客户端校验及后续无障碍修复；深色界面补回适合深底的成功标签色。论文后端、共享内容数据、素材、LICENSE、依赖、CI/部署配置均未改。
 
-## 本轮实际展示层改动
-- 暖白背景、石墨文字与香槟金细节，人物区纯白；沿用单一共享token。
-- 保留左文右视频；视频平直16:9完整画幅，说明放到框外，避免与内置字幕重叠。保留静音自动循环、暂停和失败回退。
-- 按钮扫光、箭头微移、细线展开、标题/影像进入及名单错峰；原生IntersectionObserver，零新依赖。
-- 无JS/无Observer默认可读；实时减少动效会清除待进入状态；键盘焦点不会落入透明段落。
-- 导师/学生/顾问原照不改文件，不加深色滤镜；手机提前堆叠首屏，保持视频可见。
+## 统一功能保留
+单一Astro+React前端，原EEGLab Python架构；13路由：/、/about、/research、/team、/achievements、/join、/contact、/research/brain-computer-interface、/research/diagnosis、/research/arm、/research/drone、/research/hand、/research/glove。
+共享导师/研究/人员/荣誉数据；原五研究详情及媒体、七方向交互、成果/图库/论文筛选、招生和备案展示保留。
+/api/group/papers只读兼容层、研究者限定排除、人工审核优先、API失败静态回退仍有效。本轮未操作同步任务或生产数据。
 
-## 当前真实测试结果
-所有命令在WSL运行。Node24.14.0、Python3.12.3；3.10仅做部署语法检查，未用3.10解释器执行。
-- npm run test:backend：38项PASS，使用本项目.venv。
-- npm run test:frontend：14项PASS。
-- 前端现有TypeScript库与React组件tsc --noEmit：PASS。
+## 本轮真实验证
+全部在WSL运行，Linux Node24.14.0/Python3.12.3；Python3.10仅做部署语法兼容检查。
 - npm run build：13页PASS。
-- python scripts/check_deployment.py：PASS，路由/打包输入/生产私密运行文件隔离检查。
-- scripts/check_group_site.py：43项PASS，13路由三宽度、资源、导航、研究tabs、键盘、视频和模拟API。
-- scripts/check_adversarial_site.py：128项PASS，axe 27状态、65宽度场景、26文字放大场景以及异常API/XSS、超时重试、视频失败、无JS等。
-- scripts/check_visual_fusion.py：11项PASS，8种宽度（320/390/605/774/800/805/1024/1440）、视频时间推进/比例/说明分离、错峰/焦点/实时减少动效/无Observer。
-- git diff --check：PASS；相对恢复基线的backend、data、lib、public资源、LICENSE、edgeone.json、.github无改动。
-失败及修复过程见 FUSION_REVIEW.md；没有把旧报告PASS当作本轮运行。测试项存在场景重叠，不相加为独立功能数量。
-本地证据：忽略目录 output/fusion/ 与 output/fusion-*.log；不提交截图、缓存或QA产物。
-
-## 实际浏览器检查
-实看新城黑金/动效两个历史版本首页与滚动段，动效版手机390px。
-实看本地融合版桌面、手机390px菜单、首屏播放和导师白底原照；另查看已等待图片解码的团队与导师截图。
-确认没有明显首屏重叠、横向溢出、字幕被说明遮挡；自动检查不能保证所有审美偏好，当前视觉待用户审阅。真实Safari/iOS及物理手机未测。
+- npm run test:backend（本项目.venv）：38项PASS。
+- npm run test:frontend：14项PASS。
+- python scripts/check_deployment.py：PASS。
+- scripts/check_group_site.py：43项PASS，资源/链接、13路由三宽度、导航、研究tabs、视频和模拟API。
+- scripts/check_adversarial_site.py：128项PASS，axe、窄屏、200%文字、API恶意/异常响应、视频失败、超时/重试和无JS。退出时出现一次Playwright pending路由任务清理警告，exit0，断言全部通过；不是浏览器页面脚本错误。
+- scripts/check_original_people.py：7项PASS及首页/导航原版字节对照；1440/390下首页、about、team白底/照片解码/自然色/无溢出，普通动效下视频时间实际推进。
+- git diff --check：PASS；受保护数据/后端/素材/配置对照无改动。
+截图/日志在忽略目录output/original-people/及output/original-people-*.log，QA产物不提交。各项存在覆盖重叠，不相加为独立功能数。
+Chrome实看恢复后的深色首屏及白底导师区域；查看桌面/手机人物截图。实际首页视频在普通动效下可见且播放。用户审美、真实iOS/Safari及生产未验收。
 
 ## 本轮修改文件
+- CLAUDE_HANDOFF.md
+- FINAL_INTEGRATION_REPORT.md
+- FUSION_REVIEW.md
+- PR_DRAFT.md
+- README.md
+- VISUAL_REDESIGN_REPORT.md
+- frontend/src/components/Footer.astro
 - frontend/src/components/Nav.astro
-- frontend/src/components/SiteMotion.astro（新增）
+- frontend/src/components/SiteMotion.astro
 - frontend/src/layouts/Layout.astro
+- frontend/src/pages/about.astro
 - frontend/src/pages/index.astro
+- frontend/src/pages/team.astro
 - frontend/src/styles/global.css
 - frontend/src/styles/group.css
 - frontend/src/styles/theme.css
 - scripts/check_group_site.py
-- scripts/check_visual_fusion.py（新增）
-- FUSION_REVIEW.md（新增）
-- CLAUDE_HANDOFF.md
-- PR_DRAFT.md
-- VISUAL_REDESIGN_REPORT.md
-- FINAL_INTEGRATION_REPORT.md
+- scripts/check_original_people.py
+- scripts/check_visual_fusion.py
 
-## 本地预览与交接
-已运行的构建预览：http://127.0.0.1:4327/ 。
-开发命令：ASTRO_TELEMETRY_DISABLED=1 npm --prefix frontend run dev -- --host 127.0.0.1 --port 4327；已有预览占用时复用或停止本任务自己的服务，不终止其他程序。
-Claude从 CLAUDE_HANDOFF.md 接手，先读本项目/Furnace当前任务与范围锁，再在本分支按用户反馈精修展示层。PR_DRAFT.md仅本地草稿。
-未完成：用户审阅本实验视觉、Claude后续精修、老师确认人员当前状态/素材与事实、真实生产审核记录迁移、Safari/iOS验证、域名/部署独立审批。生产迁移没有授权，不执行。
+## 预览与后续
+预览：http://127.0.0.1:4327/ ，浏览器已展示当前版。
+本地开发：ASTRO_TELEMETRY_DISABLED=1 npm --prefix frontend run dev -- --host 127.0.0.1 --port 4327；占用时复用当前预览，不终止他人服务。
+Claude入口CLAUDE_HANDOFF.md；先核对Furnace任务/锁，以用户指定原版作局部修正，不再自行换设计方向。
+未完成：用户实际审阅、老师复核人物当前状态/学术资料、真实生产审核数据迁移、Safari/iOS和正式域名/部署独立审批。
+未访问生产服务器、COS/SCF，未改DNS、备案、证书、EdgeOne或定时器，未安装Claude Code。

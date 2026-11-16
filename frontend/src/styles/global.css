@@ -1,22 +1,19 @@
 /* ── DESIGN TOKENS ─────────────────────────────────── */
 :root {
-  --bg: #fbfaf7;
-  --bg-surface: #f3f1eb;
-  --bg-elevated: #eae6dc;
-  --bg-dark: #f2efe8;
-  --text: #242521;
-  --text-2: #50514b;
-  --text-3: #68695f;
-  --text-inv: #ffffff;
-  --success: #276341;
-  --accent: #806127;
-  --accent-dim: rgba(128, 97, 39, 0.07);
-  --accent-mid: rgba(128, 97, 39, 0.16);
-  --border: rgba(36, 37, 33, 0.11);
-  --border-md: rgba(36, 37, 33, 0.22);
-  --champagne: #e3d0a5;
-  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
-  --motion-enter: 700ms;
+  --bg: #101310;
+  --bg-surface: #191d19;
+  --bg-elevated: #222822;
+  --bg-dark: #0c0f0d;
+  --text: #eceee7;
+  --text-2: #b5bcb1;
+  --text-3: #899385;
+  --text-inv: #f2f2e9;
+  --success: #89c89d;
+  --accent: #d3bc8d;
+  --accent-dim: rgba(211, 188, 141, 0.08);
+  --accent-mid: rgba(211, 188, 141, 0.2);
+  --border: rgba(232, 238, 223, 0.11);
+  --border-md: rgba(232, 238, 223, 0.22);
   --font-sans:
     "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei",
     "Noto Sans CJK SC", "WenQuanYi Zen Hei", sans-serif;
