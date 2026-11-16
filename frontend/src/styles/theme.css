@@ -23,14 +23,14 @@ input:focus-visible,
   outline-offset: 6px;
 }
 ::selection {
-  background: #d3bc8d;
+  background: #e8d9b6;
   color: #101310;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #4d574b;
+  background: #a2ad99;
 }
 img {
   max-width: 100%;

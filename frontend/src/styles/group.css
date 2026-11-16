@@ -110,7 +110,9 @@
   max-height: 500px;
   object-fit: cover;
   object-position: top;
-  filter: saturate(0.65);
+  filter: none;
+
+  background: #ffffff;
 }
 .group-advisor > div {
   min-width: 0;
@@ -133,12 +135,14 @@
   height: 230px;
   object-fit: cover;
   object-position: top;
-  background: #292e27;
-  filter: saturate(0.6);
+  background: #ffffff;
+  filter: none;
   transition: filter 0.4s;
+
+  border: 1px solid var(--border);
 }
 .group-people .group-card:hover img {
-  filter: saturate(1);
+  filter: none;
 }
 .group-people p {
   font-size: 13px;
@@ -225,7 +229,7 @@
 }
 .pill-link:hover {
   background: var(--accent);
-  border-color: var(--accent);
+  border-color: #ffffff;
   color: #121710;
 }
 .text-link {
@@ -314,7 +318,7 @@
   font-size: 11px;
   letter-spacing: 2.5px;
   margin-bottom: 38px;
-  color: #bec6b6;
+  color: var(--text-2);
 }
 .home-hero h1 {
   font-size: clamp(42px, 5.4vw, 82px);
@@ -343,12 +347,12 @@
   margin-top: 36px;
 }
 .hero-actions .pill-link {
-  background: #d3bc8d;
-  color: #151b12;
-  border-color: #d3bc8d;
+  background: #e8d9b6;
+  color: #362d1a;
+  border-color: #d0be96;
 }
 .hero-actions .pill-link:hover {
-  background: #ead9b7;
+  background: #dfcba2;
 }
 .hero-science {
   position: relative;
@@ -365,8 +369,13 @@
   overflow: hidden;
   background: #283027;
   border-radius: 3px;
-  box-shadow: 0 20px 90px #0006;
+  box-shadow: 0 16px 55px #26302416;
   transform: rotate(-3deg);
+
+  --accent: #e3c993;
+
+  --text: #f4f5ed;
+  color: #f4f5ed;
 }
 .science-film video {
   height: 100%;
@@ -438,7 +447,7 @@
   position: absolute;
   width: 90%;
   aspect-ratio: 1;
-  border: 1px solid #d3bc8d22;
+  border: 1px solid #80612722;
   border-radius: 50%;
   pointer-events: none;
 }
@@ -449,7 +458,7 @@
   width: 110%;
   transform: rotate(20deg) scaleY(0.63);
   border-style: dashed;
-  border-color: #d3bc8d15;
+  border-color: #80612718;
 }
 .science-orbit::before {
   content: "";
@@ -460,7 +469,7 @@
   height: 6px;
   background: var(--accent);
   border-radius: 50%;
-  box-shadow: 0 0 18px #d3bc8d60;
+  box-shadow: 0 0 18px #80612730;
 }
 .science-coordinate {
   position: absolute;
@@ -571,11 +580,11 @@
 
 /* The seven-direction browser reuses original, source-reviewed SVG artwork. */
 .home-research {
-  background: #e8e9df;
-  color: #232d24;
+  background: #f4f5ef;
+  color: #263024;
   padding-block: 80px 100px;
-  --text: #232d24;
-  --text-2: #5d675b;
+  --text: #263024;
+  --text-2: #4b5547;
   --text-3: #586650;
   --accent: #52613f;
   --border: #23351d20;
@@ -732,7 +741,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(0.45) brightness(0.75);
+  filter: none;
   transition: transform 1s;
 }
 .lab-photograph:hover > img {
@@ -743,10 +752,12 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(0deg, #101310, transparent);
+  background: linear-gradient(0deg, #fafaf7, #fafaf7e6 30%, transparent);
   padding: 80px 25px 25px;
   font: 9px var(--font-mono);
   letter-spacing: 1px;
+
+  color: var(--text-2);
 }
 .lab-copy h2 {
   font-size: clamp(38px, 4.3vw, 64px);
@@ -784,7 +795,7 @@
   margin-top: 6px;
 }
 .home-advisor {
-  background: #1b201a;
+  background: #ffffff;
   padding-block: 95px;
 }
 .advisor-editorial {
@@ -797,15 +808,15 @@
   width: 100%;
   max-width: 400px;
   position: relative;
-  margin-left: 3vw;
+  margin-left: 0;
 }
 .advisor-portrait img {
   width: 100%;
   height: 470px;
   object-fit: cover;
   object-position: top;
-  filter: saturate(0.45);
-  background: #d3d5ca;
+  filter: none;
+  background: #ffffff;
 }
 .advisor-portrait > span {
   position: absolute;
@@ -880,14 +891,14 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(0.5);
+  filter: none;
   transition:
     transform 0.7s,
     filter 0.7s;
 }
 .evidence-item:hover img {
   transform: scale(1.04);
-  filter: saturate(0.95);
+  filter: none;
 }
 .image-arrow {
   position: absolute;
@@ -899,7 +910,8 @@
   height: 34px;
   border: 1px solid #fff8;
   border-radius: 50%;
-  background: #10131070;
+  background: #263024;
+  color: #ffffff;
 }
 .evidence-item .eyebrow {
   font-size: 8px;
@@ -930,7 +942,7 @@
   padding-top: 0;
 }
 .home-papers {
-  background: #191d19;
+  background: #f4f5ef;
   padding-block: 65px 80px;
 }
 .paper-editorial-list {
@@ -980,6 +992,8 @@
   gap: 10vw;
   padding-block: 120px;
   align-items: center;
+
+  background: #ffffff;
 }
 .team-story h2 {
   font-size: clamp(30px, 3.4vw, 50px);
@@ -1011,11 +1025,15 @@
   height: 150px;
   object-fit: cover;
   object-position: top;
-  filter: saturate(0.35);
+  filter: none;
   transition: filter 0.4s;
+
+  background: #ffffff;
+
+  border: 1px solid var(--border);
 }
 .team-contact-sheet a:hover img {
-  filter: saturate(1);
+  filter: none;
 }
 .team-contact-sheet span {
   display: block;
@@ -1034,8 +1052,8 @@
 .home-join {
   position: relative;
   overflow: hidden;
-  background: #cbd0be;
-  color: #20291e;
+  background: #f1f3eb;
+  color: var(--text);
   padding-block: 80px 0;
   --accent: #4f6041;
   --border-md: #28382055;
