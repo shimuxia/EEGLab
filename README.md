@@ -1,3 +1,7 @@
+# 本地统一官网功能分支（2026-11-15）
+本分支将严颖课题组作为唯一网站主体，金牛湖脑机实验室作为脑机接口研究平台。使用 WSL；禁止本轮 push / PR / 部署。先读 CLAUDE_HANDOFF.md 和 FINAL_INTEGRATION_REPORT.md。
+当前为13个静态页面；论文组件默认读取 /api/group/papers。历史生产状态在下方保留，不代表统一站已上线。
+
 # 金牛湖脑机实验室网站
 
 南京信息工程大学金牛湖脑机实验室网站，正式地址：**[eeg.yanyinglab.cn](https://eeg.yanyinglab.cn)**。

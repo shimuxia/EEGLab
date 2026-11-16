@@ -1,3 +1,4 @@
+import { representativePapers } from '../data/group';
 import { useEffect, useMemo, useState } from 'react';
 import {
   fetchPublications,
@@ -46,7 +47,8 @@ export default function PublicationsExplorer() {
     return (
       <div className="publication-error" role="alert">
         <strong>暂时无法连接论文服务</strong>
-        <p>{error}</p>
+        <p>已保留静态代表论文，完整目录可稍后重试。</p>
+        <ul>{representativePapers.map(p => <li key={p.title}><a href={p.link} target="_blank" rel="noopener noreferrer">{p.title}</a> · {p.venue}</li>)}</ul>
         <button onClick={() => load(true)}>重新加载</button>
         <style>{errorStyles}</style>
       </div>

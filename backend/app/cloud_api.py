@@ -55,7 +55,7 @@ def dispatch(method, target, headers=None, body=b'', *, store=None, settings=Non
         if not hmac.compare_digest(headers.get('authorization', '').encode(),
                                    f'Bearer {settings.sync_token}'.encode()):
             return response(401, {'error': 'Unauthorized'})
-    routes = {'/papers': 'GET', '/researchers': 'GET', '/papers/version': 'GET',
+    routes = {'/group/papers': 'GET', '/papers': 'GET', '/researchers': 'GET', '/papers/version': 'GET',
               '/sync/status': 'GET', '/analytics/summary': 'GET', '/analytics/pageview': 'POST',
               '/admin/sync': 'POST', '/admin/researchers': 'POST', '/admin/scholar-candidates': 'GET'}
     if path not in routes:
@@ -98,10 +98,11 @@ def dispatch(method, target, headers=None, body=b'', *, store=None, settings=Non
             else:
                 write = path == '/admin/researchers'
                 with paper_workspace(store, settings, write=write) as local:
-                    if path == '/papers':
+                    if path in ('/papers', '/group/papers'):
                         def integer(key, default=None):
                             return int(query[key][0]) if key in query else default
                         data = get_publications(local, {
+                            'group_policy': path == '/group/papers',
                             'researchers': {slug.strip() for value in query.get('researcher', [])
                                             for slug in value.split(',') if slug.strip()},
                             'tag': query.get('tag', [None])[0], 'field': query.get('field', [None])[0],
@@ -109,7 +110,7 @@ def dispatch(method, target, headers=None, body=b'', *, store=None, settings=Non
                             'representative': query.get('representative', [''])[0].lower() == 'true',
                             'limit': integer('limit', 500), 'offset': integer('offset', 0),
                         })
-                        etag = make_etag(data['version'], url.query)
+                        etag = make_etag(data['version'] + path, url.query)
                     elif path == '/researchers':
                         data = {'researchers': list_researchers(local)}
                     elif path == '/admin/researchers':

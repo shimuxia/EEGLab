@@ -1,424 +1,76 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Nav from '../components/Nav.astro';
-import Footer from '../components/Footer.astro';
-
-const coreTeam = [
-  {
-    role: '学术核心',
-    title: '副教授 · 硕士生导师',
-    name: '严颖',
-    affil: '南京信息工程大学',
-    img: '/images/team/yan-ying.webp',
-    bio: '南京信息工程大学自动化学院副教授、硕士生导师。博士毕业于美国康涅狄格大学，研究方向涵盖脑电信号分析、模式识别、机器学习与深度学习。现兼任电气工程系副主任、江苏省气象能源利用与控制工程技术研究中心副主任。主持多项国家自然科学基金及省部级科研项目，发表 IEEE Transactions、Elsevier 旗下权威期刊等论文 70 余篇。入选斯坦福大学/爱思唯尔“全球前2%顶尖科学家”榜单（2026年，单年度影响力）。',
-    tags: ['EEG 信号分析', '模式识别', '深度学习', '脑机接口'],
-    links: [
-      { label: '导师主页', href: 'https://faculty.nuist.edu.cn/yanying/zh_CN/index.htm' },
-      { label: '邮件联系', href: 'mailto:ying.yan@nuist.edu.cn' },
-    ],
-  },
-  {
-    role: '临床核心',
-    title: '主治医生',
-    name: '刘娜',
-    affil: '南京脑科医院（南京市胸科医院）',
-    img: '/images/team/liu-na.webp',
-    bio: '依托南京脑科医院（南京市胸科医院）临床场景，参与脑电数据采集、病例协作与脑科疾病辅助诊疗验证，推动实验室研究与真实医疗场景衔接。',
-    tags: ['临床数据采集', '病例协作', '诊疗验证'],
-    links: [],
-  },
-];
-
-const advisors = [
-  { role: '学术顾问', title: '主任医师',     name: '方申存',            img: '/images/team/fang-shencun.webp',      affil: '南京脑科医院（南京市胸科医院）', desc: '呼吸二科主任 · 南京医科大学硕士研究生导师' },
-  { role: '学术顾问', title: '教授',          name: '蔡骏',              img: '/images/team/cai-jun.webp',           affil: '南京信息工程大学',              desc: 'IEEE Senior Member · 智能控制与脑机接口数据分析' },
-  { role: '学术顾问', title: '教授',          name: 'Adrian David Cheok',img: '/images/team/adrian-david-cheok.webp',affil: '南京信息工程大学',              desc: '全职引进教授 · 曾任新加坡国立大学教授' },
-  { role: '学术顾问', title: '教授',          name: '吴奇',              img: '/images/team/吴奇.webp',              affil: '上海交通大学',                  desc: '国家杰出青年基金获得者 · 具身智能与机器人' },
-  { role: '学术顾问', title: 'IEEE Life Fellow', name: 'Peter B. Luh',  img: '/images/team/Peter B. Luh.webp',      affil: 'University of Connecticut',    desc: 'Board of Trustees Distinguished Professor' },
-  { role: '学术顾问', title: 'IEEE Life Fellow', name: 'Krishna R. Pattipati', img: '/images/team/Krishna Pattipati.webp', affil: 'University of Connecticut', desc: 'Board of Trustees Distinguished Professor Emeritus' },
-];
-
-const grads = [
-  { name: '朱家琦', badge: '24级研究生 · 自动化', img: '/images/team/朱家琦.webp', focuses: ['脑电信号分析', '机器学习'] },
-  { name: '宗禹胄', badge: '26级研究生 · 自动化', img: '/images/team/宗禹胄.webp', focuses: [] },
-  { name: '陆思语', badge: '26级研究生 · 自动化', img: '/images/team/陆思语.webp', focuses: [] },
-  { name: '王宇森', badge: '26级研究生 · 自动化', img: '/images/team/王宇森.webp', focuses: [] },
-  { name: '沈培涵', badge: '26级研究生 · 自动化', img: '/images/team/沈培涵.webp', focuses: [] },
-];
-
-const undergrads = [
-  { char: '杨', name: '许穆杨', badge: '24届本科生 · 计算机科学与技术', img: '/images/team/许穆杨.webp', focuses: ['脑电信号处理', '运动意图解码'] },
-  { char: '淼', name: '刘浩淼', badge: '25级本科生 · 计算机科学与技术', img: '/images/team/刘浩淼.webp', focuses: ['深度学习', '神经信号处理'] },
-  { char: '帅', name: '田帅',   badge: '25级本科生 · 通信工程',         img: '/images/team/田帅.webp',   focuses: ['模式识别', '系统集成'] },
-  { char: '涵', name: '章子涵', badge: '25级本科生 · 通信工程',         img: '/images/team/章子涵.webp', focuses: ['通信信号处理'] },
-  { char: '昊', name: '王昊',   badge: '23级本科生 · 计算机科学与技术', img: '/images/team/王昊.webp',   focuses: ['脑机接口系统', '嵌入式开发'] },
-  { char: '志', name: '刘志',   badge: '23级本科生 · 电子信息',         img: '/images/team/刘志.webp',   focuses: ['电子系统设计'] },
-];
+import GroupLayout from "../layouts/GroupLayout.astro";
+import Advisor from "../components/Advisor.astro";
+import GroupMembers from "../components/GroupMembers.astro";
+import { labTeam } from "../data/group";
 ---
 
-<Layout title="团队成员 · 金牛湖脑机实验室" description="汇聚神经工程、信号处理、机器人控制等多学科背景的研究人员，共同推进脑机接口前沿探索">
-  <Nav active="home" />
-
-  <header class="page-header">
-    <div class="container">
-      <a href="/" class="back-link">
-        <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        返回主页
-      </a>
-      <div class="section-label">Team</div>
-      <h1 class="ph-title">核心团队</h1>
-      <p class="ph-desc">汇聚神经工程、信号处理、机器人控制等多学科背景的研究人员，共同推进脑机接口前沿探索。</p>
-    </div>
+<GroupLayout title="团队成员">
+  <header class="group-header">
+    <p class="group-kicker">PEOPLE</p>
+    <h1>团队成员</h1>
+    <p>课题组成员与脑机实验室协作团队，共同连接学术研究与工程实践。</p>
   </header>
-
-  <main class="team-body">
-    <div class="container">
-
-      <!-- Core Members -->
-      <div class="t-section fade-up">
-        <div class="t-section-head">
-          <span>Core Members</span>
-          <strong>{coreTeam.length}</strong>
-        </div>
-        <div class="core-grid">
-          {coreTeam.map((m) => (
-            <article class="core-card">
-              <div class="core-card-head">
-                <span class="ck-kicker">{m.role}</span>
-                <span class="ck-title">{m.title}</span>
-              </div>
-              <div class="core-profile">
-                <img src={m.img} alt={m.name} class="core-avatar" />
-                <div class="core-body">
-                  <h3 class="core-name">{m.name}</h3>
-                  <span class="core-affil">{m.affil}</span>
-                  <p class="core-bio">{m.bio}</p>
-                </div>
-              </div>
-              <div class="core-tags">
-                {m.tags.map(tag => <span>{tag}</span>)}
-              </div>
-              <div class="core-links">
-                {m.links.map(link => (
-                  <a
-                    href={link.href}
-                    target={link.href.startsWith('http') ? '_blank' : undefined}
-                    rel="noopener"
-                    class="arrow-link"
-                  >
-                    {link.label}
-                    <span class="arrow-icon">
-                      <svg class="arrow-out" viewBox="0 0 18 18"><path d="M2 16L16 2M16 2H6M16 2V12"/></svg>
-                      <svg class="arrow-in"  viewBox="0 0 18 18"><path d="M2 16L16 2M16 2H6M16 2V12"/></svg>
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-
-      <!-- Academic Advisors -->
-      <div class="t-section fade-up delay-1">
-        <div class="t-section-head">
-          <span>Academic Advisors</span>
-          <strong>{advisors.length}</strong>
-        </div>
-        <div class="advisor-grid">
-          {advisors.map((a) => (
-            <article class="advisor-card">
-              <img src={a.img} alt={a.name} class="advisor-avatar" />
-              <div class="advisor-info">
-                <span class="advisor-role">{a.role} · {a.title}</span>
-                <span class="advisor-name">{a.name}</span>
-                <span class="advisor-affil">{a.affil}</span>
-                <span class="advisor-desc">{a.desc}</span>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-
-      <!-- Undergraduate Students -->
-      <div class="t-section fade-up delay-2">
-        <div class="t-section-head">
-          <span>Undergraduate Students</span>
-          <strong>{undergrads.length}</strong>
-        </div>
-        <div class="member-grid member-grid-wide">
-          {undergrads.map((m) => (
-            <article class="member-card">
-              {m.img ? (
-                <img src={m.img} alt={m.name} class="member-avatar member-photo" />
-              ) : (
-                <div class="member-avatar">{m.char}</div>
-              )}
-              <div class="member-name">{m.name}</div>
-              <div class="member-badge">{m.badge}</div>
-              {m.focuses.map(f => <div class="member-focus">{f}</div>)}
-            </article>
-          ))}
-        </div>
-      </div>
-
-      <!-- Graduate Students -->
-      <div class="t-section fade-up delay-3">
-        <div class="t-section-head">
-          <span>Graduate Students</span>
-          <strong>{grads.length}</strong>
-        </div>
-        <div class="member-grid">
-          {grads.map((m) => (
-            <article class="member-card">
-              <img src={m.img} alt={m.name} class="member-avatar member-photo" />
-              <div class="member-name">{m.name}</div>
-              <div class="member-badge">{m.badge}</div>
-              {m.focuses.map(f => <div class="member-focus">{f}</div>)}
-            </article>
-          ))}
-        </div>
-      </div>
-
-      <!-- Join CTA -->
-      <div class="join-block fade-up delay-4">
-        <div class="join-kicker">Join Us</div>
-        <h2 class="join-title">加入我们</h2>
-        <p class="join-text">
-          欢迎对脑机接口、EEG 信号分析、神经工程、嵌入式系统、机器人控制等方向感兴趣的研究生与本科生加入团队。课题组提供完善的实验设备、充足的科研经费与定期的国际学术交流机会。
-        </p>
-        <a href="/contact" class="arrow-link">
-          了解详情
-          <span class="arrow-icon">
-            <svg class="arrow-out" viewBox="0 0 18 18"><path d="M2 16L16 2M16 2H6M16 2V12"/></svg>
-            <svg class="arrow-in"  viewBox="0 0 18 18"><path d="M2 16L16 2M16 2H6M16 2V12"/></svg>
-          </span>
-        </a>
-      </div>
-
+  <section class="group-section">
+    <Advisor />
+  </section>
+  <section class="group-section">
+    <h2>课题组成员</h2>
+    <GroupMembers />
+  </section>
+  <section class="group-section" id="lab-team">
+    <h2>脑机实验室协作团队</h2>
+    <p>
+      以下保留实验室网站中的协作身份；临床伙伴和学术顾问不归类为课题组学生。
+    </p>
+    <div class="group-grid group-subsection">
+      {labTeam.coreTeam.slice(1).map((m) => (
+        <article class="group-card">
+          <img
+            src={m.img}
+            alt={m.name}
+            width="90"
+            height="110"
+            loading="lazy"
+          />
+          <h3>
+            {m.name} · {m.role}
+          </h3>
+          <p>
+            {m.title} · {m.affil}
+          </p>
+          <p>{m.bio}</p>
+        </article>
+      ))}
     </div>
-  </main>
-
-  <Footer />
-</Layout>
-
-<script>
-  const io = new IntersectionObserver(
-    (entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }); },
-    { threshold: 0.06 }
-  );
-  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
-</script>
-
-<style>
-  /* ── Page Header ─────────────────────────────────── */
-  .page-header {
-    padding: 140px 0 72px;
-    background: var(--bg-surface);
-    border-bottom: 1px solid var(--border);
-  }
-  .back-link {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 14px; color: var(--text-3); text-decoration: none;
-    margin-bottom: 32px; transition: color 0.15s;
-  }
-  .back-link:hover { color: var(--text-2); }
-  .back-link svg { width: 16px; height: 16px; }
-  .ph-title {
-    font-size: clamp(40px, 6vw, 72px);
-    font-weight: 700; letter-spacing: -0.03em;
-    line-height: 1.05; margin: 12px 0 16px;
-  }
-  .ph-desc {
-    font-size: 17px; color: var(--text-2);
-    line-height: 1.7; max-width: 560px;
-  }
-
-  /* ── Body ────────────────────────────────────────── */
-  .team-body { padding: 80px 0 120px; }
-
-  /* ── Section Wrapper ─────────────────────────────── */
-  .t-section { margin-bottom: 72px; }
-
-  .t-section-head {
-    display: flex; align-items: center; justify-content: space-between;
-    padding-bottom: 14px; margin-bottom: 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .t-section-head span {
-    font-size: 10px; font-family: var(--font-mono);
-    letter-spacing: 1.6px; text-transform: uppercase; color: var(--text-3);
-  }
-  .t-section-head strong {
-    display: flex; align-items: center; justify-content: center;
-    width: 24px; height: 24px; border-radius: 50%;
-    background: var(--bg-elevated); color: var(--accent);
-    font-size: 12px; font-weight: 700;
-  }
-
-  /* ── Core Cards ──────────────────────────────────── */
-  .core-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-  }
-  .core-card {
-    display: flex; flex-direction: column;
-    padding: 24px 28px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    background: var(--bg);
-  }
-  .core-card-head {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 12px; margin-bottom: 16px;
-  }
-  .ck-kicker {
-    font-size: 10px; font-family: var(--font-mono);
-    letter-spacing: 1.6px; text-transform: uppercase;
-    color: var(--accent);
-  }
-  .ck-title {
-    font-size: 10px; font-family: var(--font-mono);
-    letter-spacing: 1.6px; color: var(--text-3);
-  }
-  .core-profile {
-    display: grid; grid-template-columns: 96px 1fr;
-    gap: 24px; align-items: start; margin-bottom: 16px;
-  }
-  .core-avatar {
-    width: 96px; height: 96px; border-radius: 50%;
-    border: 2px solid var(--accent-mid);
-    object-fit: cover; object-position: top; flex-shrink: 0;
-  }
-  .core-name {
-    font-size: 28px; font-weight: 800;
-    letter-spacing: -0.02em; margin-bottom: 6px;
-  }
-  .core-affil {
-    display: block; font-size: 11px; font-family: var(--font-mono);
-    letter-spacing: 0.5px; color: var(--text-3); margin-bottom: 10px;
-  }
-  .core-bio {
-    font-size: 14px; color: var(--text-2); line-height: 1.75;
-  }
-  .core-tags {
-    display: flex; gap: 8px; flex-wrap: wrap;
-    margin-top: auto; padding-top: 16px;
-  }
-  .core-tags span {
-    font-size: 10px; font-family: var(--font-mono);
-    padding: 4px 10px; border-radius: var(--radius-sm);
-    background: var(--bg-elevated); color: var(--text-2);
-  }
-  .core-links {
-    display: flex; gap: 24px; flex-wrap: wrap; align-items: center;
-    padding-top: 16px; min-height: 40px;
-  }
-  .core-links .arrow-link { font-size: 14px; color: var(--text-2); }
-
-  /* ── Advisor Cards ───────────────────────────────── */
-  .advisor-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-  }
-  .advisor-card {
-    display: flex; align-items: flex-start; gap: 14px;
-    padding: 18px 20px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    background: var(--bg);
-    transition: background 0.2s;
-  }
-  .advisor-card:hover { background: var(--bg-surface); }
-  .advisor-avatar {
-    width: 56px; height: 56px; border-radius: 50%;
-    border: 1.5px solid var(--border-md);
-    object-fit: cover; object-position: top; flex-shrink: 0;
-  }
-  .advisor-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-  .advisor-role {
-    font-size: 9px; font-family: var(--font-mono);
-    letter-spacing: 1.3px; color: var(--text-3); text-transform: uppercase;
-  }
-  .advisor-name { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
-  .advisor-affil { font-size: 12px; color: var(--text-2); line-height: 1.35; }
-  .advisor-desc { font-size: 11px; color: var(--text-3); line-height: 1.4; }
-
-  /* ── Member Grid ─────────────────────────────────── */
-  .member-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-  }
-  .member-grid-wide {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  }
-  .member-card {
-    background: var(--bg);
-    padding: 36px 20px;
-    text-align: center;
-    transition: background 0.2s;
-  }
-  .member-card:hover { background: var(--bg-surface); }
-  .member-avatar {
-    width: 72px; height: 72px; border-radius: 50%;
-    background: var(--accent-dim); border: 1px solid var(--accent-mid);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; font-weight: 600; color: var(--accent);
-    margin: 0 auto 16px;
-  }
-  .member-photo {
-    object-fit: cover; object-position: top; background: none;
-  }
-  .member-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-  .member-badge {
-    font-size: 11px; font-family: var(--font-mono);
-    color: var(--accent); opacity: 0.6; margin-bottom: 10px;
-  }
-  .member-focus { font-size: 12px; color: var(--text-2); line-height: 1.6; }
-
-  /* ── Join CTA ────────────────────────────────────── */
-  .join-block {
-    padding: 48px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    background: var(--bg-surface);
-  }
-  .join-kicker {
-    font-size: 10px; font-family: var(--font-mono);
-    letter-spacing: 1.6px; text-transform: uppercase;
-    color: var(--text-3); margin-bottom: 12px;
-  }
-  .join-title {
-    font-size: 28px; font-weight: 700;
-    letter-spacing: -0.02em; margin-bottom: 16px;
-  }
-  .join-text {
-    font-size: 16px; color: var(--text-2);
-    line-height: 1.85; max-width: 640px; margin-bottom: 24px;
-  }
-
-  /* ── Responsive ──────────────────────────────────── */
-  @media (max-width: 1024px) {
-    .advisor-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  @media (max-width: 768px) {
-    .core-grid { grid-template-columns: 1fr; }
-    .core-profile { grid-template-columns: 80px 1fr; gap: 16px; }
-    .core-avatar { width: 80px; height: 80px; }
-    .core-name { font-size: 24px; }
-    .member-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .member-grid-wide { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  }
-  @media (max-width: 560px) {
-    .page-header { padding: 100px 0 48px; }
-    .advisor-grid { grid-template-columns: 1fr; }
-    .member-grid,
-    .member-grid-wide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .join-block { padding: 32px 24px; }
-  }
-</style>
+    <h3 class="group-subsection">学术顾问</h3>
+    <div class="group-grid">
+      {labTeam.advisors.map((m) => (
+        <article class="group-card">
+          <h3>{m.name}</h3>
+          <p>
+            {m.title} · {m.affil}
+          </p>
+          <p>{m.desc}</p>
+        </article>
+      ))}
+    </div>
+    <h3 class="group-subsection">实验室本科成员与校友</h3>
+    <div class="group-grid group-people">
+      {labTeam.undergrads.map((m) => (
+        <article class="group-card">
+          <img
+            src={m.img}
+            alt={m.name}
+            width="90"
+            height="110"
+            loading="lazy"
+          />
+          <h3>{m.name}</h3>
+          <p>{m.badge}</p>
+          <p>{m.focuses.join(" · ")}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+</GroupLayout>

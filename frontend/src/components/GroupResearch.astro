@@ -1,0 +1,25 @@
+---
+import { directions } from "../data/group";
+---
+
+<div class="group-grid">
+  {directions.map((r) => (
+    <article class="group-card" id={r.id}>
+      <span class="group-kicker">
+        {r.no} / {r.en}
+      </span>
+      <h3>{r.title}</h3>
+      <p>{r.desc}</p>
+      <div class="group-tags">
+        {r.tags.map((tag) => (
+          <span>{tag}</span>
+        ))}
+      </div>
+      {r.id === "research-bci" && (
+        <a href="/research/brain-computer-interface">
+          金牛湖脑机实验室 · 研究与平台 →
+        </a>
+      )}
+    </article>
+  ))}
+</div>

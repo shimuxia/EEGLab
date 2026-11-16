@@ -1,4 +1,5 @@
 ---
+import GroupHonors from '../components/GroupHonors.astro';
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -25,7 +26,7 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
 ---
 
 <Layout
-  title="科研成果 · 金牛湖脑机实验室"
+  title="科研成果 · 严颖课题组"
   description="严颖副教授团队在脑机接口、EEG信号分析、模式识别等领域的学术成果汇总"
 >
   <Nav active="achievements" />
@@ -49,7 +50,7 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
             <div class="stat-label">论文总数</div>
           </div>
           <div class="stat-item">
-            <div class="stat-num">16+</div>
+            <div class="stat-num">16</div>
             <div class="stat-label">授权专利</div>
           </div>
           <div class="stat-item">
@@ -62,7 +63,8 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
   </div>
 
   <!-- ── BODY ────────────────────────────────────────── -->
-  <div class="ach-body">
+  <section class="container" style="padding-top:48px"><h2>导师学术荣誉</h2><GroupHonors /></section>
+  <div class="ach-body" id="main-content">
 
     <!-- Sidebar -->
     <aside class="ach-sidebar" id="ach-sidebar">

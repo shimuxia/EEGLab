@@ -1,0 +1,15 @@
+---
+import { honors } from "../data/group";
+---
+
+<div class="group-honors">
+  {honors.map((h) => (
+    <article>
+      <time>{h.year}</time>
+      <div>
+        <h3>{h.title}</h3>
+        <p>{h.detail}</p>
+      </div>
+    </article>
+  ))}
+</div>

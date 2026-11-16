@@ -1,0 +1,19 @@
+---
+import Layout from "./Layout.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/group.css";
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+---
+
+<Layout title={`${title} · 严颖课题组`} description={description}>
+  <Nav />
+  <main id="main-content" class="group-page">
+    <slot />
+  </main>
+  <Footer />
+</Layout>

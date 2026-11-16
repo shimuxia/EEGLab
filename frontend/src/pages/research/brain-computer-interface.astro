@@ -1,0 +1,44 @@
+---
+import GroupLayout from "../../layouts/GroupLayout.astro";
+import { research } from "../../data/research";
+---
+
+<GroupLayout title="脑机接口 · 金牛湖脑机实验室">
+  <header class="group-header">
+    <p class="group-kicker">RESEARCH / BRAIN-COMPUTER INTERFACE</p>
+    <h1>脑机接口</h1>
+    <p>
+      金牛湖脑机实验室是严颖课题组的脑机接口研究与实验平台，连接脑电信号分析、运动意图解码与智能控制。
+    </p>
+  </header>
+  <section class="group-section">
+    <h2>让思想驱动未来</h2>
+    <video
+      class="group-video"
+      controls
+      muted
+      playsinline
+      preload="metadata"
+      aria-label="脑机实验室研究展示"
+    >
+      <source src="/videos/promo-hero-v1.mp4" type="video/mp4" />
+      您的浏览器不支持视频播放。
+    </video>
+  </section>
+  <section class="group-section">
+    <h2>研究专题</h2>
+    <div class="group-grid">
+      {research.map((r) => (
+        <article class="group-card">
+          <h3>{r.title}</h3>
+          <p>{r.overview}</p>
+          <a href={`/research/${r.slug}`}>研究方法与相关论文 →</a>
+        </article>
+      ))}
+    </div>
+    <div class="group-actions">
+      <a href="/achievements">实验成果与影像 →</a>
+      <a href="/team#lab-team">实验室协作团队 →</a>
+    </div>
+  </section>
+</GroupLayout>

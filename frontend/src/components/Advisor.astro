@@ -1,0 +1,31 @@
+---
+import { advisor } from "../data/group";
+---
+
+<div class="group-advisor">
+  <img
+    src={advisor.photo}
+    alt="严颖老师肖像"
+    width="440"
+    height="520"
+    loading="lazy"
+  />
+  <div>
+    <p class="group-kicker">PRINCIPAL INVESTIGATOR</p>
+    <h2>
+      {advisor.name} <small>{advisor.nameEn}</small>
+    </h2>
+    <p>
+      {advisor.affiliation} · {advisor.role}
+    </p>
+    <p>{advisor.biography}</p>
+    <div class="group-tags">
+      {advisor.interests.map((tag) => (
+        <span>{tag}</span>
+      ))}
+    </div>
+    <a href={advisor.homepage} target="_blank" rel="noopener noreferrer">
+      官方个人主页 ↗
+    </a>
+  </div>
+</div>

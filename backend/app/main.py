@@ -59,6 +59,7 @@ async def papers(request: Request) -> Response:
     }
     representative_value = request.query_params.get('representative')
     filters = {
+        'group_policy': request.url.path.startswith('/api/group/'),
         'researchers': researcher_slugs,
         'tag': request.query_params.get('tag'),
         'field': request.query_params.get('field'),
@@ -71,7 +72,7 @@ async def papers(request: Request) -> Response:
         'offset': _optional_int(request.query_params.get('offset')) or 0,
     }
     data = await run_in_threadpool(get_publications, settings, filters)
-    etag = make_etag(data['version'], request.url.query)
+    etag = make_etag(data['version'], request.url.path + '?' + request.url.query)
     if request.headers.get('if-none-match') == etag:
         return Response(status_code=304, headers={
             'ETag': etag, 'Cache-Control': settings.cache_control,
@@ -222,6 +223,7 @@ routes = [
     Route('/health', health),
     Route('/api/researchers', researchers),
     Route('/api/papers', papers),
+    Route('/api/group/papers', papers),
     Route('/api/papers/version', papers_version),
     Route('/api/sync/status', sync_status),
     Route('/api/analytics/pageview', analytics_pageview, methods=['POST']),

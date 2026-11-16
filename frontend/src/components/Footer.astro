@@ -1,5 +1,5 @@
 ---
-const icpNumber = import.meta.env.PUBLIC_ICP_NUMBER?.trim();
+const icpNumber = import.meta.env.PUBLIC_ICP_NUMBER?.trim() || '苏ICP备2026027101号-2';
 ---
 <footer>
   <div class="footer-row">
@@ -10,9 +10,9 @@ const icpNumber = import.meta.env.PUBLIC_ICP_NUMBER?.trim();
           <rect x="1" y="10" width="20" height="1.4" rx="0.7" fill="currentColor" opacity="0.3"/>
           <path d="M1 10 Q4 4 8 10 Q11 16 14 10 Q18 4 21 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
         </svg>
-        <span>金牛湖脑机实验室</span>
+        <span>严颖课题组</span>
       </div>
-      <p class="footer-copy"> &copy; 2025 Brain-Computer Interface Lab · NUIST</p>
+      <p class="footer-copy"> &copy; 2026 Yan Ying Research Group · NUIST</p>
       {icpNumber && <p class="footer-copy"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">{icpNumber}</a></p>}
       <div
         class="footer-stats"
@@ -130,6 +130,7 @@ const icpNumber = import.meta.env.PUBLIC_ICP_NUMBER?.trim();
   }
   .footer-nav a:hover { color: var(--text); }
   .footer-unis {
+    max-width:100%;
     display: flex;
     align-items: center;
     gap: 24px;
@@ -151,6 +152,8 @@ const icpNumber = import.meta.env.PUBLIC_ICP_NUMBER?.trim();
       text-align: center;
     }
     .footer-left { align-items: center; }
+    .footer-unis {gap:16px;flex-wrap:wrap;justify-content:center}
+    .footer-uni-logo.nuist,.footer-uni-logo.ahjzu {height:auto;width:140px;max-width:100%}
     .footer-stats { justify-content: center; flex-wrap: wrap; row-gap: 6px; }
     .footer-nav { flex-wrap: wrap; justify-content: center; gap: 16px; }
   }
@@ -170,7 +173,7 @@ const icpNumber = import.meta.env.PUBLIC_ICP_NUMBER?.trim();
   };
 
   const loadSummary = async () => {
-    if (!root) return;
+    if (!root || import.meta.env.PUBLIC_ENABLE_ANALYTICS !== 'true') { if (root) root.dataset.state = 'error'; return; }
     try {
       await (analyticsWindow.__eeglabAnalyticsReady ?? Promise.resolve(false));
       const response = await fetch('/api/analytics/summary', {

@@ -1,0 +1,48 @@
+---
+import { members, studentGroups } from "../data/group";
+const { compact = false } = Astro.props;
+---
+
+<h3>研究生与校友</h3>
+<div class="group-grid group-people">
+  {members.map((m) => (
+    <article class="group-card">
+      {m.photo && (
+        <img
+          src={m.photo}
+          alt={m.name}
+          width="90"
+          height="110"
+          loading="lazy"
+        />
+      )}
+      <h3>{m.name}</h3>
+      <p>{m.stage}</p>
+      {m.note && <p>{m.note}</p>}
+    </article>
+  ))}
+</div>
+{!compact &&
+  studentGroups.map((g) => (
+    <section class="group-subsection">
+      <h3>{g.dir} · 本科生 / 项目参与与校友</h3>
+      <div class="group-grid group-people">
+        {g.students.map((m) => (
+          <article class="group-card">
+            {m.photo && (
+              <img
+                src={m.photo}
+                alt={m.name}
+                width="90"
+                height="110"
+                loading="lazy"
+              />
+            )}
+            <h3>{m.name}</h3>
+            <p>{m.stage}</p>
+            <p>{m.note}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  ))}

@@ -1,0 +1,324 @@
+{
+  "aboutTags": [
+    "模式识别",
+    "机器学习",
+    "深度学习",
+    "脑电分析",
+    "多维泰勒网",
+    "故障诊断与预测",
+    "优化",
+    "生产计划与调度"
+  ],
+  "research": [
+    {
+      "no": "01",
+      "id": "research-fault-diagnosis",
+      "title": "复杂系统故障诊断与预测",
+      "en": "Fault Diagnosis & Prognosis",
+      "desc": "暖通、电力、风机这类大系统出故障常常难以提前察觉。我们用模式识别建模运行数据，尽早发现异常，并估计设备还能稳定运行多久。",
+      "tags": [
+        "暖通空调 HVAC",
+        "电力系统",
+        "风机",
+        "故障预测"
+      ]
+    },
+    {
+      "no": "02",
+      "id": "research-bci",
+      "title": "脑机接口",
+      "en": "Brain-Computer Interface",
+      "desc": "脑电信号里藏着状态与健康的线索，却很难靠肉眼读懂。我们用机器学习从 EEG 中识别异常、估计疲劳与情绪，探索脑机接口的应用。",
+      "tags": [
+        "EEG",
+        "脑机接口",
+        "疲劳 / 情绪估计",
+        "可解释模型"
+      ]
+    },
+    {
+      "no": "03",
+      "id": "research-power-load-rainfall",
+      "title": "发电功率 / 电力负荷 / 降水预测",
+      "en": "Power · Load · Rainfall Forecasting",
+      "desc": "发电功率、电力负荷和降水都依赖对未来的判断。我们用时序建模与机器学习方法，做更稳的预测，为调度与决策提供参考。",
+      "tags": [
+        "发电功率预测",
+        "电力负荷",
+        "降水预测",
+        "时序建模"
+      ]
+    },
+    {
+      "no": "04",
+      "id": "research-public-opinion",
+      "title": "舆情分析",
+      "en": "Public Opinion Analysis",
+      "desc": "网络上的声音庞杂而分散。我们用文本分析与机器学习，梳理话题与情绪的走向，帮助更清楚地理解舆论。",
+      "tags": [
+        "文本分析",
+        "情感分析",
+        "话题演化",
+        "机器学习"
+      ]
+    },
+    {
+      "no": "05",
+      "id": "research-optimization",
+      "title": "优化算法",
+      "en": "Optimization Algorithms",
+      "desc": "排程、分配这类问题选择太多，靠经验容易顾此失彼。我们把它写成优化模型，用算法求更省、更稳的方案。",
+      "tags": [
+        "生产调度",
+        "资源分配",
+        "电力系统优化",
+        "优化算法"
+      ]
+    },
+    {
+      "no": "06",
+      "id": "research-mcu-fpga",
+      "title": "单片机 / FPGA",
+      "en": "MCU / FPGA",
+      "desc": "算法最终要落到硬件上跑。我们在单片机与 FPGA 上做信号处理与控制的工程实现，把方法变成能用的系统。",
+      "tags": [
+        "单片机",
+        "FPGA",
+        "信号处理",
+        "嵌入式控制"
+      ]
+    },
+    {
+      "no": "07",
+      "id": "research-robot-uav",
+      "title": "机器人 / 无人机",
+      "en": "Robotics / UAV",
+      "desc": "机器人与无人机需要感知、决策和控制的配合。我们围绕真实平台，做从算法到系统的落地与验证。",
+      "tags": [
+        "机器人",
+        "无人机",
+        "感知与控制",
+        "系统集成"
+      ]
+    }
+  ],
+  "team": {
+    "advisor": {
+      "name": "严颖 Ying Yan",
+      "stage": "副教授 · 硕士生导师",
+      "note": "南京信息工程大学自动化学院 · 电气工程系副系主任",
+      "highlight": "复杂系统故障诊断与预测 / 脑机接口与脑电分析 / 具身智能与人机协同",
+      "photo": "/group/assets/yan-ying-portrait.png"
+    },
+    "masters": [
+      {
+        "name": "朱家琦",
+        "photo": "/group/assets/members/朱家琦.jpg",
+        "stage": "在读研究生"
+      },
+      {
+        "name": "宗禹胄",
+        "photo": "/group/assets/members/宗禹胄.jpg",
+        "stage": "在读研究生"
+      },
+      {
+        "name": "张乐乐",
+        "photo": "/group/assets/members/张乐乐.jpg",
+        "stage": "在读研究生"
+      },
+      {
+        "name": "沈培涵",
+        "photo": "/group/assets/members/沈培涵.jpg",
+        "stage": "在读研究生"
+      },
+      {
+        "name": "王宇森",
+        "photo": "/group/assets/members/王宇森.jpg",
+        "stage": "在读研究生"
+      },
+      {
+        "name": "苗争光",
+        "photo": "/group/assets/members/苗争光.jpg",
+        "stage": "在读研究生"
+      },
+      {
+        "name": "陆思语",
+        "photo": "/group/assets/members/陆思语.jpg",
+        "stage": "在读研究生"
+      },
+      {
+        "name": "陈刘春",
+        "photo": "/group/assets/members/陈刘春.jpg",
+        "stage": "在读研究生"
+      },
+      {
+        "name": "汤云",
+        "photo": "/group/assets/team/tang-yun.webp",
+        "photoAlt": "汤云 · 严颖课题组成员",
+        "stage": "硕士 · 已毕业",
+        "note": "去向：航天新气象科技有限公司"
+      }
+    ],
+    "undergradGroups": [
+      {
+        "dir": "故障诊断与预测",
+        "students": [
+          {
+            "name": "杜文杰",
+            "photo": "/group/assets/team/du-wenjie.webp",
+            "stage": "本科生 / 项目参与学生",
+            "note": ""
+          },
+          {
+            "name": "吕炯睿",
+            "photo": "/group/assets/team/lv-jiongrui.webp",
+            "stage": "本科生 / 项目参与学生",
+            "note": ""
+          },
+          {
+            "name": "范怀熙",
+            "photo": "/group/assets/team/fan-huixi.webp",
+            "stage": "本科生 / 项目参与学生",
+            "note": ""
+          }
+        ]
+      },
+      {
+        "dir": "脑机接口",
+        "students": [
+          {
+            "name": "刘冠廷",
+            "photo": "/group/assets/team/liu-guanting.webp",
+            "stage": "本科 · 已毕业",
+            "note": "香港理工大学 · EEG 图神经网络"
+          },
+          {
+            "name": "蔡昊洋",
+            "photo": "/group/assets/team/cai-haoyang.webp",
+            "stage": "本科 · 已毕业",
+            "note": "保送华南理工大学 · NeuroLynx 国家铜奖"
+          },
+          {
+            "name": "皇甫陈萌",
+            "photo": "/group/assets/team/huangfu-chenmeng.webp",
+            "stage": "本科 · 已毕业",
+            "note": "保送河海大学 · 驾驶疲劳 EEG 分类"
+          },
+          {
+            "name": "孙玺涵",
+            "photo": "/group/assets/team/sun-xihan.webp",
+            "stage": "本科生 / 项目参与学生",
+            "note": ""
+          }
+        ]
+      },
+      {
+        "dir": "发电功率 / 电力负荷 / 降水预测",
+        "students": [
+          {
+            "name": "张金皓",
+            "photo": "/group/assets/team/zhang-jinhao.webp",
+            "stage": "本科 · 项目参与",
+            "note": ""
+          },
+          {
+            "name": "何企涵",
+            "photo": "/group/assets/team/he-qihan.webp",
+            "stage": "本科生 / 项目参与学生",
+            "note": ""
+          },
+          {
+            "name": "何抒翰",
+            "photo": "/group/assets/team/he-yuhan.webp",
+            "stage": "本科生 / 项目参与学生",
+            "note": ""
+          },
+          {
+            "name": "孙丁溢",
+            "photo": "/group/assets/team/sun-dingyi.webp",
+            "stage": "本科生 / 项目参与学生",
+            "note": ""
+          }
+        ]
+      },
+      {
+        "dir": "舆情分析",
+        "students": [
+          {
+            "name": "张裕坤",
+            "photo": "/group/assets/team/zhang-yukun.webp",
+            "stage": "本科生 / 项目参与学生",
+            "note": ""
+          }
+        ]
+      },
+      {
+        "dir": "项目参与 / 交叉实践",
+        "students": [
+          {
+            "name": "顾启航",
+            "photo": "/group/assets/team/gu-qihang.webp",
+            "photoAlt": "顾启航 · 严颖课题组成员",
+            "stage": "本科 · 已毕业",
+            "note": "保送东南大学 · 雷达信号识别 · IEEE Sensors"
+          },
+          {
+            "name": "孙健强",
+            "photo": "/group/assets/team/sun-jianqiang.webp",
+            "stage": "本科 · 已毕业",
+            "note": "英国格拉斯哥大学 · 校级优秀毕设一等奖"
+          }
+        ]
+      }
+    ]
+  },
+  "admission": [
+    {
+      "icon": "◆",
+      "title": "招生方向 / Programs",
+      "text": "包含本部、创新港、雷丁的控制工程专硕、大数据技术与工程专硕、控制科学与工程学硕、电子信息专硕，以及安徽建筑大学电子信息专硕。"
+    },
+    {
+      "icon": "◆",
+      "title": "招生规模 / Intake",
+      "text": "硕士生 5–7 人 / 年。"
+    },
+    {
+      "icon": "◆",
+      "title": "欢迎背景 / Who We Welcome",
+      "text": "数据科学与大数据技术、人工智能 / 智能科学与技术、自动化 / 控制科学与工程、电气工程及其自动化、生物医学工程、计算机科学与技术、电子信息工程 / 通信工程、数学与应用数学 / 统计学 / 运筹学、人工智能 / 认知科学、信息安全 / 军事电子工程，或上述类似专业。"
+    },
+    {
+      "icon": "◆",
+      "title": "我们期待 / What We Value",
+      "text": "希望学生具备较强的科研热情和动手能力，并愿意投身于交叉学科的研究与实际应用中。欢迎跨专业、跨领域但具备扎实基础的学生积极报考。"
+    }
+  ],
+  "papers": [
+    {
+      "title": "用于 HVAC AHU 故障诊断的自适应多项式组合优化多维泰勒网",
+      "year": "2026",
+      "venue": "Energy and Buildings · 二区 Top",
+      "type": "代表论文",
+      "direction": "复杂系统故障诊断与预测",
+      "isNew": true,
+      "link": "https://scholar.google.com/citations?user=lkDrRmoAAAAJ&hl=zh-CN"
+    },
+    {
+      "title": "面向癫痫检测的可解释梯度评分稀疏多项式网络",
+      "year": "2026",
+      "venue": "Information Sciences · 一区 Top",
+      "type": "代表论文",
+      "direction": "脑机接口",
+      "link": "https://scholar.google.com/citations?user=lkDrRmoAAAAJ&hl=zh-CN"
+    },
+    {
+      "title": "用于癫痫脑电检测的残差多维泰勒网(ResMTN)",
+      "year": "2026",
+      "venue": "Engineering Applications of AI · 一区 Top",
+      "type": "代表论文",
+      "direction": "脑机接口",
+      "link": "https://scholar.google.com/citations?user=lkDrRmoAAAAJ&hl=zh-CN"
+    }
+  ]
+}

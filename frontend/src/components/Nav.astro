@@ -10,14 +10,15 @@ const isAchievements = path === '/achievements' || active === 'achievements';
 const isContact     = path === '/contact';
 ---
 
+<a class="skip-link" href="#main-content">跳转至正文</a>
 <nav id="navbar">
   <div class="nav-left">
-    <a href="/" class="nav-brand" aria-label="金牛湖脑机实验室">
+    <a href="/" class="nav-brand" aria-label="严颖课题组">
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" class="nav-logo-svg">
         <rect x="1" y="10" width="20" height="1.4" rx="0.7" fill="currentColor" opacity="0.3"/>
         <path d="M1 10 Q4 4 8 10 Q11 16 14 10 Q18 4 21 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
       </svg>
-      <span class="nav-brand-text">金牛湖脑机</span>
+      <span class="nav-brand-text">严颖课题组</span>
     </a>
     <span id="nav-section-badge" class="nav-section-badge" aria-live="polite"></span>
     <div class="nav-unis">
@@ -32,13 +33,15 @@ const isContact     = path === '/contact';
 
   <div class="nav-right">
     <ul class="nav-links" id="nav-links">
+      <li><a href="/about">关于我们</a></li>
       <li><a href="/research" data-section="research" class:list={[{ active: isResearch }]}>研究方向</a></li>
       <li><a href="/team" data-section="team" class:list={[{ active: isTeam }]}>团队成员</a></li>
       <li><a href="/achievements" data-section="papers" class:list={[{ active: isAchievements }]}>科研成果</a></li>
+      <li><a href="/join">招生与加入</a></li>
       <li><a href="/contact" data-section="contact" class="nav-cta" class:list={[{ active: isContact }]}>联系我们</a></li>
     </ul>
 
-      <button class="nav-toggle" id="nav-toggle" aria-label="菜单">
+      <button class="nav-toggle" id="nav-toggle" aria-label="菜单" aria-expanded="false" aria-controls="nav-links">
       <span></span><span></span>
     </button>
   </div>
@@ -63,16 +66,19 @@ const isContact     = path === '/contact';
   document.getElementById('nav-toggle')!.addEventListener('click', () => {
     document.getElementById('nav-links')!.classList.toggle('open');
     document.getElementById('nav-toggle')!.classList.toggle('open');
+    document.getElementById('nav-toggle')!.setAttribute('aria-expanded', String(document.getElementById('nav-links')!.classList.contains('open')));
   });
   document.querySelectorAll('#nav-links a').forEach(a => {
     a.addEventListener('click', () => {
       document.getElementById('nav-links')!.classList.remove('open');
       document.getElementById('nav-toggle')!.classList.remove('open');
+      document.getElementById('nav-toggle')!.setAttribute('aria-expanded', 'false');
     });
   });
 </script>
 
 <style>
+.skip-link {position:fixed;top:-60px;left:16px;z-index:200;background:white;padding:10px}.skip-link:focus{top:8px}
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -239,7 +245,7 @@ const isContact     = path === '/contact';
     width: 20px;
   }
 
-  @media (max-width: 680px) {
+  @media (max-width: 1100px) {
     .nav-unis { display: none; }
     nav { height: 60px; }
     .nav-section-badge { display: none; }

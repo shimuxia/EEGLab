@@ -85,7 +85,7 @@ export interface PublicationsResponse {
 const responseCache = new Map<string, Promise<PublicationsResponse>>();
 
 function apiBase(): string {
-  return (import.meta.env.PUBLIC_PAPERS_API_URL || '/api').replace(/\/$/, '');
+  return (import.meta.env.PUBLIC_PAPERS_API_URL || '/api/group').replace(/\/$/, '');
 }
 
 export function publicationsUrl(params?: URLSearchParams): string {
@@ -101,18 +101,14 @@ export function fetchPublications(
   if (options.refresh) responseCache.delete(url);
   let pending = responseCache.get(url);
   if (!pending) {
-    pending = fetch(url, { headers: { Accept: 'application/json' } })
+    pending = fetch(url, { signal: AbortSignal.timeout(8000), headers: { Accept: 'application/json' } })
       .then(async response => {
         if (!response.ok) {
-          const contentType = response.headers.get('content-type') || '';
-          let detail = '';
-          if (contentType.includes('application/json')) {
-            const payload = await response.json().catch(() => null) as { detail?: unknown } | null;
-            if (typeof payload?.detail === 'string') detail = payload.detail.slice(0, 160);
-          }
-          throw new Error(`论文服务请求失败 (${response.status})${detail ? `：${detail}` : ''}`);
+          throw new Error('论文服务暂时不可用，请稍后重试');
         }
-        return response.json() as Promise<PublicationsResponse>;
+        const data = await response.json();
+        if (!data || !Array.isArray(data.papers) || !Array.isArray(data.researchers) || !Array.isArray(data.filterTags) || typeof data.total !== 'number' || data.papers.some((p: Publication) => !p || typeof p.title !== 'string' || !Array.isArray(p.tags) || !Array.isArray(p.researchers))) throw new Error('论文数据格式暂时不可用');
+        return data as PublicationsResponse;
       })
       .catch(error => {
         responseCache.delete(url);

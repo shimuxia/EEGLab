@@ -1,0 +1,251 @@
+.group-page {
+  padding-top: 68px;
+}
+.group-section,
+.group-header {
+  max-width: 1320px;
+  margin: auto;
+  padding: 76px 6vw;
+}
+.group-header h1,
+.group-hero h1 {
+  font-size: clamp(40px, 6vw, 80px);
+  line-height: 1.12;
+  letter-spacing: -0.04em;
+  margin: 20px 0;
+}
+.group-header p {
+  max-width: 760px;
+  color: var(--text-2);
+}
+.group-section h2 {
+  font-size: clamp(28px, 4vw, 46px);
+  margin-bottom: 28px;
+  line-height: 1.25;
+}
+.group-section h3 {
+  font-size: 20px;
+  margin-bottom: 14px;
+}
+.group-kicker {
+  font: 12px var(--font-mono);
+  letter-spacing: 2px;
+  color: var(--text-3);
+}
+.group-hero {
+  background: #050608;
+  color: #f5f5f7;
+  min-height: 78vh;
+  padding: 100px max(6vw, 24px);
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.group-hero > div {
+  max-width: 1000px;
+  position: relative;
+  z-index: 1;
+}
+.group-hero p {
+  max-width: 700px;
+  font-size: clamp(17px, 2vw, 23px);
+  color: #b1b1b9;
+}
+.group-hero .group-kicker {
+  color: #c4b187;
+  font-size: 12px;
+}
+.group-hero svg {
+  position: absolute;
+  right: -7%;
+  bottom: 4%;
+  width: 55%;
+  opacity: 0.25;
+}
+.group-hero path {
+  stroke: #c4b187;
+  fill: none;
+  stroke-width: 1.2;
+  stroke-dasharray: 900;
+  animation: group-signal 12s ease-in-out infinite alternate;
+}
+@keyframes group-signal {
+  from {
+    stroke-dashoffset: 900;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.group-actions {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 36px;
+}
+.group-actions a {
+  display: inline-block;
+  border-bottom: 1px solid currentColor;
+  padding: 8px 0;
+}
+.group-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.group-card {
+  padding: 30px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.group-card p,
+.group-advisor p {
+  color: var(--text-2);
+  margin: 14px 0;
+  line-height: 1.9;
+}
+.group-card a,
+.group-section a {
+  color: var(--accent);
+}
+.group-card h3 {
+  margin-top: 16px;
+}
+.group-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+.group-tags span {
+  font-size: 12px;
+  padding: 5px 10px;
+  border: 1px solid var(--border-md);
+  border-radius: var(--radius-pill);
+}
+.group-advisor {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 60px;
+  align-items: center;
+}
+.group-advisor > img {
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: var(--radius-lg);
+}
+.group-advisor small {
+  font-size: 0.5em;
+  font-weight: 400;
+  color: var(--text-3);
+}
+.group-people {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  margin-top: 24px;
+}
+.group-people img {
+  width: 90px;
+  height: 110px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 8px;
+}
+.group-people p {
+  font-size: 14px;
+}
+.group-subsection {
+  margin-top: 48px;
+}
+.group-honors article {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+}
+.group-honors time {
+  font: 14px var(--font-mono);
+  color: var(--accent);
+}
+.group-honors p {
+  color: var(--text-2);
+}
+.group-video {
+  width: 100%;
+  max-height: 600px;
+  background: #050608;
+  border-radius: 18px;
+}
+.group-page section[id],
+.group-card[id] {
+  scroll-margin-top: 90px;
+}
+@media (max-width: 900px) {
+  .group-advisor {
+    gap: 28px;
+  }
+  .group-grid {
+    grid-template-columns: 1fr;
+  }
+  .group-people {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .group-advisor {
+    grid-template-columns: 1fr;
+  }
+  .group-advisor > img {
+    max-width: 300px;
+  }
+  .group-section,
+  .group-header {
+    padding: 48px 6vw;
+  }
+  .group-hero {
+    padding: 70px 6vw;
+    min-height: 70vh;
+  }
+  .group-hero svg {
+    width: 100%;
+  }
+  .group-card {
+    padding: 22px;
+  }
+  .group-honors article {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .fade-up {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+.group-page a {
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.group-hero a {
+  color: #e5d7b8;
+}
+.group-card,
+.group-advisor > div {
+  min-width: 0;
+}
+.group-kicker {
+  overflow-wrap: anywhere;
+}

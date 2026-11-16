@@ -66,8 +66,8 @@ image = "/images/achievements/award-yan-ying-top2pct-2026.webp"
 
 [[awards]]
 year = 2025
-name = "中国技协职工技术创新成果二等奖"
-description = "基于脑电信号与新型可解释机器学习方法的脑科疾病诊断研究，2025年3月"
+name = "中国技协2024年职工技术创新成果二等奖"
+description = "基于脑电信号与新型可解释机器学习方法的脑科疾病诊断研究；2025年2月获奖；严颖为第一完成人"
 teamAwardees = ["严颖", "蔡骏", "Adrian David Cheok"]
 image = "/images/achievements/award-zhijiao-2nd-cert.webp"
 
@@ -179,9 +179,9 @@ teamAwardees = ["严颖", "蔡骏"]
 image = "/images/achievements/award-kehuang-jb-3rd.webp"
 
 [[awards]]
-year = 2023
-name = "江苏省自动化学会科学技术奖三等奖"
-description = "智能建筑暖通空调系统的故障诊断与预测研究，南京，2024年2月"
+year = 2024
+name = "2023年度江苏省自动化学会科学技术奖三等奖"
+description = "智能建筑暖通空调系统的故障诊断与预测研究；2024年2月获奖；严颖为第一完成人"
 teamAwardees = ["严颖"]
 images = [
   "/images/achievements/award-jiangsu-automation-cert.webp",

@@ -20,7 +20,9 @@ for source in vendor.rglob('*'):
 for source in (ROOT / 'cloud-functions').rglob('*.py'):
     ast.parse(source.read_text(encoding='utf-8'), feature_version=(3, 10))
 dist = ROOT / 'frontend/dist'
-assert len(list(dist.rglob('index.html'))) == 10
+required_routes = ['', 'about', 'research', 'team', 'achievements', 'join', 'contact', 'research/brain-computer-interface', *['research/' + slug for slug in ['diagnosis', 'arm', 'drone', 'hand', 'glove']]]
+for route in required_routes:
+    assert (dist / route / 'index.html').is_file(), f'Missing route: {route}'
 assert not list(dist.rglob('*.py'))
 assert not list(dist.rglob('*.db'))
 assert not list(dist.rglob('*.toml'))
@@ -28,4 +30,4 @@ assert not (dist / 'edgeone.json').exists()
 for asset in dist.rglob('*'):
     if asset.is_file():
         assert asset.stat().st_size <= 25_000_000, f'Exceeds Makers single-file limit: {asset}'
-print('Deployment inputs: 10 static pages, mainland region, Python 3.10 syntax, no private runtime files in dist.')
+print('Deployment inputs: all required static routes, mainland region, Python 3.10 syntax, no private runtime files in dist.')

@@ -7,7 +7,7 @@ interface Props {
 }
 const {
   title,
-  description = '南京信息工程大学金牛湖脑机实验室 — 专注脑电信号分析与脑机接口研究',
+  description = '南京信息工程大学严颖课题组 — 模式识别、机器学习、复杂系统诊断与预测、脑机接口',
 } = Astro.props;
 ---
 
@@ -19,7 +19,7 @@ const {
   <meta name="description" content={description} />
   <title>{title}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <script is:inline>
+  <script is:inline define:vars={{ analyticsEnabled: import.meta.env.PUBLIC_ENABLE_ANALYTICS === 'true' }}>
     (() => {
       const shouldSkip = (() => {
         if (navigator.doNotTrack === '1' || navigator.globalPrivacyControl === true) return true;
@@ -31,7 +31,7 @@ const {
       })();
 
       window.__eeglabAnalyticsReady = (async () => {
-        if (shouldSkip) return false;
+        if (shouldSkip || !analyticsEnabled) return false;
         try {
           const response = await fetch('/api/analytics/pageview', {
             method: 'POST',

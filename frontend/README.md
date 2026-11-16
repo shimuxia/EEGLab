@@ -1,3 +1,8 @@
+# 统一网站前端增量（2026-11-15）
+当前13页：/、/about、/research、/team、/achievements、/join、/contact、/research/brain-computer-interface 和五个既有研究详情。
+默认论文端点 /api/group/papers；已有本地配置若写 /api 请改为 /api/group，避免绕过课题组安全策略。统计默认关闭；PUBLIC_ENABLE_ANALYTICS=true 才启用原统计代码。
+首页、导师、七方向、成员、招生采用 data/group.ts；实验室详情/奖项/图库继续使用原数据。原首页视频位于脑机接口总览。旧开发说明保留在下方，当前运行命令以 CLAUDE_HANDOFF.md 为准。
+
 # 网站前端
 
 腾讯云国内站从**仓库根目录**导入 Makers，使用根目录的 `edgeone.json` 和 `npm run build`，

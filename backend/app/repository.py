@@ -4,6 +4,7 @@ import hashlib
 import json
 import sqlite3
 from .config import Settings
+from .group_policy import public_association, POLICY_VERSION
 from .database import connect, get_metadata, utc_now
 
 
@@ -70,8 +71,15 @@ def get_publications(settings: Settings, filters: dict) -> dict:
             """
         ).fetchall()
 
+    rules = []
+    if filters.get('group_policy'):
+        with connect(settings.database_path) as connection:
+            rules = connection.execute('SELECT * FROM scholar_review_rules').fetchall()
+    paper_index = {row['id']: row for row in paper_rows}
     links_by_paper: dict[int, list[dict]] = {}
     for row in link_rows:
+        if filters.get('group_policy') and (row['paper_id'] not in paper_index or not public_association(row, paper_index[row['paper_id']], rules)):
+            continue
         links_by_paper.setdefault(row['paper_id'], []).append({
             'id': row['researcher_id'],
             'slug': row['slug'],
@@ -159,6 +167,13 @@ def get_publications(settings: Settings, filters: dict) -> dict:
         })
 
     total = len(papers)
+    researchers = list_researchers(settings)
+    if filters.get('group_policy'):
+        snapshot_version += ':' + POLICY_VERSION
+        for researcher in researchers:
+            count = sum(any(link['slug'] == researcher['slug'] for link in links) for links in links_by_paper.values())
+            researcher['paperCount'] = count
+            researcher['currentPaperCount'] = count
     offset = max(0, int(filters.get('offset') or 0))
     limit = min(500, max(1, int(filters.get('limit') or 500)))
     page = papers[offset:offset + limit]
@@ -177,7 +192,7 @@ def get_publications(settings: Settings, filters: dict) -> dict:
         'filterTags': sorted({tag for paper in papers for tag in paper['tags']}),
         'fields': sorted({paper['field'] for paper in papers}),
         'years': sorted({paper['year'] for paper in papers if paper['year']}, reverse=True),
-        'researchers': list_researchers(settings),
+        'researchers': researchers,
         'papers': page,
     }
 

@@ -1,3 +1,9 @@
+# 统一课题组只读适配（2026-11-15）
+新增 GET /api/group/papers，参数沿用原 /api/papers。对 ying-yan 仅公开 confirmed 关联，独立代码基线保护两篇已确认误收论文；exclude 优先，研究者级过滤发生在搜索/统计/分页之前。其他研究者按自身规则保留。原API、种子、同步任务、COS/SCF配置均未迁移。
+group_policy.validate_recovery_rules 仅供备份副本预检：缺少两条完整排除规则或有accept冲突时拒绝；它不自动修复数据库，也未接管生产恢复启动流程。
+测试使用临时数据库、mock上游和内存COS。本分支没有访问真实生产COS。
+正式恢复/迁移仍须完整备份和人工审核；不能直接把现有种子视为迁移完成。
+
 # 论文同步与访问统计后端
 
 生产站 [eeg.yanyinglab.cn](https://eeg.yanyinglab.cn) 使用腾讯云国内站。配置步骤见 [Makers + SCF + COS 指南](../docs/tencent-makers.md)，实际资源和验收见 [生产部署记录](../docs/tencent-production.md)。文档核对日期：2026-09-06。

@@ -1,0 +1,22 @@
+---
+import GroupLayout from "../layouts/GroupLayout.astro";
+import Advisor from "../components/Advisor.astro";
+import GroupHonors from "../components/GroupHonors.astro";
+---
+
+<GroupLayout title="关于我们">
+  <header class="group-header">
+    <p class="group-kicker">ABOUT THE GROUP</p>
+    <h1>关于严颖课题组</h1>
+    <p>
+      以模式识别与机器学习为方法基础，连接复杂系统故障诊断、时序预测、脑机接口与工程实践。
+    </p>
+  </header>
+  <section class="group-section">
+    <Advisor />
+  </section>
+  <section class="group-section">
+    <h2>学术荣誉</h2>
+    <GroupHonors />
+  </section>
+</GroupLayout>
