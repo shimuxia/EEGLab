@@ -10,9 +10,9 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
-<Layout title={`${title} · 严颖课题组`} description={description}>
+<Layout title={title === "严颖课题组" ? "严颖课题组 · Yan Ying Research Group" : `${title} · 严颖课题组`} description={description}>
   <Nav />
-  <main id="main-content" class="group-page">
+  <main tabindex="-1" id="main-content" class="group-page">
     <slot />
   </main>
   <Footer />

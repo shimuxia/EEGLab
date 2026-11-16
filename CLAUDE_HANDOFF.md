@@ -1,3 +1,19 @@
+本轮最终结果：43页面交互+128对抗+14数据契约测试PASS；TypeScript/13页构建/部署检查PASS。已在真实浏览器打开，后续请从当前视觉成品继续，具体方法见VISUAL_REDESIGN_REPORT.md。
+
+## 对抗审查补充（2026-11-16）
+新增 lib/publication-contract.ts 和14项Node边界测试；npm run test:frontend。
+新增 scripts/check_adversarial_site.py：axe-core4.14.0（只安装到忽略output）、五档屏宽、200%文字、畸形/注入API、超时/恢复、视频断流、无JavaScript阅读。
+已复现并修复嵌套null渲染崩溃、两种背景的文字对比度、失效视频初始化时序、放大文字布局与焦点目标。详细方法和命令见VISUAL_REDESIGN_REPORT.md。所有源数据和后端审核策略不变。
+
+# 2026-11-16 前端重做增量
+用户否定上一版前端，本轮已直接实现视觉重做，不再把基础视觉设计留作待办。
+首页采用深墨绿黑/暖金的课题组身份与实验室视频组合；浅灰绿七方向交互区复用原官网7套SVG；实验室大图、导师编辑版式、成果影像、荣誉、代表论文、错落成员照片及招生收尾。
+新增 HomeResearch.astro（ARIA tabs及键盘切换）、ResearchArtwork.astro、research-visuals.json、theme.css；设计token统一在global.css，theme.css负责共享交互基础；Layout加载单一共享主题，group.css管理首页/内页布局。Nav含手机菜单/Escape/当前页状态。视频支持播放暂停、减少动效和离屏暂停；滚动显现渐进增强。
+团队顾问照片与五个研究详情实图恢复；React论文组件仅换样式token，未改后端、过滤和审核逻辑。
+设计色：#101310底、#d3bc8d强调、#e8e9df研究区、#cbd0be招生区；字体补充本机已有文泉驿黑体，避免Linux中文回退成不协调字体。无外部字体/新框架/生图/新增跟踪请求。
+保留原图像与视频的真实性，不新增论文数量或奖项级别。新版实际测试见工作区VISUAL_REDESIGN_REPORT.md及忽略output/visual-*日志。
+下一步应基于实际页面微调视觉；不要退回上一版通用卡片首页。禁止push/PR/部署边界继续有效。
+
 # Claude Code 接手：严颖课题组统一官网
 本轮目标是可运行的单一课题组官网；脑机实验室为研究方向与平台，不再保留独立首页。下一轮重点为统一视觉、排版层次、动效与手机体验，不改变学术事实或论文安全逻辑。
 

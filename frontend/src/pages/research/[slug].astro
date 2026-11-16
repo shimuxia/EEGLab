@@ -23,7 +23,7 @@ const next = allResearch[currentIdx + 1];
 >
   <Nav active="home" />
 
-  <div class="page-wrap" id="main-content">
+  <div class="page-wrap">
 
     <!-- Sidebar -->
     <aside class="sidebar">
@@ -47,7 +47,7 @@ const next = allResearch[currentIdx + 1];
     </aside>
 
     <!-- Main -->
-    <main class="main">
+    <main class="main" id="main-content" tabindex="-1">
       <div class="page-meta">
         <span class="meta-num">{item.num}</span>
         <span class="meta-en">{item.titleEn}</span>
@@ -63,6 +63,7 @@ const next = allResearch[currentIdx + 1];
         <p class="sec-body">{item.overview}</p>
       </section>
 
+      <figure class="research-feature-image"><img src={`/images/research/${item.slug}.webp`} alt={`${item.title}研究展示`} width="1200" height="800" loading="lazy" /><figcaption>{item.titleEn} / 研究与实践</figcaption></figure>
       <section class="methods">
         <h2 class="sec-title">研究方法</h2>
         <div class="method-list">
@@ -113,6 +114,10 @@ const next = allResearch[currentIdx + 1];
 </Layout>
 
 <style>
+  .research-feature-image{margin:40px 0 50px}
+  .research-feature-image img{width:100%;max-height:470px;object-fit:cover;filter:saturate(.65)}
+  .research-feature-image figcaption{font:10px var(--font-mono);color:var(--text-3);padding-top:14px;letter-spacing:1px}
+
   .page-wrap {
     max-width: 1200px;
     margin: 0 auto;

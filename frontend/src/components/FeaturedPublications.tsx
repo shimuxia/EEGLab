@@ -41,17 +41,17 @@ export default function FeaturedPublications() {
       ))}
       <style>{`
         .featured-publications { display:flex; flex-direction:column; }
-        .featured-paper { display:grid; grid-template-columns:72px 1fr 28px; gap:24px; align-items:center; padding:22px 18px; border-bottom:1px solid rgba(0,0,0,.08); color:inherit; transition:background .2s; }
-        .featured-paper:hover { background:#f7f7f7; }
-        .featured-year { font:12px 'SF Mono',monospace; color:#0057FF; }
+        .featured-paper { display:grid; grid-template-columns:72px 1fr 28px; gap:24px; align-items:center; padding:22px 18px; border-bottom:1px solid var(--border); color:inherit; transition:background .2s; }
+        .featured-paper:hover { background:var(--bg-elevated); }
+        .featured-year { font:12px 'SF Mono',monospace; color:var(--accent); }
         .featured-title { margin:0 0 7px; font-size:16px; line-height:1.5; font-weight:600; }
-        .featured-journal { margin:0; font-size:12px; color:#888; }
+        .featured-journal { margin:0; font-size:12px; color:var(--text-3); }
         .featured-researchers { display:flex; gap:5px; margin-top:8px; }
-        .featured-researchers span { font-size:10px; color:#0057FF; background:rgba(0,87,255,.06); padding:2px 7px; border-radius:999px; }
-        .featured-paper svg { width:20px; color:#888; }
-        .featured-status { color:#888; font-size:14px; padding:24px 18px; }
+        .featured-researchers span { font-size:10px; color:var(--accent); background:var(--accent-dim); padding:2px 7px; border-radius:999px; }
+        .featured-paper svg { width:20px; color:var(--text-3); }
+        .featured-status { color:var(--text-3); font-size:14px; padding:24px 18px; }
         .featured-loading { display:grid; gap:12px; }
-        .featured-loading span { height:72px; border-radius:8px; background:linear-gradient(90deg,#f2f2f2,#fafafa,#f2f2f2); background-size:200% 100%; animation:paper-loading 1.5s infinite; }
+        .featured-loading span { height:72px; border-radius:8px; background:linear-gradient(90deg,var(--bg-elevated),var(--bg-surface),var(--bg-elevated)); background-size:200% 100%; animation:paper-loading 1.5s infinite; }
         @keyframes paper-loading { to { background-position:-200% 0; } }
         @media(max-width:560px){.featured-paper{grid-template-columns:1fr 20px}.featured-year{display:none}}
       `}</style>

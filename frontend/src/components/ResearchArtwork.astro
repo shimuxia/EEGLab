@@ -1,0 +1,6 @@
+---
+import visuals from "../data/research-visuals.json";
+const { index = 0 } = Astro.props;
+---
+
+<div class="research-art" set:html={visuals[index % visuals.length]} />

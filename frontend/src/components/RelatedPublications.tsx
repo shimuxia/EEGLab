@@ -36,15 +36,15 @@ export default function RelatedPublications({ tags, limit = 3, variant = 'detail
       </div>
       {variant === 'detail' && <a className="related-all" href="/achievements">查看全部成果 →</a>}
       <style>{`
-        .related-publications { margin-top:42px; padding-top:30px; border-top:1px solid rgba(0,0,0,.08); }
-        .related-publications h2 { margin:0 0 16px; font-size:12px; letter-spacing:.12em; color:#888; font-weight:600; }
+        .related-publications { margin-top:42px; padding-top:30px; border-top:1px solid var(--border); }
+        .related-publications h2 { margin:0 0 16px; font-size:12px; letter-spacing:.12em; color:var(--text-3); font-weight:600; }
         .related-publications a:not(.related-all) { display:grid; grid-template-columns:48px 1fr minmax(100px,220px); gap:14px; align-items:start; padding:13px 8px; border-radius:7px; color:inherit; }
-        .related-publications a:not(.related-all):hover { background:#f7f7f7; }
-        .related-year { color:#0057FF; font:11px 'SF Mono',monospace; }
+        .related-publications a:not(.related-all):hover { background:var(--bg-elevated); }
+        .related-year { color:var(--accent); font:11px 'SF Mono',monospace; }
         .related-title { font-size:13px; line-height:1.5; }
-        .related-journal { color:#888; font-size:11px; text-align:right; }
-        .related-all { display:inline-block; margin-top:16px; font-size:13px; color:#0057FF; }
-        .related-paper-loading { margin-top:32px; color:#aaa; font-size:12px; }
+        .related-journal { color:var(--text-3); font-size:11px; text-align:right; }
+        .related-all { display:inline-block; margin-top:16px; font-size:13px; color:var(--accent); }
+        .related-paper-loading { margin-top:32px; color:var(--text-3); font-size:12px; }
         @media(max-width:640px){.related-publications a:not(.related-all){grid-template-columns:42px 1fr}.related-journal{display:none}}
       `}</style>
     </section>

@@ -1,4 +1,5 @@
 ---
+import '../styles/group.css';
 import GroupHonors from '../components/GroupHonors.astro';
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
@@ -63,8 +64,8 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
   </div>
 
   <!-- ── BODY ────────────────────────────────────────── -->
-  <section class="container" style="padding-top:48px"><h2>导师学术荣誉</h2><GroupHonors /></section>
-  <div class="ach-body" id="main-content">
+  <section class="group-section achievements-honors"><div><p class="group-kicker">ACADEMIC RECOGNITION</p><h2>导师学术荣誉</h2></div><GroupHonors /></section>
+  <div class="ach-body">
 
     <!-- Sidebar -->
     <aside class="ach-sidebar" id="ach-sidebar">
@@ -95,7 +96,7 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
     </aside>
 
     <!-- Main content -->
-    <main class="ach-main">
+    <main class="ach-main" id="main-content" tabindex="-1">
 
       <!-- Papers -->
       <section id="papers" class="ach-section">

@@ -1,39 +1,37 @@
 /* ── DESIGN TOKENS ─────────────────────────────────── */
 :root {
-  --bg:          #FFFFFF;
-  --bg-surface:  #F5F5F5;
-  --bg-elevated: #EEEEEE;
-  --bg-dark:     #0A0A0A;
-
-  --accent:      #0057FF;
-  --accent-dim:  rgba(0, 87, 255, 0.08);
-  --accent-mid:  rgba(0, 87, 255, 0.2);
-
-  --text:        #0A0A0A;
-  --text-2:      #444444;
-  --text-3:      #888888;
-  --text-inv:    #FFFFFF;
-
-  --border:      rgba(0, 0, 0, 0.08);
-  --border-md:   rgba(0, 0, 0, 0.15);
-
-  --radius-sm:   4px;
-  --radius-md:   10px;
-  --radius-lg:   18px;
-  --radius-pill: 999px;
-
-  --font-sans:   -apple-system, 'PingFang SC', 'Microsoft YaHei', BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-mono:   'SF Mono', 'Fira Code', ui-monospace, monospace;
+  --bg: #101310;
+  --bg-surface: #191d19;
+  --bg-elevated: #222822;
+  --bg-dark: #0c0f0d;
+  --text: #eceee7;
+  --text-2: #b5bcb1;
+  --text-3: #899385;
+  --text-inv: #f2f2e9;
+  --accent: #d3bc8d;
+  --accent-dim: rgba(211, 188, 141, 0.08);
+  --accent-mid: rgba(211, 188, 141, 0.2);
+  --border: rgba(232, 238, 223, 0.11);
+  --border-md: rgba(232, 238, 223, 0.22);
+  --font-sans:
+    "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei",
+    "Noto Sans CJK SC", "WenQuanYi Zen Hei", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
 /* ── RESET ─────────────────────────────────────────── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html { scroll-behavior: smooth; background: #fff; }
+html {
+  scroll-behavior: smooth;
+  background: #fff;
+}
 
 body {
   font-family: var(--font-sans);
@@ -46,9 +44,16 @@ body {
 }
 
 /* ── SCROLLBAR ─────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #fff; }
-::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 2px; }
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+}
 
 /* ── UTILITY ───────────────────────────────────────── */
 .container {
@@ -89,18 +94,29 @@ body {
 .fade-up {
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .fade-up.visible {
   opacity: 1;
   transform: none;
 }
-.delay-1 { transition-delay: 0.08s; }
-.delay-2 { transition-delay: 0.16s; }
-.delay-3 { transition-delay: 0.24s; }
-.delay-4 { transition-delay: 0.32s; }
-.delay-5 { transition-delay: 0.40s; }
+.delay-1 {
+  transition-delay: 0.08s;
+}
+.delay-2 {
+  transition-delay: 0.16s;
+}
+.delay-3 {
+  transition-delay: 0.24s;
+}
+.delay-4 {
+  transition-delay: 0.32s;
+}
+.delay-5 {
+  transition-delay: 0.4s;
+}
 
 /* ── BUTTON ────────────────────────────────────────── */
 .btn {
@@ -112,13 +128,21 @@ body {
   text-decoration: none;
   border-radius: var(--radius-pill);
   padding: 13px 28px;
-  transition: opacity 0.2s, transform 0.2s;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
   letter-spacing: -0.01em;
   cursor: pointer;
   border: none;
 }
-.btn:hover { opacity: 0.85; transform: translateY(-1px); }
-.btn-sm { font-size: 14px; padding: 7px 18px; }
+.btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+.btn-sm {
+  font-size: 14px;
+  padding: 7px 18px;
+}
 .btn-dark {
   background: var(--text);
   color: var(--text-inv);
@@ -128,7 +152,10 @@ body {
   color: var(--text);
   border: 1.5px solid var(--border-md);
 }
-.btn-outline:hover { background: var(--bg-surface); opacity: 1; }
+.btn-outline:hover {
+  background: var(--bg-surface);
+  opacity: 1;
+}
 
 /* ── ANIMATED ARROW LINK ───────────────────────────── */
 .arrow-link {
@@ -142,7 +169,9 @@ body {
   letter-spacing: -0.01em;
   transition: gap 0.35s ease;
 }
-.arrow-link:hover { gap: 14px; }
+.arrow-link:hover {
+  gap: 14px;
+}
 
 .arrow-icon {
   position: relative;
@@ -161,8 +190,9 @@ body {
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .arrow-icon .arrow-out {
   opacity: 1;

@@ -1,83 +1,468 @@
 ---
 import GroupLayout from "../layouts/GroupLayout.astro";
-import Advisor from "../components/Advisor.astro";
-import GroupResearch from "../components/GroupResearch.astro";
-import GroupMembers from "../components/GroupMembers.astro";
+import HomeResearch from "../components/HomeResearch.astro";
 import GroupHonors from "../components/GroupHonors.astro";
-import { representativePapers } from "../data/group";
-import Admission from "../components/Admission.astro";
+import { advisor, members, representativePapers } from "../data/group";
+const media = [
+  {
+    src: "/images/achievements/demo-lab-setup.webp",
+    label: "从信号采集，到闭环控制",
+    tag: "实验现场 / BCI SYSTEM",
+  },
+  {
+    src: "/images/achievements/award-phm-hangzhou-bestpaper-ceremony.webp",
+    label: "让研究走向更广阔的学术现场",
+    tag: "学术交流 / IEEE PHM",
+  },
+  {
+    src: "/images/achievements/device-eeg-cap.webp",
+    label: "连接算法与真实世界的实验平台",
+    tag: "实验设备 / EEG",
+  },
+];
 ---
 
 <GroupLayout
   title="严颖课题组"
-  description="南京信息工程大学自动化学院严颖课题组，探索模式识别、机器学习、复杂系统诊断与预测及脑机接口。"
+  description="南京信息工程大学严颖课题组：以模式识别与机器学习，探索复杂系统诊断、脑机接口与智能预测。"
 >
-  <section class="group-hero">
-    <div>
-      <p class="group-kicker">NUIST / YAN YING RESEARCH GROUP</p>
-      <h1>严颖课题组</h1>
-      <p>
-        从复杂数据中理解系统，
-        <br />
-        让智能方法走向真实应用。
-      </p>
-      <div class="group-actions">
-        <a href="/research">探索研究方向 →</a>
-        <a href="/join">加入我们 →</a>
+  <section class="home-hero" aria-labelledby="home-title">
+    <div class="home-hero-grid">
+      <div class="home-hero-copy">
+        <p class="eyebrow">
+          <span class="status-dot"></span> 南京信息工程大学 · 自动化学院
+        </p>
+        <h1 id="home-title">
+          严颖课题组
+          <span>
+            Yan Ying
+            <br />
+            Research Group.
+          </span>
+        </h1>
+        <p class="hero-statement">
+          从复杂数据中理解系统。
+          <br />
+          让智能方法，走向真实世界。
+        </p>
+        <div class="hero-actions">
+          <a class="pill-link" href="#research">
+            探索我们的研究 <span>↗</span>
+          </a>
+          <a class="quiet-link" href="/about">
+            认识课题组 <span>→</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-science" aria-label="脑机接口实验影像与科研信号示意">
+        <div class="science-orbit orbit-one"></div>
+        <div class="science-orbit orbit-two"></div>
+        <div class="science-coordinate coordinate-top">
+          NUIST / INTELLIGENCE IN THE REAL WORLD
+        </div>
+        <div class="science-film">
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            poster="/videos/promo-hero-poster-v1.webp"
+            data-hero-video
+            aria-label="脑机实验室研究展示"
+          >
+            <source src="/videos/promo-hero-v1.mp4" type="video/mp4" />
+          </video>
+          <div class="film-shade"></div>
+          <div class="film-label">
+            <span class="status-dot"></span> 实验影像 · BRAIN-COMPUTER INTERFACE
+          </div>
+          <button
+            class="film-pause"
+            type="button"
+            aria-label="暂停实验视频"
+            aria-pressed="false"
+            data-video-toggle
+          >
+            <span aria-hidden="true">Ⅱ</span>
+          </button>
+          <span class="film-status" data-video-status role="status" hidden>
+            实验视频暂不可用，已保留静态影像
+          </span>
+          <div class="film-caption">
+            <span>思想与行动之间，</span>
+            <strong>是我们探索的边界。</strong>
+            <a
+              href="/research/brain-computer-interface"
+              aria-label="了解脑机实验室"
+            >
+              ↗
+            </a>
+          </div>
+        </div>
+        <svg
+          class="hero-signal"
+          viewBox="0 0 600 150"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path d="M0 80H70L92 65L112 89L133 30L152 123L172 64L194 80H240L258 71L276 87L294 53L314 101L333 80H600" />
+          <path
+            class="signal-ghost"
+            d="M0 110Q75 40 150 110T300 110T450 110T600 110"
+          />
+        </svg>
+        <div class="science-coordinate coordinate-bottom">
+          <span>01 / SIGNAL → MODEL → SYSTEM</span>
+          <span>持续探索，无限可能</span>
+        </div>
       </div>
     </div>
-    <svg viewBox="0 0 600 400" aria-hidden="true">
-      <path d="M0 200 Q60 200 90 160 T170 230 T250 120 T330 250 T420 180 T600 200" />
-      <path d="M0 260 Q100 80 200 260 T400 260 T600 260" />
-    </svg>
-  </section>
-  <section class="group-section" id="about">
-    <Advisor />
-    <div class="group-actions">
-      <a href="/about">了解导师与课题组 →</a>
+    <div class="hero-bottom">
+      <a href="#research" class="scroll-cue">
+        <span>向下探索</span>
+        <span>↓</span>
+      </a>
+      <div>
+        <span>模式识别</span>
+        <span>机器学习</span>
+        <span>可解释智能</span>
+        <span>交叉研究</span>
+      </div>
+      <span class="hero-bottom-note">
+        RESEARCH WITH CURIOSITY. BUILD WITH PURPOSE.
+      </span>
     </div>
   </section>
-  <section class="group-section" id="research">
-    <p class="group-kicker">RESEARCH</p>
-    <h2>面向真实问题的交叉研究</h2>
-    <GroupResearch />
-  </section>
-  <section class="group-section" id="team">
-    <h2>团队与成长</h2>
-    <GroupMembers compact />
-    <div class="group-actions">
-      <a href="/team">课题组成员与实验室协作团队 →</a>
+
+  <section class="home-intro home-wrap" id="about" data-reveal>
+    <div class="section-index">
+      <span>01 — ABOUT</span>
+      <span>我们的研究出发点</span>
+    </div>
+    <div class="intro-body">
+      <h2>
+        数据背后，
+        <br />
+        是值得被理解的<span>真实问题。</span>
+      </h2>
+      <div>
+        <p>
+          我们立足模式识别与机器学习，在复杂系统诊断、脑电分析、时序预测和优化决策之间，寻找方法与应用的连接。
+        </p>
+        <p class="muted">
+          从理论建模到硬件实现，从实验室验证到跨学科协作。保持好奇，也重视每一次扎实的实践。
+        </p>
+        <a class="text-link" href="/about">
+          了解严颖课题组 <span>↗</span>
+        </a>
+      </div>
     </div>
   </section>
-  <section class="group-section" id="achievements">
-    <h2>学术荣誉</h2>
-    <GroupHonors />
-    <div id="papers" class="group-subsection">
-      <h2>代表论文</h2>
-      <div class="group-grid">
-        {representativePapers.map((p) => (
-          <article class="group-card">
-            <h3>{p.title}</h3>
-            <p>
-              {p.year} · {p.venue}
-            </p>
-            <a href={p.link} target="_blank" rel="noopener noreferrer">
-              Google Scholar ↗
-            </a>
-          </article>
+
+  <section class="home-research" id="research">
+    <div class="home-wrap">
+      <div class="section-index">
+        <span>02 — RESEARCH FIELDS</span>
+        <span>七个方向，一份共同的好奇心</span>
+      </div>
+      <div class="section-heading" data-reveal>
+        <h2>
+          从理解系统，
+          <br />
+          到创造<span>可能。</span>
+        </h2>
+        <a class="text-link" href="/research">
+          全部研究方向 <span>↗</span>
+        </a>
+      </div>
+      <HomeResearch />
+    </div>
+  </section>
+
+  <section class="home-lab home-wrap" data-reveal>
+    <div class="lab-photograph">
+      <img
+        src="/images/achievements/demo-lab-setup.webp"
+        alt="金牛湖脑机实验室闭环演示现场"
+        loading="lazy"
+        width="1200"
+        height="800"
+      />
+      <span>RESEARCH IN ACTION / 金牛湖脑机实验室</span>
+    </div>
+    <div class="lab-copy">
+      <p class="eyebrow">BRAIN-COMPUTER INTERFACE</p>
+      <h2>
+        让思想，
+        <br />
+        驱动<span>未来。</span>
+      </h2>
+      <p>
+        作为课题组的脑机接口研究与实验平台，金牛湖脑机实验室连接脑电信号分析、运动意图解码与智能控制。
+      </p>
+      <div class="lab-topics">
+        <a href="/research/diagnosis">
+          脑疾病诊断 <span>↗</span>
+        </a>
+        <a href="/research/arm">
+          脑控机械臂 <span>↗</span>
+        </a>
+        <a href="/research/drone">
+          脑控无人机 <span>↗</span>
+        </a>
+        <a href="/research/hand">
+          脑控灵巧手 <span>↗</span>
+        </a>
+        <a href="/research/glove">
+          脑控气动手套 <span>↗</span>
+        </a>
+      </div>
+      <a class="pill-link" href="/research/brain-computer-interface">
+        走进实验室 <span>↗</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="home-advisor" data-reveal>
+    <div class="home-wrap advisor-editorial">
+      <div class="advisor-portrait">
+        <img
+          src={advisor.photo}
+          alt="严颖老师肖像"
+          width="440"
+          height="520"
+          loading="lazy"
+        />
+        <span>PRINCIPAL INVESTIGATOR</span>
+      </div>
+      <div class="advisor-editorial-copy">
+        <p class="eyebrow">03 — PEOPLE & IDEAS</p>
+        <h2>
+          严颖<span>Ying Yan</span>
+        </h2>
+        <p class="advisor-role">
+          {advisor.role}
+          <br />
+          {advisor.affiliation}
+        </p>
+        <div class="advisor-rule"></div>
+        <p>{advisor.biography}</p>
+        <div class="advisor-interests">
+          {advisor.interests.slice(0, 6).map((t) => (
+            <span>{t}</span>
+          ))}
+        </div>
+        <a class="text-link" href="/about">
+          导师介绍与学术经历 <span>↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-evidence home-wrap" id="achievements">
+    <div class="section-index">
+      <span>04 — DISCOVERY & IMPACT</span>
+      <span>把探索，变成可见的进展</span>
+    </div>
+    <div class="section-heading" data-reveal>
+      <h2>
+        研究有迹，
+        <br />
+        <span>探索有声。</span>
+      </h2>
+      <a class="text-link" href="/achievements">
+        科研成果与影像 <span>↗</span>
+      </a>
+    </div>
+    <div class="evidence-gallery">
+      {media.map((m, i) => (
+        <a
+          class:list={["evidence-item", { "evidence-item-wide": i === 0 }]}
+          href="/achievements#gallery"
+          data-reveal
+        >
+          <div>
+            <img
+              src={m.src}
+              alt={m.label}
+              width="900"
+              height="600"
+              loading="lazy"
+            />
+            <span class="image-arrow">↗</span>
+          </div>
+          <p class="eyebrow">{m.tag}</p>
+          <h3>{m.label}</h3>
+        </a>
+      ))}
+    </div>
+    <div class="home-honors" data-reveal>
+      <div>
+        <p class="eyebrow">ACADEMIC RECOGNITION</p>
+        <h3>
+          每一次认可，
+          <br />
+          都是下一次探索的起点。
+        </h3>
+      </div>
+      <GroupHonors />
+    </div>
+  </section>
+
+  <section class="home-papers" id="papers">
+    <div class="home-wrap">
+      <div class="section-index">
+        <span>05 — SELECTED PUBLICATIONS</span>
+        <a href="/achievements#papers">完整论文目录 ↗</a>
+      </div>
+      <div class="paper-editorial-list">
+        {representativePapers.map((p, i) => (
+          <a
+            href={p.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-reveal
+          >
+            <span class="paper-index">0{i + 1}</span>
+            <div>
+              <p class="eyebrow">
+                {p.venue} <span> / {p.year}</span>
+              </p>
+              <h3>{p.title}</h3>
+              <span class="paper-direction">{p.direction}</span>
+            </div>
+            <span class="paper-arrow">↗</span>
+          </a>
         ))}
       </div>
-      <div class="group-actions">
-        <a href="/achievements#papers">完整论文目录与筛选 →</a>
-      </div>
     </div>
   </section>
-  <section class="group-section" id="admission">
-    <h2>欢迎加入严颖课题组</h2>
-    <Admission />
+
+  <section class="home-team home-wrap" id="team" data-reveal>
+    <div class="team-story">
+      <p class="eyebrow">06 — GROW TOGETHER</p>
+      <h2>
+        好的研究，
+        <br />从<span>一起探索</span>开始。
+      </h2>
+      <p>
+        不同的背景，共同的求知欲。
+        <br />
+        在讨论、实践与协作中，让想法慢慢成为现实。
+      </p>
+      <a class="text-link" href="/team">
+        认识课题组与实验室协作团队 <span>↗</span>
+      </a>
+    </div>
+    <div class="team-contact-sheet">
+      {members.slice(0, 6).map((m, i) => (
+        <a href="/team" class:list={[{ "portrait-offset": i % 3 === 1 }]}>
+          <img
+            src={m.photo}
+            alt={m.name}
+            width="180"
+            height="220"
+            loading="lazy"
+          />
+          <span>
+            {m.name}
+            <small>{m.stage}</small>
+          </span>
+        </a>
+      ))}
+    </div>
   </section>
-  <section class="group-section" id="contact">
-    <h2>联系与交流</h2>
-    <a href="/contact">邮箱、办公地点与学术主页 →</a>
+
+  <section class="home-join" id="admission">
+    <div class="home-wrap">
+      <p class="eyebrow">
+        <span class="status-dot"></span> KEEP ASKING. KEEP EXPLORING.
+      </p>
+      <h2>
+        下一段探索，
+        <br />
+        期待<span>与你一起。</span>
+      </h2>
+      <div class="join-bottom">
+        <p>
+          欢迎有科研热情与动手能力的你，
+          <br />
+          一起面对真实问题，寻找新的答案。
+        </p>
+        <a class="pill-link" href="/join">
+          招生与加入 <span>↗</span>
+        </a>
+      </div>
+      <div id="contact" class="join-contact">
+        <a href={`mailto:${advisor.email}`}>{advisor.email} ↗</a>
+        <span>南京信息工程大学 · 自动化学院</span>
+      </div>
+    </div>
+    <div class="join-orbit" aria-hidden="true"></div>
   </section>
 </GroupLayout>
+
+<script>
+  const video = document.querySelector<HTMLVideoElement>("[data-hero-video]");
+  const toggle = document.querySelector<HTMLButtonElement>(
+    "[data-video-toggle]",
+  );
+  const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (video && toggle) {
+    const update = () => {
+      if (toggle.disabled) return;
+      toggle.setAttribute(
+        "aria-label",
+        video.paused ? "播放实验视频" : "暂停实验视频",
+      );
+      toggle.setAttribute("aria-pressed", String(video.paused));
+      toggle.innerHTML = video.paused
+        ? '<span aria-hidden="true">▷</span>'
+        : '<span aria-hidden="true">Ⅱ</span>';
+    };
+    const fail = () => {
+      toggle.disabled = true;
+      toggle.setAttribute("aria-label", "实验视频暂不可用");
+      const status = document.querySelector<HTMLElement>("[data-video-status]");
+      if (status) status.hidden = false;
+      video.poster = "/videos/promo-hero-poster-v1.webp";
+    };
+    video.addEventListener("error", fail);
+    video
+      .querySelectorAll("source")
+      .forEach((source) => source.addEventListener("error", fail));
+    if (
+      video.error ||
+      video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE
+    )
+      fail();
+    const respectMotion = () => {
+      if (motion.matches) video.pause();
+      update();
+    };
+    video.addEventListener("play", update);
+    video.addEventListener("pause", update);
+    toggle.addEventListener("click", () => {
+      if (video.paused)
+        video.play().catch(() => {
+          if (
+            video.error ||
+            video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE
+          )
+            fail();
+          else update();
+        });
+      else video.pause();
+    });
+    motion.addEventListener("change", respectMotion);
+    respectMotion();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) video.pause();
+      },
+      { threshold: 0.05 },
+    );
+    observer.observe(video);
+  }
+</script>

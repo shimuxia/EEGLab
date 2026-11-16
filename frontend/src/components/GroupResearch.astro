@@ -1,25 +1,29 @@
 ---
 import { directions } from "../data/group";
+import ResearchArtwork from "./ResearchArtwork.astro";
 ---
 
-<div class="group-grid">
-  {directions.map((r) => (
+<div class="research-overview">
+  {directions.map((r, i) => (
     <article class="group-card" id={r.id}>
-      <span class="group-kicker">
-        {r.no} / {r.en}
-      </span>
-      <h3>{r.title}</h3>
-      <p>{r.desc}</p>
-      <div class="group-tags">
-        {r.tags.map((tag) => (
-          <span>{tag}</span>
-        ))}
+      <div>
+        <span class="group-kicker">
+          {r.no} / {r.en}
+        </span>
+        <h3>{r.title}</h3>
+        <p>{r.desc}</p>
+        <div class="group-tags">
+          {r.tags.map((tag) => (
+            <span>{tag}</span>
+          ))}
+        </div>
+        {i === 1 && (
+          <a class="text-link" href="/research/brain-computer-interface">
+            金牛湖脑机实验室 · 研究与平台 <span>↗</span>
+          </a>
+        )}
       </div>
-      {r.id === "research-bci" && (
-        <a href="/research/brain-computer-interface">
-          金牛湖脑机实验室 · 研究与平台 →
-        </a>
-      )}
+      <ResearchArtwork index={i} />
     </article>
   ))}
 </div>

@@ -75,6 +75,47 @@ def run():
             page.wait_for_timeout(300)
             page.screenshot(path=str(OUT/f'team-{width}.png'),full_page=True)
             context.close()
+        # New homepage interactions, both responsive layouts and motion preferences.
+        for width in (1440, 390):
+            context=browser.new_context(viewport={'width':width,'height':950},reduced_motion='reduce')
+            context.route('**/*',lambda route:route.continue_() if route.request.url.startswith(BASE) else route.abort())
+            page=context.new_page()
+            page.goto(BASE,wait_until='networkidle')
+            tabs=page.get_by_role('tab')
+            assert tabs.count()==7
+            for i in range(7):
+                tabs.nth(i).click()
+                assert tabs.nth(i).get_attribute('aria-selected')=='true'
+                panel=page.locator(f'#research-panel-{i}')
+                assert panel.is_visible()
+                assert page.locator('[role="tabpanel"]:visible').count()==1
+                artwork=panel.locator('.research-art').bounding_box()
+                copy=panel.locator('.research-panel-copy').bounding_box()
+                assert artwork['y']+artwork['height'] <= copy['y']+1, 'Artwork overlaps copy'
+            tabs.nth(6).press('Home')
+            assert tabs.nth(0).get_attribute('aria-selected')=='true'
+            tabs.nth(0).press('ArrowDown')
+            assert tabs.nth(1).get_attribute('aria-selected')=='true'
+            video=page.locator('[data-hero-video]')
+            assert video.evaluate('(v)=>v.paused'), 'Reduced motion should pause video'
+            video.scroll_into_view_if_needed()
+            page.get_by_role('button',name='播放实验视频').click()
+            page.wait_for_function("!document.querySelector('[data-hero-video]').paused")
+            page.get_by_role('button',name='暂停实验视频').click()
+            assert video.evaluate('(v)=>v.paused')
+            if width==390:
+                page.locator('#nav-toggle').click()
+                page.keyboard.press('Escape')
+                assert page.locator('#nav-toggle').get_attribute('aria-expanded')=='false'
+            checks.append({'case':'research tabs/keyboard, artwork separation, video control/reduced motion, menu Escape','width':width,'status':'PASS'})
+            context.close()
+        context=browser.new_context(viewport={'width':1440,'height':950},reduced_motion='no-preference')
+        context.route('**/*',lambda route:route.continue_() if route.request.url.startswith(BASE) else route.abort())
+        page=context.new_page();page.goto(BASE,wait_until='networkidle')
+        page.locator('.home-intro').scroll_into_view_if_needed()
+        page.wait_for_function("document.querySelector('.home-intro').classList.contains('is-visible')")
+        checks.append({'case':'normal motion scroll reveal','status':'PASS'})
+        context.close()
         # Synthetic API success and interactive filtering are explicitly isolated.
         context=browser.new_context(viewport={'width':1440,'height':950})
         payload={'version':'synthetic','updatedAt':'2026-11-15T00:00:00Z','total':1,

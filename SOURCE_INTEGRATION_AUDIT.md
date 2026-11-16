@@ -35,3 +35,6 @@ Astro 静态页面与 React 论文组件继续使用 frontend/；图片、压缩
 ## 已读入口与验证基础
 EEGLab AGENTS、README、docs/handoff、publications-platform、tencent-makers、frontend/README、backend/README、todo、edgeone、package/astro配置及CI；旧官网AGENTS、README、index、CSS、script、paper-sync README/restore_guard/研究者与审核模型、排除门禁及测试结构。
 原有Python unittest、Astro构建和部署输入检查作为基础；补充合成数据安全回归、全部路由/资源/桌面手机检查。历史PASS不作为本次结果。
+
+## 2026-11-16 前端精华融合增量
+从原官网公开页面js/script.js的RESEARCH_VISUALS选择性迁移7套手绘科研SVG至research-visuals.json；未复制私有业务代码。复用实验室现有视频、真实现场/设备/获奖影像、五方向图片与顾问肖像。共享内容与后端审核逻辑不变。

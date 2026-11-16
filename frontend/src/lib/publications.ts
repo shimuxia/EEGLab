@@ -1,3 +1,5 @@
+import { parsePublicationsResponse } from "./publication-contract";
+
 export interface Researcher {
   id: number;
   slug: string;
@@ -16,7 +18,7 @@ export interface Researcher {
     hIndex?: number | null;
     i10Index?: number | null;
     updatedAt?: string | null;
-    status: 'success' | 'warning' | 'pending';
+    status: "success" | "warning" | "pending";
   };
 }
 
@@ -34,7 +36,7 @@ export interface PaperResearcher {
   scholarCitedByCount?: number | null;
   scholarLastSeenAt?: string | null;
   scholarMissingSince?: string | null;
-  sourceMatchStatus?: 'confirmed' | 'openalex_only';
+  sourceMatchStatus?: "confirmed" | "openalex_only";
   sourceMatchScore?: number | null;
 }
 
@@ -47,14 +49,14 @@ export interface Publication {
   title: string;
   authors: string;
   journal: string;
-  type: 'journal' | 'conference';
+  type: "journal" | "conference";
   citedByCount: number;
-  citationSource?: 'openalex' | 'googleScholar';
+  citationSource?: "openalex" | "googleScholar";
   citationSources?: {
     openalex?: number | null;
     googleScholar?: number | null;
   };
-  sourceStatus?: 'confirmed' | 'openalex_only' | 'scholar_only';
+  sourceStatus?: "confirmed" | "openalex_only" | "scholar_only";
   field: string;
   tags: string[];
   quartile?: string | null;
@@ -85,12 +87,15 @@ export interface PublicationsResponse {
 const responseCache = new Map<string, Promise<PublicationsResponse>>();
 
 function apiBase(): string {
-  return (import.meta.env.PUBLIC_PAPERS_API_URL || '/api/group').replace(/\/$/, '');
+  return (import.meta.env.PUBLIC_PAPERS_API_URL || "/api/group").replace(
+    /\/$/,
+    "",
+  );
 }
 
 export function publicationsUrl(params?: URLSearchParams): string {
   const query = params?.toString();
-  return `${apiBase()}/papers${query ? `?${query}` : ''}`;
+  return `${apiBase()}/papers${query ? `?${query}` : ""}`;
 }
 
 export function fetchPublications(
@@ -101,16 +106,17 @@ export function fetchPublications(
   if (options.refresh) responseCache.delete(url);
   let pending = responseCache.get(url);
   if (!pending) {
-    pending = fetch(url, { signal: AbortSignal.timeout(8000), headers: { Accept: 'application/json' } })
-      .then(async response => {
+    pending = fetch(url, {
+      signal: AbortSignal.timeout(8000),
+      headers: { Accept: "application/json" },
+    })
+      .then(async (response) => {
         if (!response.ok) {
-          throw new Error('论文服务暂时不可用，请稍后重试');
+          throw new Error("论文服务暂时不可用，请稍后重试");
         }
-        const data = await response.json();
-        if (!data || !Array.isArray(data.papers) || !Array.isArray(data.researchers) || !Array.isArray(data.filterTags) || typeof data.total !== 'number' || data.papers.some((p: Publication) => !p || typeof p.title !== 'string' || !Array.isArray(p.tags) || !Array.isArray(p.researchers))) throw new Error('论文数据格式暂时不可用');
-        return data as PublicationsResponse;
+        return parsePublicationsResponse(await response.json());
       })
-      .catch(error => {
+      .catch((error) => {
         responseCache.delete(url);
         throw error;
       });
@@ -120,11 +126,15 @@ export function fetchPublications(
 }
 
 export function formatUpdatedAt(value?: string): string {
-  if (!value) return '尚未同步';
+  if (!value) return "尚未同步";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
-  return new Intl.DateTimeFormat('zh-CN', {
-    year: 'numeric', month: '2-digit', day: '2-digit',
-    hour: '2-digit', minute: '2-digit', hour12: false,
+  return new Intl.DateTimeFormat("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
   }).format(date);
 }
