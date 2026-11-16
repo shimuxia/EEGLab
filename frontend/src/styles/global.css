@@ -1,19 +1,22 @@
 /* ── DESIGN TOKENS ─────────────────────────────────── */
 :root {
-  --bg: #fafaf7;
-  --bg-surface: #f2f3ed;
-  --bg-elevated: #e9ece2;
-  --bg-dark: #f1f2ed;
-  --text: #263024;
-  --text-2: #4b5547;
-  --text-3: #626d5d;
+  --bg: #fbfaf7;
+  --bg-surface: #f3f1eb;
+  --bg-elevated: #eae6dc;
+  --bg-dark: #f2efe8;
+  --text: #242521;
+  --text-2: #50514b;
+  --text-3: #68695f;
   --text-inv: #ffffff;
   --success: #276341;
   --accent: #806127;
   --accent-dim: rgba(128, 97, 39, 0.07);
   --accent-mid: rgba(128, 97, 39, 0.16);
-  --border: rgba(38, 48, 36, 0.11);
-  --border-md: rgba(38, 48, 36, 0.22);
+  --border: rgba(36, 37, 33, 0.11);
+  --border-md: rgba(36, 37, 33, 0.22);
+  --champagne: #e3d0a5;
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-enter: 700ms;
   --font-sans:
     "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei",
     "Noto Sans CJK SC", "WenQuanYi Zen Hei", sans-serif;

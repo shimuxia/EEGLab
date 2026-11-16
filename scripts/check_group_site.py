@@ -112,8 +112,8 @@ def run():
         context=browser.new_context(viewport={'width':1440,'height':950},reduced_motion='no-preference')
         context.route('**/*',lambda route:route.continue_() if route.request.url.startswith(BASE) else route.abort())
         page=context.new_page();page.goto(BASE,wait_until='networkidle')
-        page.locator('.home-intro').scroll_into_view_if_needed()
-        page.wait_for_function("document.querySelector('.home-intro').classList.contains('is-visible')")
+        page.locator('.intro-body').scroll_into_view_if_needed()
+        page.wait_for_function("document.querySelector('.intro-body').classList.contains('is-visible')")
         checks.append({'case':'normal motion scroll reveal','status':'PASS'})
         context.close()
         # Synthetic API success and interactive filtering are explicitly isolated.

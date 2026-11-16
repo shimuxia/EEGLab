@@ -29,10 +29,10 @@ const media = [
   <section class="home-hero" aria-labelledby="home-title">
     <div class="home-hero-grid">
       <div class="home-hero-copy">
-        <p class="eyebrow">
+        <p class="eyebrow" data-hero-sequence>
           <span class="status-dot"></span> 南京信息工程大学 · 自动化学院
         </p>
-        <h1 id="home-title">
+        <h1 id="home-title" data-hero-sequence>
           严颖课题组
           <span>
             Yan Ying
@@ -40,12 +40,12 @@ const media = [
             Research Group.
           </span>
         </h1>
-        <p class="hero-statement">
+        <p class="hero-statement" data-hero-sequence>
           从复杂数据中理解系统。
           <br />
           让智能方法，走向真实世界。
         </p>
-        <div class="hero-actions">
+        <div class="hero-actions" data-hero-sequence>
           <a class="pill-link" href="#research">
             探索我们的研究 <span>↗</span>
           </a>
@@ -54,9 +54,7 @@ const media = [
           </a>
         </div>
       </div>
-      <div class="hero-science" aria-label="脑机接口实验影像与科研信号示意">
-        <div class="science-orbit orbit-one"></div>
-        <div class="science-orbit orbit-two"></div>
+      <div class="hero-science" aria-label="脑机接口实验影像">
         <div class="science-coordinate coordinate-top">
           NUIST / INTELLIGENCE IN THE REAL WORLD
         </div>
@@ -89,29 +87,17 @@ const media = [
           <span class="film-status" data-video-status role="status" hidden>
             实验视频暂不可用，已保留静态影像
           </span>
-          <div class="film-caption">
-            <span>思想与行动之间，</span>
-            <strong>是我们探索的边界。</strong>
-            <a
-              href="/research/brain-computer-interface"
-              aria-label="了解脑机实验室"
-            >
-              ↗
-            </a>
-          </div>
         </div>
-        <svg
-          class="hero-signal"
-          viewBox="0 0 600 150"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path d="M0 80H70L92 65L112 89L133 30L152 123L172 64L194 80H240L258 71L276 87L294 53L314 101L333 80H600" />
-          <path
-            class="signal-ghost"
-            d="M0 110Q75 40 150 110T300 110T450 110T600 110"
-          />
-        </svg>
+        <div class="film-caption">
+          <span>思想与行动之间，</span>
+          <strong>是我们探索的边界。</strong>
+          <a
+            href="/research/brain-computer-interface"
+            aria-label="了解脑机实验室"
+          >
+            ↗
+          </a>
+        </div>
         <div class="science-coordinate coordinate-bottom">
           <span>01 / SIGNAL → MODEL → SYSTEM</span>
           <span>持续探索，无限可能</span>
@@ -135,12 +121,12 @@ const media = [
     </div>
   </section>
 
-  <section class="home-intro home-wrap" id="about" data-reveal>
-    <div class="section-index">
+  <section class="home-intro home-wrap" id="about">
+    <div class="section-index" data-reveal="line">
       <span>01 — ABOUT</span>
       <span>我们的研究出发点</span>
     </div>
-    <div class="intro-body">
+    <div class="intro-body" data-reveal="cascade">
       <h2>
         数据背后，
         <br />
@@ -162,11 +148,11 @@ const media = [
 
   <section class="home-research" id="research">
     <div class="home-wrap">
-      <div class="section-index">
+      <div class="section-index" data-reveal="line">
         <span>02 — RESEARCH FIELDS</span>
         <span>七个方向，一份共同的好奇心</span>
       </div>
-      <div class="section-heading" data-reveal>
+      <div class="section-heading" data-reveal="title">
         <h2>
           从理解系统，
           <br />
@@ -180,8 +166,8 @@ const media = [
     </div>
   </section>
 
-  <section class="home-lab home-wrap" data-reveal>
-    <div class="lab-photograph">
+  <section class="home-lab home-wrap">
+    <div class="lab-photograph" data-reveal="image">
       <img
         src="/images/achievements/demo-lab-setup.webp"
         alt="金牛湖脑机实验室闭环演示现场"
@@ -191,7 +177,7 @@ const media = [
       />
       <span>RESEARCH IN ACTION / 金牛湖脑机实验室</span>
     </div>
-    <div class="lab-copy">
+    <div class="lab-copy" data-reveal="title">
       <p class="eyebrow">BRAIN-COMPUTER INTERFACE</p>
       <h2>
         让思想，
@@ -224,9 +210,9 @@ const media = [
     </div>
   </section>
 
-  <section class="home-advisor" data-reveal>
+  <section class="home-advisor">
     <div class="home-wrap advisor-editorial">
-      <div class="advisor-portrait">
+      <div class="advisor-portrait" data-reveal="image">
         <img
           src={advisor.photo}
           alt="严颖老师肖像"
@@ -236,7 +222,7 @@ const media = [
         />
         <span>PRINCIPAL INVESTIGATOR</span>
       </div>
-      <div class="advisor-editorial-copy">
+      <div class="advisor-editorial-copy" data-reveal="title">
         <p class="eyebrow">03 — PEOPLE & IDEAS</p>
         <h2>
           严颖<span>Ying Yan</span>
@@ -261,11 +247,11 @@ const media = [
   </section>
 
   <section class="home-evidence home-wrap" id="achievements">
-    <div class="section-index">
+    <div class="section-index" data-reveal="line">
       <span>04 — DISCOVERY & IMPACT</span>
       <span>把探索，变成可见的进展</span>
     </div>
-    <div class="section-heading" data-reveal>
+    <div class="section-heading" data-reveal="title">
       <h2>
         研究有迹，
         <br />
@@ -297,7 +283,7 @@ const media = [
         </a>
       ))}
     </div>
-    <div class="home-honors" data-reveal>
+    <div class="home-honors" data-reveal="cascade">
       <div>
         <p class="eyebrow">ACADEMIC RECOGNITION</p>
         <h3>
@@ -312,7 +298,7 @@ const media = [
 
   <section class="home-papers" id="papers">
     <div class="home-wrap">
-      <div class="section-index">
+      <div class="section-index" data-reveal="line">
         <span>05 — SELECTED PUBLICATIONS</span>
         <a href="/achievements#papers">完整论文目录 ↗</a>
       </div>
@@ -339,8 +325,8 @@ const media = [
     </div>
   </section>
 
-  <section class="home-team home-wrap" id="team" data-reveal>
-    <div class="team-story">
+  <section class="home-team home-wrap" id="team">
+    <div class="team-story" data-reveal="title">
       <p class="eyebrow">06 — GROW TOGETHER</p>
       <h2>
         好的研究，
@@ -355,7 +341,7 @@ const media = [
         认识课题组与实验室协作团队 <span>↗</span>
       </a>
     </div>
-    <div class="team-contact-sheet">
+    <div class="team-contact-sheet" data-reveal="cascade">
       {members.slice(0, 6).map((m, i) => (
         <a href="/team" class:list={[{ "portrait-offset": i % 3 === 1 }]}>
           <img

@@ -1,0 +1,61 @@
+<!-- Presentation only. Content stays visible until this controller observes it. -->
+<script>
+  const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const compact = window.matchMedia("(max-width: 600px)");
+  const elements = [...document.querySelectorAll<HTMLElement>("[data-reveal]")];
+  const reveal = (element: HTMLElement) => {
+    element.removeAttribute("data-motion-pending");
+    element.classList.add("is-visible");
+  };
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          reveal(entry.target as HTMLElement);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.06, rootMargin: "0px 0px -24px 0px" },
+    );
+    const update = () => {
+      document.documentElement.dataset.motion = preference.matches
+        ? "reduced"
+        : compact.matches
+          ? "limited"
+          : "full";
+      if (preference.matches) {
+        elements.forEach(reveal);
+        observer.disconnect();
+        return;
+      }
+      for (const element of elements) {
+        if (element.classList.contains("is-visible")) continue;
+        // Never delay content already on screen, including an anchor destination.
+        const box = element.getBoundingClientRect();
+        if (box.top < innerHeight && box.bottom > 0) {
+          reveal(element);
+        } else {
+          observer.observe(element);
+          element.setAttribute("data-motion-pending", "");
+        }
+      }
+    };
+    document.addEventListener("focusin", (event) => {
+      if (!(event.target instanceof Element)) return;
+      let element = event.target.closest<HTMLElement>("[data-reveal]");
+      while (element) {
+        reveal(element);
+        observer.unobserve(element);
+        element =
+          element.parentElement?.closest<HTMLElement>("[data-reveal]") ?? null;
+      }
+    });
+    // Browser back/forward cache restores must not leave an in-view section pending.
+    window.addEventListener("pageshow", update);
+    preference.addEventListener("change", update);
+    compact.addEventListener("change", update);
+    update();
+  }
+</script>
