@@ -194,8 +194,8 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
 <style>
   /* ── PAGE HEADER ────────────────────────────────────── */
   .page-header {
-    padding: 140px 0 72px;
-    background: var(--bg-surface);
+    padding: clamp(110px, 10vw, 155px) 0 clamp(30px, 4vw, 60px);
+    background: var(--bg);
     border-bottom: 1px solid var(--border);
   }
   .back-link {
@@ -233,10 +233,10 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
   }
   .stats-row {
     display: flex;
-    gap: 48px;
-    flex-shrink: 0;
+    gap: clamp(15px, 3vw, 46px);
+    flex-wrap: wrap;
   }
-  .stat-item { text-align: right; }
+  .stat-item { text-align: left; border-left: 2px solid var(--accent); padding-left: 14px; }
   .stat-num {
     font-size: 48px;
     font-weight: 700;

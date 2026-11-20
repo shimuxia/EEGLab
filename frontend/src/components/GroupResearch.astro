@@ -5,7 +5,7 @@ import ResearchArtwork from "./ResearchArtwork.astro";
 
 <div class="research-overview">
   {directions.map((r, i) => (
-    <article class="group-card" id={r.id}>
+    <article class:list={["group-card", {"field-feature": i === 1}]} id={r.id}>
       <div>
         <span class="group-kicker">
           {r.no} / {r.en}
@@ -23,7 +23,9 @@ import ResearchArtwork from "./ResearchArtwork.astro";
           </a>
         )}
       </div>
-      <ResearchArtwork index={i} />
+      {i === 1
+        ? <a class="field-photo" href="/research/brain-computer-interface" aria-label="进入脑机接口研究平台"><img src="/images/achievements/demo-eeg-monitor.webp" alt="实验人员在监视器上观察脑电信号" loading="lazy" width="660" height="440" /></a>
+        : <ResearchArtwork index={i} />}
     </article>
   ))}
 </div>

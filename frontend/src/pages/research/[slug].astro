@@ -48,17 +48,16 @@ const next = allResearch[currentIdx + 1];
 
     <!-- Main -->
     <main class="main" id="main-content" tabindex="-1">
-      <div class="page-meta">
-        <span class="meta-num">{item.num}</span>
-        <span class="meta-en">{item.titleEn}</span>
-      </div>
-
-      <h1 class="page-title">{item.title}</h1>
-      <p class="page-lead">{item.desc}</p>
-
-      <div class="divider"></div>
-
-      <figure class="research-feature-image"><img src={`/images/research/${item.slug}.webp`} alt={`${item.title}研究展示`} width="1200" height="800" loading="lazy" /><figcaption>{item.titleEn} / 研究与实践</figcaption></figure>
+      <header class="detail-intro">
+        <div>
+          <div class="page-meta"><span class="meta-num">{item.num}</span><span class="meta-en">{item.titleEn}</span></div>
+          <h1 class="page-title">{item.title}</h1>
+          <p class="page-lead">{item.desc}</p>
+        </div>
+        <figure class="research-feature-image">
+          <img src={`/images/research/${item.slug}.webp`} alt={`${item.title}研究示意图`} width="600" height="600" />
+        </figure>
+      </header>
       <section class="overview">
         <h2 class="sec-title">研究概述</h2>
         <p class="sec-body">{item.overview}</p>
@@ -114,8 +113,13 @@ const next = allResearch[currentIdx + 1];
 </Layout>
 
 <style>
+  .detail-intro {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.94fr);gap:clamp(1rem,4vw,4rem);align-items:center;margin-bottom:3rem}
+  .detail-intro .research-feature-image {margin:0;background:#eff4fb}
+  .detail-intro .research-feature-image img {width:100%;height:auto;aspect-ratio:1;object-fit:contain;mix-blend-mode:multiply;background:transparent}
+  @media(max-width:850px){.detail-intro{grid-template-columns:minmax(0,1fr)}.detail-intro .research-feature-image img{max-height:340px}}
+
   .research-feature-image{margin:40px 0 50px}
-  .research-feature-image img{width:100%;height:auto;max-height:500px;object-fit:contain;background:#e8ece9;filter:none}
+  .research-feature-image img{width:100%;height:auto;max-height:500px;object-fit:contain;background:var(--bg-surface);filter:none}
   .research-feature-image figcaption{font:10px var(--font-mono);color:var(--text-3);padding-top:14px;letter-spacing:1px}
 
   .page-wrap {

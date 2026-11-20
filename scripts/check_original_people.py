@@ -42,11 +42,14 @@ def run():
         ctx.route("**/*", lambda r: r.continue_() if r.request.url.startswith(BASE) else r.abort())
         page = ctx.new_page()
         page.goto(BASE, wait_until="networkidle")
+        film = page.locator("[data-hero-video]")
+        assert film.evaluate("(v) => v.paused"), "Offscreen chapter footage should be paused"
+        film.scroll_into_view_if_needed()
         page.wait_for_function("!document.querySelector('[data-hero-video]').paused")
         before = page.locator("video").evaluate("(v) => v.currentTime")
         page.wait_for_timeout(800)
         assert page.locator("video").evaluate("(v) => v.currentTime") > before
-        results.append({"case": "original hero footage actually plays", "status": "PASS"})
+        results.append({"case": "chapter footage actually plays in view", "status": "PASS"})
         browser.close()
     (OUT / "results.json").write_text(json.dumps(results, ensure_ascii=False, indent=2))
     print(f"PASS: {len(results)} original visual / portrait checks; desktop split and mobile stacked composition verified")

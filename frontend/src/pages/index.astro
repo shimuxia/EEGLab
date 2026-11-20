@@ -2,7 +2,7 @@
 import GroupLayout from "../layouts/GroupLayout.astro";
 import HomeResearch from "../components/HomeResearch.astro";
 import GroupHonors from "../components/GroupHonors.astro";
-import { advisor, members, representativePapers } from "../data/group";
+import { advisor, directions, members, representativePapers } from "../data/group";
 const media = [
   {
     src: "/images/achievements/demo-lab-setup.webp",
@@ -29,62 +29,25 @@ const media = [
   <section class="home-hero" aria-labelledby="home-title">
     <div class="home-hero-grid">
       <div class="home-hero-copy">
-        <p class="eyebrow">南京信息工程大学 <span aria-hidden="true">/</span> 自动化学院</p>
-        <h1 id="home-title">严颖课题组<span lang="en">Yan Ying <br />Research Group</span></h1>
+        <p class="eyebrow">南京信息工程大学 · 自动化学院</p>
+        <h1 id="home-title">严颖课题组</h1>
+        <p class="hero-name" lang="en">Yan Ying Research Group</p>
         <p class="hero-statement">从设备故障诊断到脑电信号解码，我们研究如何从复杂数据中辨识系统的状态，预测它的变化。</p>
         <div class="hero-actions">
-          <a class="pill-link" href="#research">
-            浏览研究方向
-          </a>
-          <a class="quiet-link" href="/about">
-            导师与团队
-          </a>
+          <a class="pill-link" href="#research">探索研究方向 <span aria-hidden="true">↓</span></a>
+          <a class="text-link" href="/about">关于课题组 ↗</a>
         </div>
       </div>
-      <figure class="hero-science" aria-label="脑机接口实验影像">
-        <div class="science-film">
-          <video
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="metadata"
-            poster="/videos/promo-hero-poster-v1.webp"
-            data-hero-video
-            aria-label="脑机实验室研究展示"
-          >
-            <source src="/videos/promo-hero-v1.mp4" type="video/mp4" />
-          </video>
-          <div class="film-shade"></div>
-          <div class="film-label" lang="en">LAB FILM</div>
-          <button
-            class="film-pause"
-            type="button"
-            aria-label="暂停实验视频"
-            aria-pressed="false"
-            data-video-toggle
-          >
-            <span aria-hidden="true">Ⅱ</span>
-          </button>
-          <span class="film-status" data-video-status role="status" hidden>
-            实验视频暂不可用，已保留静态影像
-          </span>
-        </div>
-        <figcaption class="hero-film-credit">
-          <span>实验影像 <i aria-hidden="true"></i> 金牛湖脑机实验室</span>
-          <a href="/research/brain-computer-interface">查看研究</a>
-        </figcaption>
-      </figure>
-    </div>
-    <div class="hero-bottom">
-      <a href="#research" class="scroll-cue">
-        <span>向下探索</span>
-        <span>↓</span>
+      <a class="feature-plate" href="/research/arm">
+        <span class="plate-label">研究选读 <span lang="en">/ RESEARCH FOCUS</span></span>
+        <img src="/images/research/arm-diagram.webp" alt="脑电采集设备与机械臂的系统构成示意" width="900" height="600" fetchpriority="high" />
+        <span class="plate-caption"><span><small>脑机接口</small><strong>脑控机械臂</strong></span><span aria-hidden="true">↗</span></span>
       </a>
-      <nav aria-label="首页章节">
-        <a href="#research">研究方向</a><a href="#papers">代表论文</a><a href="#team">课题组成员</a><a href="#admission">招生</a>
-      </nav>
     </div>
+    <nav class="hero-bottom" aria-label="研究方向索引">
+      <h2>研究方向</h2>
+      <div>{directions.map(r => <a href={`/research#${r.id}`}>{r.title}</a>)}</div>
+    </nav>
   </section>
 
   <section class="home-intro home-wrap" id="about" data-reveal>
@@ -123,16 +86,6 @@ const media = [
   </section>
 
   <section class="home-lab home-wrap" data-reveal>
-    <div class="lab-photograph">
-      <img
-        src="/images/achievements/demo-lab-setup.webp"
-        alt="金牛湖脑机实验室闭环演示现场"
-        loading="lazy"
-        width="1200"
-        height="800"
-      />
-      <span>RESEARCH IN ACTION / 金牛湖脑机实验室</span>
-    </div>
     <div class="lab-copy">
       <p class="eyebrow">BRAIN-COMPUTER INTERFACE</p>
       <h2>脑机接口<br /><span>实验平台</span></h2>
@@ -160,6 +113,39 @@ const media = [
         走进实验室 <span>↗</span>
       </a>
     </div>
+    <figure class="hero-science" aria-label="脑机接口实验影像">
+        <div class="science-film">
+          <video
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            poster="/videos/promo-hero-poster-v1.webp"
+            data-hero-video
+            aria-label="脑机实验室研究展示"
+          >
+            <source src="/videos/promo-hero-v1.mp4" type="video/mp4" />
+          </video>
+
+          <div class="film-label" lang="en">LAB FILM</div>
+          <button
+            class="film-pause"
+            type="button"
+            aria-label="暂停实验视频"
+            aria-pressed="false"
+            data-video-toggle
+          >
+            <span aria-hidden="true">Ⅱ</span>
+          </button>
+          <span class="film-status" data-video-status role="status" hidden>
+            实验视频暂不可用，已保留静态影像
+          </span>
+        </div>
+        <figcaption class="hero-film-credit">
+          <span>实验影像 <i aria-hidden="true"></i> 金牛湖脑机实验室</span>
+          <a href="/research/brain-computer-interface">查看研究</a>
+        </figcaption>
+      </figure>
   </section>
 
   <section class="home-advisor" data-reveal>
@@ -321,7 +307,7 @@ const media = [
         <span>南京信息工程大学 · 自动化学院</span>
       </div>
     </div>
-    <div class="join-orbit" aria-hidden="true"></div>
+
   </section>
 </GroupLayout>
 
@@ -359,6 +345,7 @@ const media = [
       video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE
     )
       fail();
+    let userPaused = false;
     const respectMotion = () => {
       if (motion.matches) video.pause();
       update();
@@ -366,7 +353,8 @@ const media = [
     video.addEventListener("play", update);
     video.addEventListener("pause", update);
     toggle.addEventListener("click", () => {
-      if (video.paused)
+      if (video.paused) {
+        userPaused = false;
         video.play().catch(() => {
           if (
             video.error ||
@@ -375,13 +363,20 @@ const media = [
             fail();
           else update();
         });
-      else video.pause();
+      } else {
+        userPaused = true;
+        video.pause();
+      }
     });
     motion.addEventListener("change", respectMotion);
     respectMotion();
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) video.pause();
+        if (!entry.isIntersecting) {
+          video.pause();
+        } else if (!motion.matches && !userPaused && !toggle.disabled) {
+          video.play().catch(update);
+        }
       },
       { threshold: 0.05 },
     );

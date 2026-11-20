@@ -17,9 +17,9 @@ const galleryTags = Array.from(new Set(items.map(i => i.tag)));
 <div id="gallery-filter-root">
   <div class="gf-filter-bar">
     {galleryTags.map(tag => (
-      <button class="gf-chip" data-tag={tag}>{tag}</button>
+      <button class="gf-chip" aria-pressed="false" data-tag={tag}>{tag}</button>
     ))}
-    <button class="gf-chip active" data-tag="全部">全部</button>
+    <button class="gf-chip active" aria-pressed="true" data-tag="全部">全部</button>
   </div>
 
   <div class="gf-grid">
@@ -46,7 +46,8 @@ const galleryTags = Array.from(new Set(items.map(i => i.tag)));
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
       const tag = chip.getAttribute('data-tag')!;
-      chips.forEach(c => c.classList.remove('active'));
+      chips.forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
+      chip.setAttribute('aria-pressed', 'true');
       chip.classList.add('active');
 
       let any = false;
@@ -97,7 +98,7 @@ const galleryTags = Array.from(new Set(items.map(i => i.tag)));
     gap: 10px;
   }
   #gallery-filter-root .gf-item {
-    border-radius: 12px;
+    border-radius: 4px;
     overflow: hidden;
     border: 1px solid var(--border);
     background: var(--bg-surface);
@@ -111,9 +112,9 @@ const galleryTags = Array.from(new Set(items.map(i => i.tag)));
   }
   #gallery-filter-root .gf-img {
     width: 100%;
-    aspect-ratio: 3/4;
-    object-fit: cover;
-    object-position: top;
+    aspect-ratio: 4/3;
+    object-fit: contain; background: var(--bg-surface);
+    object-position: center;
     display: block;
   }
   #gallery-filter-root .gf-caption {

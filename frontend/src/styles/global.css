@@ -1,24 +1,23 @@
 /* ── DESIGN TOKENS ─────────────────────────────────── */
 :root {
-  --bg: #101b18;
-  --bg-surface: #172823;
-  --bg-elevated: #233730;
-  --bg-dark: #0c0f0d;
-  --text: #eceee7;
-  --text-2: #b5bcb1;
-  --text-3: #a6b5ac;
-  --text-inv: #f2f2e9;
-  --success: #89c89d;
-  --accent: #d3bc8d;
-  --accent-dim: rgba(211, 188, 141, 0.08);
-  --accent-mid: rgba(211, 188, 141, 0.2);
-  --border: rgba(232, 238, 223, 0.11);
-  --border-md: rgba(232, 238, 223, 0.22);
-  --font-sans:
-    "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei",
-    "Noto Sans CJK SC", "WenQuanYi Zen Hei", sans-serif;
-  --font-display: "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  color-scheme: light;
+  --bg: #fff;
+  --bg-surface: #f3f6fa;
+  --bg-elevated: #e5edf8;
+  --bg-dark: #101d32;
+  --text: #132138;
+  --text-2: #37465b;
+  --text-3: #505e72;
+  --text-inv: #fff;
+  --success: #185e4b;
+  --accent: #194ac5;
+  --accent-dim: #e8efff;
+  --accent-mid: #c5d8ff;
+  --border: #d7dfe9;
+  --border-md: #a8b6c8;
+  --font-sans: "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "WenQuanYi Zen Hei", sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: Consolas, "Liberation Mono", monospace;
 }
 
 /* ── RESET ─────────────────────────────────────────── */
