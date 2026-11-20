@@ -1,7 +1,9 @@
 """A shared deadline across pagination, retries and sources in one sync job."""
 from __future__ import annotations
 
+import math
 import time
+from email.utils import parsedate_to_datetime
 from contextlib import contextmanager
 from contextvars import ContextVar
 
@@ -41,3 +43,15 @@ def retry_sleep(seconds: float) -> None:
     if deadline is not None and time.monotonic() + seconds + 1 >= deadline:
         raise SyncDeadlineExceeded('上游限流等待超过同步时间预算')
     time.sleep(seconds)
+
+def retry_delay(header: str | None, fallback: float) -> float:
+    if not header:
+        return fallback
+    try:
+        seconds = float(header)
+    except ValueError:
+        try:
+            seconds = parsedate_to_datetime(header).timestamp() - time.time()
+        except (TypeError, ValueError, OverflowError, OSError):
+            return fallback
+    return max(0.0, min(60.0, seconds)) if math.isfinite(seconds) else fallback

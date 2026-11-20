@@ -2,40 +2,48 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import sqlite3
+import uuid
+from urllib.parse import urlsplit
 from .config import Settings
-from .group_policy import public_association, POLICY_VERSION
-from .database import connect, get_metadata, utc_now
+from .group_policy import POLICY_VERSION, protected_exclusion, public_association
+from .database import connect, get_metadata, set_metadata, utc_now
 
 
 def list_researchers(settings: Settings) -> list[dict]:
-    with connect(settings.database_path) as connection:
-        rows = connection.execute(
-            """
-            SELECT r.*,
-                   COUNT(CASE
-                       WHEN rp.paper_id IS NOT NULL AND COALESCE(po.hidden, 0) = 0
-                       THEN 1
-                   END) AS paper_count,
-                   COUNT(CASE
-                       WHEN rp.paper_id IS NOT NULL
-                        AND rp.missing_since IS NULL
-                        AND COALESCE(po.hidden, 0) = 0
-                       THEN 1
-                   END) AS current_count
-            FROM researchers r
-            LEFT JOIN researcher_papers rp ON rp.researcher_id = r.id
-            LEFT JOIN paper_overrides po ON po.paper_id = rp.paper_id
-            WHERE r.active = 1
-            GROUP BY r.id
-            ORDER BY r.sort_order, r.id
-            """
-        ).fetchall()
+    return get_publications(settings, {'limit': 1})['researchers']
+
+
+def _list_researchers(connection: sqlite3.Connection) -> list[dict]:
+    rows = connection.execute(
+        """
+        SELECT r.*,
+               COUNT(CASE
+                   WHEN rp.paper_id IS NOT NULL AND COALESCE(po.hidden, 0) = 0
+                   THEN 1
+               END) AS paper_count,
+               COUNT(CASE
+                   WHEN rp.paper_id IS NOT NULL
+                    AND rp.missing_since IS NULL
+                    AND COALESCE(po.hidden, 0) = 0
+                   THEN 1
+               END) AS current_count
+        FROM researchers r
+        LEFT JOIN researcher_papers rp ON rp.researcher_id = r.id
+        LEFT JOIN paper_overrides po ON po.paper_id = rp.paper_id
+        WHERE r.active = 1
+        GROUP BY r.id
+        ORDER BY r.sort_order, r.id
+        """
+    ).fetchall()
     return [_researcher_dict(row) for row in rows]
 
 
 def get_publications(settings: Settings, filters: dict) -> dict:
+    group_policy = filters.get('group_policy', False)
     with connect(settings.database_path) as connection:
+        connection.execute('BEGIN')
         snapshot_version = get_metadata(connection, 'snapshot_version', '')
         last_sync_at = get_metadata(connection, 'last_sync_at', '')
         paper_rows = connection.execute(
@@ -71,14 +79,15 @@ def get_publications(settings: Settings, filters: dict) -> dict:
             """
         ).fetchall()
 
-    rules = []
-    if filters.get('group_policy'):
-        with connect(settings.database_path) as connection:
-            rules = connection.execute('SELECT * FROM scholar_review_rules').fetchall()
+        researchers = _list_researchers(connection)
+        rules = connection.execute('SELECT * FROM scholar_review_rules').fetchall() if group_policy else []
     paper_index = {row['id']: row for row in paper_rows}
     links_by_paper: dict[int, list[dict]] = {}
     for row in link_rows:
-        if filters.get('group_policy') and (row['paper_id'] not in paper_index or not public_association(row, paper_index[row['paper_id']], rules)):
+        paper = paper_index.get(row['paper_id'])
+        if paper is None or protected_exclusion(row, paper):
+            continue
+        if group_policy and not public_association(row, paper, rules):
             continue
         links_by_paper.setdefault(row['paper_id'], []).append({
             'id': row['researcher_id'],
@@ -100,6 +109,7 @@ def get_publications(settings: Settings, filters: dict) -> dict:
 
     requested_researchers = set(filters.get('researchers') or [])
     papers: list[dict] = []
+    query = (filters.get('query') or '').casefold()
     for row in paper_rows:
         researcher_links = links_by_paper.get(row['id'], [])
         if not researcher_links:
@@ -120,7 +130,6 @@ def get_publications(settings: Settings, filters: dict) -> dict:
         representative = any(link['representative'] for link in selected_links or researcher_links)
         if filters.get('representative') is True and not representative:
             continue
-        query = (filters.get('query') or '').casefold()
         if query and query not in f'{row["title"]} {row["authors"]} {row["venue"]}'.casefold():
             continue
         relevant_links = selected_links or researcher_links
@@ -167,13 +176,16 @@ def get_publications(settings: Settings, filters: dict) -> dict:
         })
 
     total = len(papers)
-    researchers = list_researchers(settings)
-    if filters.get('group_policy'):
+    if group_policy:
         snapshot_version += ':' + POLICY_VERSION
-        for researcher in researchers:
-            count = sum(any(link['slug'] == researcher['slug'] for link in links) for links in links_by_paper.values())
-            researcher['paperCount'] = count
-            researcher['currentPaperCount'] = count
+    counts = {researcher['slug']: [0, 0] for researcher in researchers}
+    for links in links_by_paper.values():
+        for link in links:
+            count = counts[link['slug']]
+            count[0] += 1
+            count[1] += link['missingSince'] is None
+    for researcher in researchers:
+        researcher['paperCount'], researcher['currentPaperCount'] = counts[researcher['slug']]
     offset = max(0, int(filters.get('offset') or 0))
     limit = min(500, max(1, int(filters.get('limit') or 500)))
     page = papers[offset:offset + limit]
@@ -261,13 +273,43 @@ def list_scholar_candidates(settings: Settings) -> list[dict]:
 
 
 def create_researcher(settings: Settings, payload: dict) -> dict:
-    required = ('slug', 'name', 'openalexAuthorId')
-    missing = [key for key in required if not str(payload.get(key) or '').strip()]
-    if missing:
-        raise ValueError(f'缺少字段: {", ".join(missing)}')
-    slug = str(payload['slug']).strip().lower()
-    if not all(char.isalnum() or char == '-' for char in slug):
-        raise ValueError('slug 只能包含小写字母、数字和连字符')
+    if not isinstance(payload, dict):
+        raise ValueError('无效的研究者数据')
+
+    def field(key: str, limit: int, *, required: bool = False) -> str | None:
+        value = payload.get(key)
+        if value is None and not required:
+            return None
+        if not isinstance(value, str) or len(value) > limit:
+            raise ValueError(f'无效字段: {key}')
+        value = value.strip()
+        if (not value and required) or any(ord(char) < 32 for char in value):
+            raise ValueError(f'无效字段: {key}')
+        return value or None
+
+    slug = field('slug', 64, required=True).lower()
+    name = field('name', 160, required=True)
+    author_id = field('openalexAuthorId', 128, required=True).removeprefix('https://openalex.org/')
+    if not all(char.isalnum() or char == '-' for char in slug) or not re.fullmatch(r'A[0-9]+', author_id):
+        raise ValueError('无效的研究者标识')
+    name_en = field('nameEn', 160)
+    orcid = field('orcid', 96)
+    scholar_id = field('googleScholarId', 64)
+    if scholar_id and not re.fullmatch(r'[a-zA-Z0-9_-]+', scholar_id):
+        raise ValueError('无效的 Scholar 标识')
+    affiliation = field('affiliation', 240)
+    avatar = field('avatarUrl', 512)
+    if avatar:
+        url = urlsplit(avatar)
+        local = avatar.startswith('/') and not avatar.startswith('//')
+        remote = url.scheme == 'https' and url.hostname and not (url.username or url.password)
+        if chr(92) in avatar or not (local or remote):
+            raise ValueError('无效的头像地址')
+    order = payload.get('sortOrder', 100)
+    if isinstance(order, str) and re.fullmatch(r'-?[0-9]{1,6}', order):
+        order = int(order)
+    if type(order) is not int or not -100_000 <= order <= 100_000:
+        raise ValueError('无效的排列顺序')
     now = utc_now()
     with connect(settings.database_path) as connection:
         connection.execute(
@@ -278,13 +320,12 @@ def create_researcher(settings: Settings, payload: dict) -> dict:
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)
             """,
             (
-                slug, str(payload['name']).strip(), payload.get('nameEn'), payload.get('orcid'),
-                str(payload['openalexAuthorId']).strip().rsplit('/', 1)[-1],
-                payload.get('googleScholarId'), payload.get('affiliation'),
-                payload.get('avatarUrl'), int(payload.get('sortOrder', 100)), now, now,
+                slug, name, name_en, orcid, author_id, scholar_id,
+                affiliation, avatar, int(order), now, now,
             ),
         )
-    return next(item for item in list_researchers(settings) if item['slug'] == slug)
+        set_metadata(connection, 'snapshot_version', uuid.uuid4().hex)
+        return next(item for item in _list_researchers(connection) if item['slug'] == slug)
 
 
 def make_etag(version: str, query_string: str) -> str:

@@ -20,10 +20,11 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--source-only', action='store_true', help='Source archive for inspection, not deployment')
+    parser.add_argument('--output-dir', type=Path, default=ROOT / 'output')
     args = parser.parse_args()
     if not args.source_only and (sys.platform != 'linux' or sys.version_info[:2] != (3, 10)):
         parser.error('部署包必须在 Linux Python 3.10 下构建；请使用 GitHub Actions 或 --source-only')
-    output = ROOT / 'output'
+    output = args.output_dir.resolve()
     output.mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='eeglab-scf-', dir=output) as directory:
         stage = Path(directory)

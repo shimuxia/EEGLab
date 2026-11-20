@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 
 from .analytics import initialize_analytics
 from .config import get_settings
@@ -17,7 +18,12 @@ def main() -> int:
     initialize(settings)
     initialize_analytics(settings)
     if args.command == 'sync':
-        print(json.dumps(sync_all_researchers(settings).as_dict(), ensure_ascii=False, indent=2))
+        try:
+            result = sync_all_researchers(settings)
+        except Exception as exc:
+            print(f'论文同步失败（{type(exc).__name__}），已保留上次快照。', file=sys.stderr)
+            return 1
+        print(json.dumps(result.as_dict(), ensure_ascii=False, indent=2))
     else:
         print(f'数据库已初始化: {settings.database_path}')
         print(f'访问统计数据库已初始化: {settings.analytics_database_path}')

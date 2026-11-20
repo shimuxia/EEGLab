@@ -21,8 +21,8 @@ def main() -> None:
         try:
             result = sync_all_researchers(settings)
             logging.info('publication sync completed: %s', result.as_dict())
-        except Exception:
-            logging.exception('publication sync failed; serving previous snapshot')
+        except Exception as exc:
+            logging.error('publication sync failed (%s); serving previous snapshot', type(exc).__name__)
         time.sleep(settings.sync_interval_seconds)
 
 

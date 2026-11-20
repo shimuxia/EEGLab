@@ -2,15 +2,20 @@ from __future__ import annotations
 
 import json
 import sqlite3
+import uuid
 from dataclasses import dataclass
 from difflib import SequenceMatcher
 
 from .classification import classify
 from .config import Settings
-from .database import connect, normalize_doi, normalize_title, set_metadata, utc_now
+from .database import connect, get_metadata, normalize_doi, normalize_title, set_metadata, utc_now
 from .openalex import fetch_author_works
 from .scholar import ScholarProfile, fetch_author_profile
 from .review_service import accept_scholar_article, load_review_rules
+
+
+class SnapshotChanged(RuntimeError):
+    pass
 
 
 @dataclass
@@ -58,6 +63,7 @@ def sync_all_researchers(settings: Settings) -> SyncResult:
             (started_at,),
         )
         run_id = int(cursor.lastrowid)
+        base_version = get_metadata(connection, 'snapshot_version')
         researchers = connection.execute(
             """
             SELECT id, slug, name, openalex_author_id, google_scholar_id
@@ -77,7 +83,7 @@ def sync_all_researchers(settings: Settings) -> SyncResult:
             works = fetch_author_works(
                 researcher['openalex_author_id'], settings.openalex_api_key
             )
-            _validate_count(settings, researcher, works)
+            _validate_count(settings, researcher, len(works))
             fetched_by_researcher.append((researcher, works))
             fetched_total += len(works)
 
@@ -96,7 +102,7 @@ def sync_all_researchers(settings: Settings) -> SyncResult:
                     _validate_scholar_count(settings, researcher, profile)
                     scholar_profiles[researcher['id']] = profile
                 except Exception as exc:
-                    detail = _safe_error(exc, settings)
+                    detail = type(exc).__name__
                     message = f'{researcher["name"]} 的 Google Scholar 同步失败: {detail}'
                     scholar_errors[researcher['id']] = detail[:1000]
                     warnings.append(message)
@@ -107,13 +113,16 @@ def sync_all_researchers(settings: Settings) -> SyncResult:
         scholar_fetched_total = sum(len(item.articles) for item in scholar_profiles.values())
         scholar_matched_total = 0
         scholar_candidate_total = 0
-        snapshot_version = utc_now()
+        snapshot_version = uuid.uuid4().hex
+        seen_at = utc_now()
         with connect(settings.database_path) as connection:
             connection.execute('BEGIN IMMEDIATE')
+            if get_metadata(connection, 'snapshot_version') != base_version:
+                raise SnapshotChanged('目录版本已变化，请重试同步')
             for researcher, works in fetched_by_researcher:
                 seen_ids: set[int] = set()
                 for work in works:
-                    paper_id, inserted = _upsert_work(connection, work, snapshot_version)
+                    paper_id, inserted = _upsert_work(connection, work, seen_at)
                     if inserted:
                         inserted_ids.add(paper_id)
                     else:
@@ -125,8 +134,10 @@ def sync_all_researchers(settings: Settings) -> SyncResult:
                         author_id=researcher['openalex_author_id'],
                         paper_id=paper_id,
                         work=work,
-                        seen_at=snapshot_version,
+                        seen_at=seen_at,
                     )
+                if len(seen_ids) != len(works):
+                    _validate_count(settings, researcher, len(seen_ids))
                 missing_total += _mark_missing_links(
                     connection, researcher['id'], seen_ids, snapshot_version
                 )
@@ -134,7 +145,7 @@ def sync_all_researchers(settings: Settings) -> SyncResult:
                 profile = scholar_profiles.get(researcher['id'])
                 if profile:
                     matched, candidates = _reconcile_scholar(
-                        connection, researcher['id'], profile, snapshot_version,
+                        connection, researcher['id'], profile, seen_at,
                         settings.scholar_match_threshold,
                     )
                     scholar_matched_total += matched
@@ -148,17 +159,17 @@ def sync_all_researchers(settings: Settings) -> SyncResult:
                         """,
                         (
                             profile.total_citations, profile.h_index, profile.i10_index,
-                            snapshot_version, snapshot_version, researcher['id'],
+                            seen_at, seen_at, researcher['id'],
                         ),
                     )
                 elif researcher['id'] in scholar_errors:
                     connection.execute(
                         'UPDATE researchers SET scholar_sync_error=?, updated_at=? WHERE id=?',
-                        (scholar_errors[researcher['id']], snapshot_version, researcher['id']),
+                        (scholar_errors[researcher['id']], seen_at, researcher['id']),
                     )
 
             set_metadata(connection, 'snapshot_version', snapshot_version)
-            set_metadata(connection, 'last_sync_at', snapshot_version)
+            set_metadata(connection, 'last_sync_at', seen_at)
             configured_scholar_ids = any(
                 researcher['google_scholar_id'] for researcher in researchers
             )
@@ -182,7 +193,7 @@ def sync_all_researchers(settings: Settings) -> SyncResult:
                 WHERE id=?
                 """,
                 (
-                    snapshot_version, fetched_total, len(inserted_ids), len(updated_ids),
+                    seen_at, fetched_total, len(inserted_ids), len(updated_ids - inserted_ids),
                     missing_total, fetched_total, scholar_fetched_total,
                     scholar_matched_total, scholar_candidate_total, source_status,
                     snapshot_version, run_id,
@@ -190,7 +201,7 @@ def sync_all_researchers(settings: Settings) -> SyncResult:
             )
             connection.commit()
         return SyncResult(
-            run_id, 'success', fetched_total, len(inserted_ids), len(updated_ids),
+            run_id, 'success', fetched_total, len(inserted_ids), len(updated_ids - inserted_ids),
             missing_total, snapshot_version, scholar_fetched_total,
             scholar_matched_total, scholar_candidate_total, tuple(warnings),
             scholar_state,
@@ -204,21 +215,13 @@ def sync_all_researchers(settings: Settings) -> SyncResult:
                 SET finished_at=?, status='failed', error_message=?
                 WHERE id=?
                 """,
-                (finished_at, _safe_error(exc, settings)[:2000], run_id),
+                (finished_at, type(exc).__name__, run_id),
             )
         raise
 
 
-def _safe_error(error: Exception, settings: Settings) -> str:
-    message = str(error)
-    for secret in (settings.openalex_api_key, settings.serpapi_api_key, settings.sync_token):
-        if secret:
-            message = message.replace(secret, '[redacted]')
-    return message
-
-
-def _validate_count(settings: Settings, researcher: sqlite3.Row, works: list[dict]) -> None:
-    if not works:
+def _validate_count(settings: Settings, researcher: sqlite3.Row, count: int) -> None:
+    if not count:
         raise RuntimeError(f'{researcher["name"]} 的 OpenAlex 返回为空，拒绝覆盖快照')
     with connect(settings.database_path) as connection:
         existing = connection.execute(
@@ -226,9 +229,9 @@ def _validate_count(settings: Settings, researcher: sqlite3.Row, works: list[dic
             (researcher['id'],),
         ).fetchone()[0]
     minimum = int(existing * settings.sync_minimum_ratio)
-    if existing and len(works) < minimum:
+    if existing and count < minimum:
         raise RuntimeError(
-            f'{researcher["name"]} 本次仅返回 {len(works)} 篇，'
+            f'{researcher["name"]} 本次仅返回 {count} 篇，'
             f'低于已有 {existing} 篇的安全阈值 {minimum} 篇'
         )
 
@@ -283,10 +286,17 @@ def _upsert_work(
     if row is None and doi:
         row = connection.execute('SELECT id FROM papers WHERE doi = ?', (doi,)).fetchone()
     if row is None:
-        row = connection.execute(
-            'SELECT id FROM papers WHERE normalized_title = ? ORDER BY id LIMIT 1',
-            (normalized_title,),
-        ).fetchone()
+        candidates = connection.execute(
+            '''
+            SELECT id FROM papers
+            WHERE normalized_title=? AND publication_year=?
+              AND (openalex_id IS NULL OR ? IS NULL)
+              AND (doi IS NULL OR ? IS NULL)
+            LIMIT 2
+            ''',
+            (normalized_title, int(work.get('publication_year') or 0), openalex_id, doi),
+        ).fetchall()
+        row = candidates[0] if len(candidates) == 1 else None
 
     authorships = work.get('authorships') or []
     authors = ', '.join(
@@ -335,7 +345,7 @@ def _upsert_work(
     connection.execute(
         """
         UPDATE papers SET
-            openalex_id=COALESCE(?, openalex_id), doi=COALESCE(?, doi),
+            openalex_id=COALESCE(openalex_id, ?), doi=COALESCE(?, doi),
             normalized_title=?, title=?, authors=?, venue=?, publication_year=?,
             publication_date=?, work_type=?, cited_by_count=?, field=?, tags_json=?,
             updated_at=?, last_seen_at=?, missing_since=NULL
@@ -424,6 +434,11 @@ def _reconcile_scholar(
         FROM researcher_papers rp
         JOIN papers p ON p.id = rp.paper_id
         WHERE rp.researcher_id=? AND rp.missing_since IS NULL
+          AND NOT EXISTS (
+              SELECT 1 FROM scholar_review_rules rr
+              WHERE rr.researcher_id=rp.researcher_id AND rr.citation_id=rp.scholar_citation_id
+                AND rr.decision='accept'
+          )
         """,
         (researcher_id,),
     ).fetchall()
@@ -472,6 +487,12 @@ def _reconcile_scholar(
         """
         SELECT paper_id FROM researcher_papers
         WHERE researcher_id=? AND source_match_status='confirmed'
+          AND NOT EXISTS (
+              SELECT 1 FROM scholar_review_rules rr
+              WHERE rr.researcher_id=researcher_papers.researcher_id
+                AND rr.citation_id=researcher_papers.scholar_citation_id
+                AND rr.decision='accept'
+          )
         """,
         (researcher_id,),
     ).fetchall()

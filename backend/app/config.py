@@ -62,7 +62,8 @@ class Settings:
 
 
 def get_settings() -> Settings:
-    _load_env_file(BACKEND_ROOT / '.env')
+    if os.getenv('PAPERS_LOAD_ENV', '1') != '0':
+        _load_env_file(BACKEND_ROOT / '.env')
     sync_token = os.getenv('PAPERS_SYNC_TOKEN') or None
     return Settings(
         database_path=Path(

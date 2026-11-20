@@ -20,12 +20,14 @@ def matches(paper, *, oid=None, doi=None, title=None) -> bool:
     )
 
 
-def public_association(link, paper, rules) -> bool:
-    if link['slug'] == 'ying-yan' and any(
+def protected_exclusion(link, paper) -> bool:
+    return link['slug'] == 'ying-yan' and any(
         matches(paper, oid=oid, doi=doi, title=title)
         for oid, doi, title in PROTECTED_EXCLUSIONS
-    ):
-        return False
+    )
+
+
+def public_association(link, paper, rules) -> bool:
     applicable = [rule for rule in rules if rule['researcher_id'] == link['researcher_id']]
     for rule in applicable:
         if rule['decision'] == 'exclude' and (

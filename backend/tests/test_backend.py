@@ -25,7 +25,7 @@ class BackendTestCase(unittest.TestCase):
             researchers_seed_path=BACKEND_ROOT / 'data' / 'researchers.toml',
             papers_seed_path=BACKEND_ROOT / 'data' / 'papers.toml',
             openalex_api_key='test-key',
-            sync_token='test-token',
+            sync_token='local-fixture-' * 3,
             allowed_origins=('http://localhost:4321',),
             cache_control='public, max-age=0, s-maxage=60',
             sync_interval_seconds=86400,
@@ -95,7 +95,7 @@ class BackendTestCase(unittest.TestCase):
 
                 created = client.post(
                     '/api/admin/researchers',
-                    headers={'Authorization': 'Bearer test-token'},
+                    headers={'Authorization': 'Bearer ' + self.settings.sync_token},
                     json={
                         'slug': 'second-member',
                         'name': '第二位成员',

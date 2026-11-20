@@ -197,8 +197,9 @@ def initialize(settings: Settings) -> None:
         connection.executescript(SCHEMA)
         _migrate_schema(connection)
         _seed_researchers(connection, settings.researchers_seed_path)
+        new_catalog = connection.execute('SELECT 1 FROM papers LIMIT 1').fetchone() is None
         _seed_papers(connection, settings.papers_seed_path)
-        _seed_scholar_reviews(connection, settings.scholar_reviews_seed_path)
+        _seed_scholar_reviews(connection, settings.scholar_reviews_seed_path, new_catalog=new_catalog)
     # 延迟导入避免 database ↔ review_service 的模块循环。
     from .review_service import apply_scholar_review_rules
     apply_scholar_review_rules(settings)
@@ -344,7 +345,7 @@ def _seed_papers(connection: sqlite3.Connection, path: Path) -> None:
 
 
 def _seed_scholar_reviews(
-    connection: sqlite3.Connection, path: Path | None
+    connection: sqlite3.Connection, path: Path | None, *, new_catalog: bool
 ) -> None:
     if not path or not path.exists():
         return
@@ -367,13 +368,7 @@ def _seed_scholar_reviews(
                 researcher_id, citation_id, decision, target_openalex_id,
                 target_doi, target_normalized_title, notes, reviewed_at
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT(researcher_id, citation_id) DO UPDATE SET
-                decision=excluded.decision,
-                target_openalex_id=excluded.target_openalex_id,
-                target_doi=excluded.target_doi,
-                target_normalized_title=excluded.target_normalized_title,
-                notes=excluded.notes,
-                reviewed_at=excluded.reviewed_at
+            ON CONFLICT(researcher_id, citation_id) DO NOTHING
             """,
             (
                 researcher['id'], item['citation_id'], decision, target_openalex_id,
@@ -382,6 +377,9 @@ def _seed_scholar_reviews(
                 item.get('notes'), now,
             ),
         )
+    # Global seed merges describe a fresh catalog. Existing visibility is an editorial decision.
+    if not new_catalog:
+        return
     for item in data.get('paper_merges', []):
         canonical_doi = normalize_doi(item.get('canonical_doi'))
         canonical = connection.execute(
@@ -392,9 +390,7 @@ def _seed_scholar_reviews(
                 """
                 INSERT INTO paper_overrides (paper_id, hidden, notes, updated_at)
                 VALUES (?, 0, ?, ?)
-                ON CONFLICT(paper_id) DO UPDATE SET
-                    hidden=0, notes=COALESCE(excluded.notes, paper_overrides.notes),
-                    updated_at=excluded.updated_at
+                ON CONFLICT(paper_id) DO NOTHING
                 """,
                 (canonical['id'], item.get('notes'), now),
             )
@@ -407,9 +403,9 @@ def _seed_scholar_reviews(
                     """
                     INSERT INTO paper_overrides (paper_id, hidden, notes, updated_at)
                     VALUES (?, 1, ?, ?)
-                    ON CONFLICT(paper_id) DO UPDATE SET
-                        hidden=1, notes=COALESCE(excluded.notes, paper_overrides.notes),
+                    ON CONFLICT(paper_id) DO UPDATE SET hidden=1, notes=excluded.notes,
                         updated_at=excluded.updated_at
+                    WHERE paper_overrides.notes IS NULL AND paper_overrides.hidden=0
                     """,
                     (duplicate['id'], item.get('notes'), now),
                 )

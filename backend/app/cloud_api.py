@@ -4,17 +4,16 @@ from __future__ import annotations
 import hmac
 import json
 import sqlite3
-import uuid
 from urllib.parse import parse_qs, urlsplit
 
 from .analytics import make_analytics_etag, normalize_public_path
+from .api_contract import publication_filters, public_sync_status
 from .budget import sync_budget, SyncDeadlineExceeded
 from .cloud_analytics import record_cloud_pageview, get_cloud_summary
 from .cloud_papers import paper_workspace
 from .cloud_runtime import sync_cloud, latest_run
 from .config import get_settings
 from .cos_store import CosStore, StorageError, WriteConflict
-from .database import connect, set_metadata
 from .repository import (get_publications, list_researchers, get_sync_status,
                          list_scholar_candidates, create_researcher, make_etag)
 
@@ -27,9 +26,8 @@ def dispatch(method, target, headers=None, body=b'', *, store=None, settings=Non
     # Handler runtimes may retain or strip the /api file-route prefix.
     if path.startswith('/api/'):
         path = path[4:]
-    query = parse_qs(url.query)
     common = {'Content-Type': 'application/json; charset=utf-8',
-              'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff'}
+              'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Vary': 'Origin'}
     origin = headers.get('origin', '').rstrip('/')
     allowed = {item.rstrip('/') for item in settings.allowed_origins}
     host = headers.get('host', '')
@@ -51,7 +49,7 @@ def dispatch(method, target, headers=None, body=b'', *, store=None, settings=Non
         return response(200, {'status': 'ok', 'runtime': 'makers-python', 'storage': 'cos'})
     if path.startswith('/admin/'):
         if not settings.sync_token or len(settings.sync_token) < 32:
-            return response(503, {'error': '请配置至少 32 字符的 PAPERS_SYNC_TOKEN'})
+            return response(503, {'error': '管理接口暂不可用'})
         if not hmac.compare_digest(headers.get('authorization', '').encode(),
                                    f'Bearer {settings.sync_token}'.encode()):
             return response(401, {'error': 'Unauthorized'})
@@ -65,6 +63,14 @@ def dispatch(method, target, headers=None, body=b'', *, store=None, settings=Non
     if len(body) > (1024 if path == '/analytics/pageview' else 8192):
         return response(413, {'error': '请求体过大'})
     try:
+        filters = None
+        if path in ('/papers', '/group/papers'):
+            if len(url.query) > 8192:
+                return response(400, {'error': '论文查询过长'})
+            query = parse_qs(url.query, keep_blank_values=True, max_num_fields=100)
+            filters = publication_filters(
+                lambda key: query.get(key, []), group_policy=path == '/group/papers',
+            )
         payload = json.loads(body) if body else {}
         if not isinstance(payload, dict):
             return response(400, {'error': 'JSON 请求体必须是对象'})
@@ -98,25 +104,13 @@ def dispatch(method, target, headers=None, body=b'', *, store=None, settings=Non
             else:
                 write = path == '/admin/researchers'
                 with paper_workspace(store, settings, write=write) as local:
-                    if path in ('/papers', '/group/papers'):
-                        def integer(key, default=None):
-                            return int(query[key][0]) if key in query else default
-                        data = get_publications(local, {
-                            'group_policy': path == '/group/papers',
-                            'researchers': {slug.strip() for value in query.get('researcher', [])
-                                            for slug in value.split(',') if slug.strip()},
-                            'tag': query.get('tag', [None])[0], 'field': query.get('field', [None])[0],
-                            'query': query.get('q', [''])[0], 'year': integer('year'),
-                            'representative': query.get('representative', [''])[0].lower() == 'true',
-                            'limit': integer('limit', 500), 'offset': integer('offset', 0),
-                        })
+                    if filters is not None:
+                        data = get_publications(local, filters)
                         etag = make_etag(data['version'] + path, url.query)
                     elif path == '/researchers':
                         data = {'researchers': list_researchers(local)}
                     elif path == '/admin/researchers':
                         data = create_researcher(local, payload)
-                        with connect(local.database_path) as connection:
-                            set_metadata(connection, 'snapshot_version', uuid.uuid4().hex)
                     elif path == '/admin/scholar-candidates':
                         data = {'candidates': list_scholar_candidates(local)}
                     else:
@@ -127,6 +121,7 @@ def dispatch(method, target, headers=None, body=b'', *, store=None, settings=Non
                                 data['lastAttempt'] = attempt
                                 data['status'] = attempt['status']
                                 data['error'] = attempt.get('error')
+                            data = public_sync_status(data)
                         else:
                             data = {'version': data.get('snapshotVersion'), 'updatedAt': data.get('lastSyncAt')}
             if path.startswith('/admin/'):
@@ -139,8 +134,10 @@ def dispatch(method, target, headers=None, body=b'', *, store=None, settings=Non
             return response(201 if path == '/admin/researchers' else 200, data, **extra)
     except WriteConflict:
         return response(409, {'error': '其他任务已更新数据，请重试'})
-    except (ValueError, TypeError, sqlite3.IntegrityError):
-        return response(400, {'error': '无效参数或研究者标识重复'})
+    except sqlite3.IntegrityError:
+        return response(409, {'error': '研究者已存在或标识冲突'})
+    except (ValueError, TypeError):
+        return response(400, {'error': '无效的请求参数'})
     except SyncDeadlineExceeded:
         return response(504, {'error': '同步超时，保留上次快照；完整同步请使用 SCF 定时任务'})
     except StorageError:

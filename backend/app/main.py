@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import hmac
 import json
 import sqlite3
 from contextlib import asynccontextmanager
@@ -19,6 +20,8 @@ from .analytics import (
     normalize_public_path,
     record_pageview,
 )
+from .api_contract import publication_filters, public_sync_status
+from .budget import SyncDeadlineExceeded, sync_budget
 from .config import get_settings
 from .database import initialize
 from .repository import (
@@ -29,7 +32,7 @@ from .repository import (
     list_researchers,
     make_etag,
 )
-from .sync_service import sync_all_researchers
+from .sync_service import SnapshotChanged, sync_all_researchers
 
 
 settings = get_settings()
@@ -53,25 +56,18 @@ async def researchers(_: Request) -> JSONResponse:
 
 
 async def papers(request: Request) -> Response:
-    researcher_values = request.query_params.getlist('researcher')
-    researcher_slugs = {
-        slug.strip() for value in researcher_values for slug in value.split(',') if slug.strip()
-    }
-    representative_value = request.query_params.get('representative')
-    filters = {
-        'group_policy': request.url.path.startswith('/api/group/'),
-        'researchers': researcher_slugs,
-        'tag': request.query_params.get('tag'),
-        'field': request.query_params.get('field'),
-        'year': _optional_int(request.query_params.get('year')),
-        'representative': (
-            representative_value.lower() == 'true' if representative_value else None
-        ),
-        'query': request.query_params.get('q'),
-        'limit': _optional_int(request.query_params.get('limit')) or 500,
-        'offset': _optional_int(request.query_params.get('offset')) or 0,
-    }
-    data = await run_in_threadpool(get_publications, settings, filters)
+    if len(request.scope['query_string']) > 8192:
+        return _error('论文查询过长', 400)
+    try:
+        filters = publication_filters(
+            request.query_params.getlist, group_policy=request.url.path == '/api/group/papers',
+        )
+    except ValueError:
+        return _error('无效的论文查询参数', 400)
+    try:
+        data = await run_in_threadpool(get_publications, settings, filters)
+    except (sqlite3.Error, ValueError):
+        return _error('论文服务暂时不可用', 503)
     etag = make_etag(data['version'], request.url.path + '?' + request.url.query)
     if request.headers.get('if-none-match') == etag:
         return Response(status_code=304, headers={
@@ -89,7 +85,7 @@ async def papers_version(_: Request) -> JSONResponse:
 
 
 async def sync_status(_: Request) -> JSONResponse:
-    return _public_json(await run_in_threadpool(get_sync_status, settings))
+    return _public_json(public_sync_status(await run_in_threadpool(get_sync_status, settings)))
 
 
 async def analytics_pageview(request: Request) -> Response:
@@ -99,19 +95,14 @@ async def analytics_pageview(request: Request) -> Response:
             status_code=403,
             headers={'Cache-Control': 'no-store'},
         )
-    content_length = _optional_int(request.headers.get('content-length')) or 0
-    if content_length > 1024:
-        return JSONResponse(
-            {'error': '请求体过大'},
-            status_code=413,
-            headers={'Cache-Control': 'no-store'},
-        )
     try:
-        payload = await request.json()
+        payload = await _bounded_json(request, 1024)
         path = normalize_public_path(payload.get('path') if isinstance(payload, dict) else None)
         if path is None:
             raise ValueError('无效的页面路径')
-    except (ValueError, json.JSONDecodeError):
+    except BodyTooLarge:
+        return _error('请求体过大', 413)
+    except ValueError:
         return JSONResponse(
             {'error': '无效的访问记录'},
             status_code=400,
@@ -142,13 +133,18 @@ async def trigger_sync(request: Request) -> JSONResponse:
     if unauthorized:
         return unauthorized
     if sync_lock.locked():
-        return JSONResponse({'error': '同步任务正在运行'}, status_code=409)
+        return _error('同步任务正在运行', 409)
     async with sync_lock:
         try:
-            result = await run_in_threadpool(sync_all_researchers, settings)
-            return JSONResponse(result.as_dict())
-        except Exception as exc:
-            return JSONResponse({'error': str(exc)}, status_code=502)
+            with sync_budget(70):
+                result = await run_in_threadpool(sync_all_researchers, settings)
+            return JSONResponse(result.as_dict(), headers={'Cache-Control': 'no-store'})
+        except SnapshotChanged:
+            return _error('其他任务已更新数据，请重试', 409)
+        except SyncDeadlineExceeded:
+            return _error('同步超时，已保留上次完整快照', 504)
+        except Exception:
+            return _error('论文同步失败，已保留上次完整快照', 502)
 
 
 async def add_researcher(request: Request) -> JSONResponse:
@@ -156,13 +152,15 @@ async def add_researcher(request: Request) -> JSONResponse:
     if unauthorized:
         return unauthorized
     try:
-        payload = await request.json()
+        payload = await _bounded_json(request, 8192)
         researcher = await run_in_threadpool(create_researcher, settings, payload)
-        return JSONResponse(researcher, status_code=201)
-    except (ValueError, json.JSONDecodeError) as exc:
-        return JSONResponse({'error': str(exc)}, status_code=400)
-    except sqlite3.IntegrityError as exc:
-        return JSONResponse({'error': f'研究者已存在或标识冲突: {exc}'}, status_code=409)
+        return JSONResponse(researcher, status_code=201, headers={'Cache-Control': 'no-store'})
+    except BodyTooLarge:
+        return _error('请求体过大', 413)
+    except ValueError:
+        return _error('无效的研究者数据', 400)
+    except sqlite3.IntegrityError:
+        return _error('研究者已存在或标识冲突', 409)
 
 
 async def scholar_candidates(request: Request) -> JSONResponse:
@@ -170,16 +168,36 @@ async def scholar_candidates(request: Request) -> JSONResponse:
     if unauthorized:
         return unauthorized
     data = await run_in_threadpool(list_scholar_candidates, settings)
-    return JSONResponse({'candidates': data})
+    return JSONResponse({'candidates': data}, headers={'Cache-Control': 'no-store'})
+
+
+def _error(message: str, status: int) -> JSONResponse:
+    return JSONResponse({'error': message}, status_code=status, headers={'Cache-Control': 'no-store'})
+
+
+class BodyTooLarge(ValueError):
+    pass
+
+
+async def _bounded_json(request: Request, limit: int) -> dict:
+    body = bytearray()
+    async for chunk in request.stream():
+        if len(body) + len(chunk) > limit:
+            raise BodyTooLarge()
+        body.extend(chunk)
+    payload = json.loads(body)
+    if not isinstance(payload, dict):
+        raise ValueError('JSON 请求体必须是对象')
+    return payload
 
 
 def _require_admin(request: Request) -> JSONResponse | None:
-    if not settings.sync_token:
-        return JSONResponse({'error': '服务器未配置 PAPERS_SYNC_TOKEN'}, status_code=503)
-    authorization = request.headers.get('authorization', '')
-    token = authorization[7:] if authorization.startswith('Bearer ') else ''
-    if token != settings.sync_token:
-        return JSONResponse({'error': 'Unauthorized'}, status_code=401)
+    if not settings.sync_token or len(settings.sync_token) < 32:
+        return _error('管理接口暂不可用', 503)
+    actual = request.headers.get('authorization', '')
+    expected = f'Bearer {settings.sync_token}'
+    if not hmac.compare_digest(actual.encode(), expected.encode()):
+        return _error('Unauthorized', 401)
     return None
 
 
@@ -208,15 +226,6 @@ def _analytics_client_ip(request: Request) -> str:
 def _public_json(payload: dict, *, headers: dict | None = None) -> JSONResponse:
     response_headers = {'Cache-Control': settings.cache_control, **(headers or {})}
     return JSONResponse(payload, headers=response_headers)
-
-
-def _optional_int(value: str | None) -> int | None:
-    if not value:
-        return None
-    try:
-        return int(value)
-    except ValueError:
-        return None
 
 
 routes = [

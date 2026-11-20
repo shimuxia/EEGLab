@@ -199,3 +199,22 @@ notes = "用户确认排除：同名作者"
 canonical_doi = "10.1016/j.tsep.2023.101883"
 duplicate_dois = ["10.2139/ssrn.4374706"]
 notes = "同标题正式期刊版与 SSRN 预印本合并；保留正式期刊版本"
+
+# Source: approved researcher-scoped exclusions from the prior group site.
+[[reviews]]
+researcher_slug = "ying-yan"
+citation_id = "manual:openalex:W7163642400"
+decision = "exclude"
+target_openalex_id = "W7163642400"
+target_doi = "10.1117/12.3116350"
+target_title = "Research on repeated quantum error detection based on surface codes"
+notes = "confirmed false positive / same-name author mismatch"
+
+[[reviews]]
+researcher_slug = "ying-yan"
+citation_id = "manual:openalex:W7163778240"
+decision = "exclude"
+target_openalex_id = "W7163778240"
+target_doi = "10.48550/arxiv.2606.05405"
+target_title = "Agents' Last Exam"
+notes = "confirmed false positive / same-name author mismatch"

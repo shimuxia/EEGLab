@@ -7,7 +7,7 @@ import urllib.parse
 import urllib.request
 from dataclasses import dataclass
 
-from .budget import remaining_timeout, retry_sleep
+from .budget import remaining_timeout, retry_delay, retry_sleep
 
 
 SERPAPI_URL = 'https://serpapi.com/search.json'
@@ -159,7 +159,7 @@ def _request_json(url: str, *, timeout: int, max_attempts: int) -> dict:
                 detail = exc.read().decode('utf-8', errors='replace')
                 raise ScholarError(f'SerpAPI HTTP {exc.code}: {detail[:500]}') from exc
             retry_after = exc.headers.get('Retry-After')
-            delay = min(60.0, float(retry_after)) if retry_after else _backoff(attempt)
+            delay = retry_delay(retry_after, _backoff(attempt))
             retry_sleep(delay)
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
             last_error = exc

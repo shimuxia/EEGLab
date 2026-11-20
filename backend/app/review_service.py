@@ -20,6 +20,7 @@ def apply_scholar_review_rules(settings: Settings) -> dict:
             FROM scholar_candidates sc
             JOIN scholar_review_rules rr
               ON rr.researcher_id=sc.researcher_id AND rr.citation_id=sc.citation_id
+            WHERE sc.missing_since IS NULL
             ORDER BY sc.id
             """
         ).fetchall()
@@ -94,8 +95,6 @@ def accept_scholar_article(
             """,
             (researcher_id, paper_id),
         )
-    if rule['target_openalex_id'] or rule['target_doi']:
-        _hide_duplicate_versions(connection, paper_id, seen_at)
     return paper_id
 
 
@@ -156,34 +155,3 @@ def _create_scholar_paper(
         ),
     )
     return int(cursor.lastrowid)
-
-
-def _hide_duplicate_versions(
-    connection: sqlite3.Connection, canonical_paper_id: int, updated_at: str
-) -> None:
-    canonical = connection.execute(
-        'SELECT normalized_title FROM papers WHERE id=?', (canonical_paper_id,)
-    ).fetchone()
-    if not canonical:
-        return
-    duplicate_rows = connection.execute(
-        'SELECT id FROM papers WHERE normalized_title=? AND id<>?',
-        (canonical['normalized_title'], canonical_paper_id),
-    ).fetchall()
-    for row in duplicate_rows:
-        connection.execute(
-            """
-            INSERT INTO paper_overrides (paper_id, hidden, updated_at)
-            VALUES (?, 1, ?)
-            ON CONFLICT(paper_id) DO UPDATE SET hidden=1, updated_at=excluded.updated_at
-            """,
-            (row['id'], updated_at),
-        )
-    connection.execute(
-        """
-        INSERT INTO paper_overrides (paper_id, hidden, updated_at)
-        VALUES (?, 0, ?)
-        ON CONFLICT(paper_id) DO UPDATE SET hidden=0, updated_at=excluded.updated_at
-        """,
-        (canonical_paper_id, updated_at),
-    )
