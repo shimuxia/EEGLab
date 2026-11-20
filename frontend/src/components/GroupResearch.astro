@@ -7,8 +7,9 @@ import ResearchArtwork from "./ResearchArtwork.astro";
   {directions.map((r, i) => (
     <article class:list={["group-card", {"field-feature": i === 1}]} id={r.id}>
       <div>
+        <span class="field-number" aria-hidden="true">{r.no}</span>
         <span class="group-kicker">
-          {r.no} / {r.en}
+          {r.en}
         </span>
         <h3>{r.title}</h3>
         <p>{r.desc}</p>

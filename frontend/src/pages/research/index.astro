@@ -2,6 +2,7 @@
 import SectionHeader from "../../components/SectionHeader.astro";
 import GroupLayout from "../../layouts/GroupLayout.astro";
 import GroupResearch from "../../components/GroupResearch.astro";
+import { directions } from "../../data/group";
 import { research } from "../../data/research";
 ---
 
@@ -10,7 +11,12 @@ import { research } from "../../data/research";
     从复杂系统诊断到脑机交互，以可解释方法、时序建模与优化连接真实场景。
   </SectionHeader>
   <section class="group-section" id="fields">
-    <GroupResearch />
+    <div class="field-atlas">
+      <nav class="atlas-list" aria-label="研究章节">
+        {directions.map(d => <a href={`#${d.id}`}><small>{d.no}</small>{d.title}</a>)}
+      </nav>
+      <GroupResearch />
+    </div>
   </section>
   <section class="group-section" id="lab-topics">
     <h2>脑机实验室研究专题</h2>
@@ -26,3 +32,21 @@ import { research } from "../../data/research";
     </div>
   </section>
 </GroupLayout>
+
+<script>
+  const list = document.querySelector(".atlas-list");
+  if (list && "IntersectionObserver" in window) {
+    const links = [...list.querySelectorAll("a")];
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          for (const link of links) {
+            if (link.hash === "#" + entry.target.id) link.setAttribute("aria-current", "location");
+            else link.removeAttribute("aria-current");
+          }
+        }
+      }
+    }, { rootMargin: "-18% 0px -57% 0px" });
+    document.querySelectorAll(".research-overview article").forEach(el => observer.observe(el));
+  }
+</script>

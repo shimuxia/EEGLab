@@ -1,4 +1,5 @@
 ---
+import DevicePlate from "../../components/DevicePlate.astro";
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
@@ -54,9 +55,7 @@ const next = allResearch[currentIdx + 1];
           <h1 class="page-title">{item.title}</h1>
           <p class="page-lead">{item.desc}</p>
         </div>
-        <figure class="research-feature-image">
-          <img src={`/images/research/${item.slug}.webp`} alt={`${item.title}研究示意图`} width="600" height="600" />
-        </figure>
+        <DevicePlate slug={item.slug} title={item.title} />
       </header>
       <section class="overview">
         <h2 class="sec-title">研究概述</h2>
@@ -114,13 +113,7 @@ const next = allResearch[currentIdx + 1];
 
 <style>
   .detail-intro {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.94fr);gap:clamp(1rem,4vw,4rem);align-items:center;margin-bottom:3rem}
-  .detail-intro .research-feature-image {margin:0;background:#eff4fb}
-  .detail-intro .research-feature-image img {width:100%;height:auto;aspect-ratio:1;object-fit:contain;mix-blend-mode:multiply;background:transparent}
-  @media(max-width:850px){.detail-intro{grid-template-columns:minmax(0,1fr)}.detail-intro .research-feature-image img{max-height:340px}}
-
-  .research-feature-image{margin:40px 0 50px}
-  .research-feature-image img{width:100%;height:auto;max-height:500px;object-fit:contain;background:var(--bg-surface);filter:none}
-  .research-feature-image figcaption{font:10px var(--font-mono);color:var(--text-3);padding-top:14px;letter-spacing:1px}
+  @media(max-width:850px){.detail-intro{grid-template-columns:minmax(0,1fr)}}
 
   .page-wrap {
     max-width: 1200px;

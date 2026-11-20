@@ -34,7 +34,7 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
   <Nav active="achievements" />
 
   <!-- ── PAGE HEADER ──────────────────────────────────── -->
-  <div class="page-header">
+  <div class="page-header archive-mast">
     <div class="container">
       <a href="/" class="back-link">
         <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -192,6 +192,12 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
 </script>
 
 <style>
+  .page-header.archive-mast {background:#252323;color:#f7f3ea;border:0;padding-bottom:clamp(28px,4vw,68px)}
+  .archive-mast :is(.back-link,.ph-sub,.stat-label,.section-label) {color:#ded0b4}
+  .archive-mast .stat-num {color:#fff;font-weight:500}
+  .archive-mast .stat-item {border-left-color:var(--gold)}
+  .archive-mast .stats-row {border-top:1px solid #786c5d;padding-top:1rem}
+
   /* ── PAGE HEADER ────────────────────────────────────── */
   .page-header {
     padding: clamp(110px, 10vw, 155px) 0 clamp(30px, 4vw, 60px);
@@ -363,7 +369,7 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
   .award-line {
     width: 1px;
     flex: 1;
-    background: linear-gradient(to bottom, rgba(0,87,255,0.15), transparent);
+    background: linear-gradient(to bottom, rgba(150,45,48,0.15), transparent);
     margin-top: 6px;
     min-height: 20px;
   }

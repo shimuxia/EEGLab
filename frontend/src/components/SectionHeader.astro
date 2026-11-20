@@ -6,7 +6,7 @@ interface Props {
 }
 const { title, english, links } = Astro.props;
 ---
-<header class="group-header section-masthead">
+<header class="group-header section-masthead" data-section={english.toLowerCase()}>
   <div>
     <p class="group-kicker" lang="en">{english}</p>
     <h1>{title}</h1>

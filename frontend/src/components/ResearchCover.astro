@@ -1,0 +1,45 @@
+---
+const scenes = [
+  { image: "demo-eeg-monitor", label: "脑电信号采集", english: "EEG recording", alt: "实验人员佩戴脑电帽，在工作站监视器上查看信号", href: "/research/brain-computer-interface" },
+  { image: "demo-glove-training", label: "运动意图解码", english: "Motor imagery", alt: "实验台上的脑电设备、训练界面和受试者", href: "/research/glove" },
+  { image: "award-phm-hangzhou-bestpaper-ceremony", label: "学术交流现场", english: "Academic exchange", alt: "IEEE PHM 会议颁奖现场", href: "/achievements#awards" },
+];
+---
+<div class="edition-cover" data-cover>
+  <div class="cover-images" aria-hidden="true">
+    {scenes.map((s, i) => <img class:list={["cover-photo", { current: i === 0 }]} src={`/images/achievements/${s.image}.webp`} alt="" loading={i === 0 ? "eager" : "lazy"} fetchpriority={i === 0 ? "high" : "low"} />)}
+  </div>
+  <div class="cover-inner">
+    <div class="home-hero-copy">
+      <p class="cover-affiliation">南京信息工程大学 <span>/</span> 自动化学院</p>
+      <h1 id="home-title"><span>严颖</span><span>课题组</span></h1>
+      <p class="cover-en" lang="en">Yan Ying Research Group</p>
+      <p class="cover-lead">以模式识别与机器学习，研究复杂系统的状态与变化。</p>
+      <div class="hero-actions"><a href="#research">探索研究方向 <span aria-hidden="true">↓</span></a><a href="/about">关于课题组 ↗</a></div>
+    </div>
+    <div class="cover-console">
+      <div class="cover-controls" hidden role="group" aria-label="选择科研影像">
+        {scenes.map((s, i) => <button type="button" data-scene={i} aria-label={`查看影像：${s.label}`} aria-pressed={i === 0 ? "true" : "false"}>{String(i+1).padStart(2,"0")}</button>)}
+      </div>
+      <div class="cover-caption" aria-live="polite">
+        {scenes.map((s, i) => <a hidden={i !== 0} href={s.href} aria-label={`${s.alt}，查看${s.label}`}><span lang="en">{s.english}</span><strong>{s.label} ↗</strong></a>)}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const cover = document.querySelector<HTMLElement>("[data-cover]");
+  if (cover) {
+    cover.querySelector<HTMLElement>(".cover-controls")?.removeAttribute("hidden");
+    const buttons = [...cover.querySelectorAll<HTMLButtonElement>("[data-scene]")];
+    const images = [...cover.querySelectorAll<HTMLImageElement>(".cover-photo")];
+    const captions = [...cover.querySelectorAll<HTMLAnchorElement>(".cover-caption a")];
+    buttons.forEach((button, selected) => button.addEventListener("click", () => {
+      buttons.forEach((b, i) => {
+        b.setAttribute("aria-pressed", String(i === selected));
+        images[i].classList.toggle("current", i === selected);
+        captions[i].hidden = i !== selected;
+      });
+    }));
+  }
+</script>

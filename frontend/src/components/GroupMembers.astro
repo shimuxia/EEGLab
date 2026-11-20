@@ -3,7 +3,13 @@ import { members, studentGroups } from "../data/group";
 const { compact = false } = Astro.props;
 ---
 
-<h3>研究生与校友</h3>
+<div data-member-directory>
+  {!compact && <div class="member-switch" hidden aria-label="筛选课题组成员">
+    <button type="button" data-show="all" aria-pressed="true">全部</button>
+    <button type="button" data-show="graduates" aria-pressed="false">研究生与校友</button>
+    <button type="button" data-show="projects" aria-pressed="false">本科项目成员与校友</button>
+  </div>}
+  <section data-member-group="graduates"><h3>研究生与校友</h3>
 <div class="group-grid group-people">
   {members.map((m) => (
     <article class="group-card">
@@ -21,10 +27,10 @@ const { compact = false } = Astro.props;
       {m.note && <p>{m.note}</p>}
     </article>
   ))}
-</div>
+</div></section>
 {!compact &&
   studentGroups.map((g) => (
-    <section class="group-subsection">
+    <section class="group-subsection" data-member-group="projects">
       <h3>{g.dir} · 本科生 / 项目参与与校友</h3>
       <div class="group-grid group-people">
         {g.students.map((m) => (
@@ -46,3 +52,23 @@ const { compact = false } = Astro.props;
       </div>
     </section>
   ))}
+
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>("[data-member-directory]").forEach(directory => {
+    const controls = directory.querySelector<HTMLElement>(".member-switch");
+    if (!controls) return;
+    controls.hidden = false;
+    const buttons = [...controls.querySelectorAll("button")];
+    const groups = [...directory.querySelectorAll<HTMLElement>("[data-member-group]")];
+    buttons.forEach(button => button.addEventListener("click", () => {
+      buttons.forEach(b => b.setAttribute("aria-pressed", String(b === button)));
+      for (const group of groups) {
+        group.hidden = button.dataset.show !== "all" && group.dataset.memberGroup !== button.dataset.show;
+        if (!group.hidden && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          group.animate([{opacity:.35, transform:"translateX(-12px)"}, {opacity:1, transform:"none"}], {duration:320,easing:"ease-out"});
+        }
+      }
+    }));
+  });
+</script>

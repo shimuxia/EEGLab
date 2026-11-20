@@ -51,10 +51,21 @@ const galleryTags = Array.from(new Set(items.map(i => i.tag)));
       chip.classList.add('active');
 
       let any = false;
+      let position = 0;
       items.forEach(item => {
         const show = tag === '全部' || item.getAttribute('data-tag') === tag;
         item.style.display = show ? '' : 'none';
-        if (show) any = true;
+        if (show) {
+          any = true;
+          if (position < 9 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            item.getAnimations().forEach(animation => animation.cancel());
+            item.animate(
+              [{ opacity: 0.45, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }],
+              { duration: 330, delay: position * 24, easing: "ease-out", fill: "backwards" }
+            );
+          }
+          position++;
+        }
       });
       noResults.style.display = any ? 'none' : '';
     });
