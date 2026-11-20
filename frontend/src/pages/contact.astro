@@ -1,17 +1,16 @@
 ---
+import SectionHeader from "../components/SectionHeader.astro";
 import GroupLayout from "../layouts/GroupLayout.astro";
 import { advisor } from "../data/group";
 ---
 
 <GroupLayout title="联系与交流">
-  <header class="group-header">
-    <p class="group-kicker">CONTACT</p>
-    <h1>联系与交流</h1>
-    <p>欢迎围绕课题研究、招生及产学研合作与我们交流。</p>
-  </header>
-  <section class="group-section">
+  <SectionHeader title="联系与交流" english="CONTACT" links={[{"href": "#contact-details", "label": "联系方式"}, {"href": "/join", "label": "招生信息"}]}>
+    欢迎围绕课题研究、招生及产学研合作与我们交流。
+  </SectionHeader>
+  <section class="group-section" id="contact-details">
     <div class="group-grid">
-      <article class="group-card">
+      <article class="group-card contact-mail">
         <h2>电子邮箱</h2>
         <a href={`mailto:${advisor.email}`}>{advisor.email}</a>
       </article>

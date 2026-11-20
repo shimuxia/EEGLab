@@ -54,6 +54,8 @@ function paper(value: unknown): boolean {
     optionalText(value.doi) &&
     optionalText(value.quartile) &&
     optionalNumber(value.impactFactor) &&
+    (value.citationSources == null || (record(value.citationSources) &&
+      optionalNumber(value.citationSources.openalex) && optionalNumber(value.citationSources.googleScholar))) &&
     typeof value.representative === "boolean" &&
     typeof value.isTop === "boolean" &&
     typeof value.lead === "boolean" &&
@@ -98,4 +100,30 @@ export function parsePublicationsResponse(
         count(value.typeCounts.conference)));
   if (!valid) throw new Error("论文数据格式暂时不可用");
   return value as unknown as PublicationsResponse;
+}
+
+/** Client-side filters operate on a complete catalog from one immutable snapshot. */
+export async function completeCatalog(
+  first: PublicationsResponse,
+  loadPage: (offset: number) => Promise<PublicationsResponse>,
+): Promise<PublicationsResponse> {
+  const papers = [...first.papers];
+  const ids = new Set(papers.map(paper => paper.id));
+  if (ids.size !== papers.length || first.offset !== 0 || papers.length > first.total) {
+    throw new Error("论文分页数据不一致");
+  }
+  while (papers.length < first.total) {
+    if (!papers.length || !first.limit) throw new Error("论文分页未前进");
+    const page = await loadPage(papers.length);
+    if (page.version !== first.version || page.total !== first.total || page.offset !== papers.length ||
+        !page.papers.length || papers.length + page.papers.length > first.total) {
+      throw new Error("论文目录已变化，请重试");
+    }
+    for (const paper of page.papers) {
+      if (ids.has(paper.id)) throw new Error("论文分页存在重复记录");
+      ids.add(paper.id);
+      papers.push(paper);
+    }
+  }
+  return { ...first, papers };
 }

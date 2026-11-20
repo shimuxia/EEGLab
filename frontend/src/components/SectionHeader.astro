@@ -1,0 +1,18 @@
+---
+interface Props {
+  title: string;
+  english: string;
+  links: { href: string; label: string }[];
+}
+const { title, english, links } = Astro.props;
+---
+<header class="group-header section-masthead">
+  <div>
+    <p class="group-kicker" lang="en">{english}</p>
+    <h1>{title}</h1>
+    <p class="masthead-lead"><slot /></p>
+  </div>
+  <nav class="chapter-links" aria-label="本页目录">
+    {links.map(link => <a href={link.href}>{link.label}</a>)}
+  </nav>
+</header>

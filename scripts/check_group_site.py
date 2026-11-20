@@ -9,8 +9,8 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / 'frontend/dist'
-OUT = ROOT / 'output'
-BASE = 'http://127.0.0.1:4327'
+OUT = Path(os.getenv('QA_OUTPUT_DIR', ROOT / 'output'))
+BASE = 'http://127.0.0.1:' + str(int(os.getenv('QA_PREVIEW_PORT', '4327')))
 ROUTES = ['/', '/about', '/research', '/team', '/achievements', '/join', '/contact',
           '/research/brain-computer-interface',
           *['/research/'+s for s in ['diagnosis','arm','drone','hand','glove']]]

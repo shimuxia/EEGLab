@@ -1,12 +1,12 @@
 /* ── DESIGN TOKENS ─────────────────────────────────── */
 :root {
-  --bg: #101310;
-  --bg-surface: #191d19;
-  --bg-elevated: #222822;
+  --bg: #101b18;
+  --bg-surface: #172823;
+  --bg-elevated: #233730;
   --bg-dark: #0c0f0d;
   --text: #eceee7;
   --text-2: #b5bcb1;
-  --text-3: #899385;
+  --text-3: #a6b5ac;
   --text-inv: #f2f2e9;
   --success: #89c89d;
   --accent: #d3bc8d;
@@ -17,6 +17,7 @@
   --font-sans:
     "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei",
     "Noto Sans CJK SC", "WenQuanYi Zen Hei", sans-serif;
+  --font-display: "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 

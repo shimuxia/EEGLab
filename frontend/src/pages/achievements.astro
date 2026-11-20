@@ -1,6 +1,7 @@
 ---
 import '../styles/group.css';
 import GroupHonors from '../components/GroupHonors.astro';
+import { representativePapers } from '../data/group';
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -48,11 +49,11 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
         <div class="stats-row">
           <div class="stat-item">
             <div class="stat-num"><PublicationCount client:load /></div>
-            <div class="stat-label">论文总数</div>
+            <div class="stat-label">当前目录论文</div>
           </div>
           <div class="stat-item">
-            <div class="stat-num">16</div>
-            <div class="stat-label">授权专利</div>
+            <div class="stat-num">{galleryGrid.length}</div>
+            <div class="stat-label">成果图录</div>
           </div>
           <div class="stat-item">
             <div class="stat-num">{awards.length}</div>
@@ -64,7 +65,7 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
   </div>
 
   <!-- ── BODY ────────────────────────────────────────── -->
-  <section class="group-section achievements-honors"><div><p class="group-kicker">ACADEMIC RECOGNITION</p><h2>导师学术荣誉</h2></div><GroupHonors /></section>
+
   <div class="ach-body">
 
     <!-- Sidebar -->
@@ -104,6 +105,12 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
           <h2 class="section-heading">期刊与会议论文</h2>
         </div>
         <PublicationsExplorer client:load />
+        <noscript>
+          <h3>课题组选登的代表论文</h3>
+          <p>浏览实时目录和使用筛选需要启用 JavaScript。</p>
+          <ul class="static-selection">{representativePapers.map(p => <li><small>{p.year} · {p.venue}</small><a href={p.link}>{p.title}</a></li>)}</ul>
+          <style is:inline>.publication-loading {display:none}</style>
+        </noscript>
       </section>
 
       <!-- Awards -->
@@ -111,6 +118,7 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
         <div class="section-header">
           <h2 class="section-heading">荣誉奖项</h2>
         </div>
+        <div class="mentor-honors"><h3>导师学术荣誉</h3><GroupHonors /></div>
         <div class="award-timeline">
           {awards.map((award, i) => (
             <div class="award-row">

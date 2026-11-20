@@ -1,21 +1,18 @@
 ---
+import SectionHeader from "../components/SectionHeader.astro";
 import GroupLayout from "../layouts/GroupLayout.astro";
 import Advisor from "../components/Advisor.astro";
 import GroupHonors from "../components/GroupHonors.astro";
 ---
 
 <GroupLayout title="关于我们">
-  <header class="group-header">
-    <p class="group-kicker">ABOUT THE GROUP</p>
-    <h1>关于严颖课题组</h1>
-    <p>
-      以模式识别与机器学习为方法基础，连接复杂系统故障诊断、时序预测、脑机接口与工程实践。
-    </p>
-  </header>
-  <section class="group-section people-surface">
+  <SectionHeader title="关于严颖课题组" english="ABOUT THE GROUP" links={[{"href": "#advisor", "label": "导师介绍"}, {"href": "#honors", "label": "学术荣誉"}]}>
+    以模式识别与机器学习为方法基础，连接复杂系统故障诊断、时序预测、脑机接口与工程实践。
+  </SectionHeader>
+  <section class="group-section people-surface" id="advisor">
     <Advisor />
   </section>
-  <section class="group-section">
+  <section class="group-section" id="honors">
     <h2>学术荣誉</h2>
     <GroupHonors />
   </section>

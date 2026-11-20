@@ -1,23 +1,23 @@
 ---
+import SectionHeader from "../../components/SectionHeader.astro";
 import GroupLayout from "../../layouts/GroupLayout.astro";
 import GroupResearch from "../../components/GroupResearch.astro";
 import { research } from "../../data/research";
 ---
 
 <GroupLayout title="研究方向">
-  <header class="group-header">
-    <p class="group-kicker">RESEARCH</p>
-    <h1>研究方向</h1>
-    <p>从复杂系统诊断到脑机交互，以可解释方法、时序建模与优化连接真实场景。</p>
-  </header>
-  <section class="group-section">
+  <SectionHeader title="研究方向" english="RESEARCH" links={[{"href": "#fields", "label": "七个研究方向"}, {"href": "#lab-topics", "label": "脑机实验室专题"}]}>
+    从复杂系统诊断到脑机交互，以可解释方法、时序建模与优化连接真实场景。
+  </SectionHeader>
+  <section class="group-section" id="fields">
     <GroupResearch />
   </section>
-  <section class="group-section">
+  <section class="group-section" id="lab-topics">
     <h2>脑机实验室研究专题</h2>
     <div class="group-grid">
       {research.map((r) => (
         <article class="group-card">
+          <img class="topic-photo" src={`/images/research/${r.slug}.webp`} alt={r.title} loading="lazy" width="600" height="360" />
           <h3>{r.title}</h3>
           <p>{r.desc}</p>
           <a href={`/research/${r.slug}`}>研究详情 →</a>

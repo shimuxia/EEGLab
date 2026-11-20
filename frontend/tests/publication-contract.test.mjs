@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parsePublicationsResponse } from '../src/lib/publication-contract.ts';
+import { completeCatalog, parsePublicationsResponse } from '../src/lib/publication-contract.ts';
 
 const fixture = () => ({
   version: 'synthetic', updatedAt: '', total: 1, offset: 0, limit: 500,
@@ -15,6 +15,7 @@ test('valid API and text containing markup remain data', () => {
   assert.deepEqual(parsePublicationsResponse(value), value);
 });
 for (const [name, mutate] of [
+  ['invalid citation count', d => d.papers[0].citationSources = {openalex:{}}],
   ['null researcher', d => d.researchers = [null]],
   ['null paper researcher', d => d.papers[0].researchers = [null]],
   ['object tag', d => d.papers[0].tags = [{}]],
@@ -36,4 +37,18 @@ for (const [name, mutate] of [
 test('empty valid catalog renders normally', () => {
   const value=fixture(); value.total=0; value.papers=[]; value.researchers=[];
   assert.equal(parsePublicationsResponse(value).total, 0);
+});
+
+test('complete filters include later pages of the same version', async () => {
+  const first = { ...fixture(), total: 2, limit: 1 };
+  const result = await completeCatalog(first, async offset => ({
+    ...first, offset, papers: [{ ...first.papers[0], id: 'second' }],
+  }));
+  assert.deepEqual(result.papers.map(p => p.id), ['test', 'second']);
+});
+test('a changed snapshot, stalled page, or duplicate identity invalidates the catalog', async () => {
+  const first = { ...fixture(), total: 2, limit: 1 };
+  for (const changes of [{version:'changed'}, {papers:[]}, {}]) {
+    await assert.rejects(completeCatalog(first, async offset => ({...first, offset, ...changes})));
+  }
 });

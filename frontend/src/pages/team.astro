@@ -1,27 +1,33 @@
 ---
+import SectionHeader from "../components/SectionHeader.astro";
 import GroupLayout from "../layouts/GroupLayout.astro";
-import Advisor from "../components/Advisor.astro";
 import GroupMembers from "../components/GroupMembers.astro";
-import { labTeam } from "../data/group";
+import { advisor, labTeam } from "../data/group";
 ---
 
 <GroupLayout title="团队成员">
-  <header class="group-header">
-    <p class="group-kicker">PEOPLE</p>
-    <h1>团队成员</h1>
-    <p>课题组成员与脑机实验室协作团队，共同连接学术研究与工程实践。</p>
-  </header>
-  <section class="group-section people-surface">
-    <Advisor />
+  <SectionHeader title="团队成员" english="PEOPLE" links={[{"href": "#advisor", "label": "导师"}, {"href": "#members", "label": "课题组成员"}, {"href": "#lab-team", "label": "实验室协作团队"}]}>
+    课题组成员与脑机实验室协作团队，共同连接学术研究与工程实践。
+  </SectionHeader>
+  <section class="group-section people-surface" id="advisor">
+    <div class="team-lead">
+      <img src={advisor.photo} alt="严颖老师肖像" width="140" height="172" />
+      <div>
+        <p class="group-kicker">课题组导师</p>
+        <h2>{advisor.name} <small lang="en">{advisor.nameEn}</small></h2>
+        <p>{advisor.affiliation} · {advisor.role}</p>
+        <a href="/about#advisor">导师介绍与学术经历</a>
+      </div>
+    </div>
   </section>
-  <section class="group-section people-surface">
+  <section class="group-section people-surface" id="members">
     <h2>课题组成员</h2>
     <GroupMembers />
   </section>
   <section class="group-section people-surface" id="lab-team">
     <h2>脑机实验室协作团队</h2>
     <p>
-      以下保留实验室网站中的协作身份；临床伙伴和学术顾问不归类为课题组学生。
+      金牛湖脑机实验室的研究与临床伙伴、学术顾问及学生成员。
     </p>
     <div class="group-grid group-subsection">
       {labTeam.coreTeam.slice(1).map((m) => (

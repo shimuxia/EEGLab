@@ -1,4 +1,4 @@
-import { parsePublicationsResponse } from "./publication-contract";
+import { completeCatalog, parsePublicationsResponse } from "./publication-contract";
 
 export interface Researcher {
   id: number;
@@ -84,13 +84,18 @@ export interface PublicationsResponse {
   papers: Publication[];
 }
 
+const catalogListeners = new Set<(data: PublicationsResponse) => void>();
+
+export function onCatalogLoaded(listener: (data: PublicationsResponse) => void): () => void {
+  catalogListeners.add(listener);
+  return () => { catalogListeners.delete(listener); };
+}
+
 const responseCache = new Map<string, Promise<PublicationsResponse>>();
 
 function apiBase(): string {
-  return (import.meta.env.PUBLIC_PAPERS_API_URL || "/api/group").replace(
-    /\/$/,
-    "",
-  );
+  const base = (import.meta.env.PUBLIC_PAPERS_API_URL || "/api/group").replace(/\/+$/, "");
+  return base.endsWith("/group") ? base : `${base}/group`;
 }
 
 export function publicationsUrl(params?: URLSearchParams): string {
@@ -106,18 +111,28 @@ export function fetchPublications(
   if (options.refresh) responseCache.delete(url);
   let pending = responseCache.get(url);
   if (!pending) {
-    pending = fetch(url, {
-      signal: AbortSignal.timeout(8000),
-      headers: { Accept: "application/json" },
+    const signal = AbortSignal.timeout(8000);
+    const read = async (target: string) => {
+      const response = await fetch(target, { signal, headers: { Accept: "application/json" } });
+      if (!response.ok) throw new Error("论文服务暂时不可用，请稍后重试");
+      return parsePublicationsResponse(await response.json());
+    };
+    pending = read(url).then(first => {
+      if (params?.has("limit") || params?.has("offset")) return first;
+      return completeCatalog(first, offset => {
+        const next = new URLSearchParams(params);
+        next.set("offset", String(offset));
+        next.set("limit", String(first.limit));
+        return read(publicationsUrl(next));
+      });
+    }).then(data => {
+      if (!params?.size && responseCache.get(url) === pending) {
+        catalogListeners.forEach(listener => listener(data));
+      }
+      return data;
     })
-      .then(async (response) => {
-        if (!response.ok) {
-          throw new Error("论文服务暂时不可用，请稍后重试");
-        }
-        return parsePublicationsResponse(await response.json());
-      })
       .catch((error) => {
-        responseCache.delete(url);
+        if (responseCache.get(url) === pending) responseCache.delete(url);
         throw error;
       });
     responseCache.set(url, pending);

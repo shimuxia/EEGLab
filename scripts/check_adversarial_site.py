@@ -9,8 +9,8 @@ from playwright.sync_api import sync_playwright, expect
 from check_group_site import BASE, ROUTES
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'output'
-AXE = Path(os.getenv('AXE_PATH', OUT / 'accessibility/node_modules/axe-core/axe.min.js'))
+OUT = Path(os.getenv('QA_OUTPUT_DIR', ROOT / 'output'))
+AXE = Path(os.getenv('AXE_PATH', ROOT / 'output/accessibility/node_modules/axe-core/axe.min.js'))
 PAYLOAD = {
     'version':'synthetic', 'updatedAt':'', 'total':1, 'offset':0, 'limit':500,
     'filterTags':['EEG'], 'fields':['EEG'], 'years':[2026],
@@ -72,6 +72,22 @@ def run():
                         assert box['x']+box['width']<=width+1, 'Enlarged primary action is clipped'
         context.close()
 
+        for width in (360, 1440):
+            context=browser.new_context(viewport={'width':width,'height':900})
+            payload=copy.deepcopy(PAYLOAD)
+            payload['papers'][0]['title']='跨语言 '+('UnbrokenResearchTitle'*27)+' 脑电 / テスト'
+            context.route('**/*',lambda r:r.continue_() if r.request.url.startswith(BASE+'/') else r.abort())
+            context.route('**/api/group/papers*',lambda r:r.fulfill(json=payload))
+            page=context.new_page()
+            page.goto(BASE+'/achievements#papers',wait_until='networkidle')
+            row=page.locator('.pr-title').first
+            expect(row).to_be_visible()
+            box=row.bounding_box()
+            results.append({'case':'long mixed-language title','width':width,
+                            'overflow':box['x']+box['width']>width+1 or
+                                       row.evaluate('e=>e.scrollWidth>e.clientWidth+1')})
+            context.close()
+
         for variant in ('null researcher','null paper researcher','unsafe link','object tag','invalid JSON','markup'):
             context=browser.new_context(reduced_motion='reduce')
             context.route('**/*',lambda route:route.continue_() if route.request.url.startswith(BASE) else route.abort())
@@ -129,6 +145,7 @@ def run():
         phase['ok']=True
         page.get_by_role('button',name='重新加载').click()
         expect(page.get_by_text('合成边界测试',exact=True)).to_be_visible()
+        expect(page.locator('.stats-row .stat-num').first).to_have_text('1')
         results.append({'case':'API recovery retry replaces fallback with real response','status':'PASS'})
         context.close()
 

@@ -20,7 +20,12 @@ export default function PublicationsExplorer() {
   const load = (refresh = false) => {
     setError('');
     fetchPublications(undefined, { refresh })
-      .then(setData)
+      .then(result => {
+        setData(result);
+        if (result.papers.length && !result.papers.some(paper => paper.representative)) {
+          setActiveFilter('全部');
+        }
+      })
       .catch(reason => setError(reason instanceof Error ? reason.message : '论文服务暂时不可用'));
   };
 
@@ -48,7 +53,7 @@ export default function PublicationsExplorer() {
       <div className="publication-error" role="alert">
         <strong>暂时无法连接论文服务</strong>
         <p>已保留静态代表论文，完整目录可稍后重试。</p>
-        <ul>{representativePapers.map(p => <li key={p.title}><a href={p.link} target="_blank" rel="noopener noreferrer">{p.title}</a> · {p.venue}</li>)}</ul>
+        <StaticSelection />
         <button onClick={() => load(true)}>重新加载</button>
         <style>{errorStyles}</style>
       </div>
@@ -66,6 +71,8 @@ export default function PublicationsExplorer() {
 
   return (
     <div className="publications-explorer">
+      {import.meta.env.PUBLIC_LOCAL_PREVIEW === 'true' && <p className="local-catalog-note">本地预览 · 当前目录使用随仓数据，完整论文库待接入。</p>}
+      {data.total === 0 && <section className="catalog-empty"><h3>课题组选登的代表论文</h3><p>当前目录暂无已核验条目。以下选自课题组公开介绍。</p><StaticSelection /></section>}
       <div className="researcher-switcher" aria-label="按研究者筛选">
         <button
           className={activeResearcher === 'all' ? 'active' : ''}
@@ -138,6 +145,15 @@ export default function PublicationsExplorer() {
   );
 }
 
+function StaticSelection() {
+  return <ul className="static-selection">{representativePapers.map(paper => (
+    <li key={paper.title}>
+      <small>{paper.year} · {paper.venue}</small>
+      <a href={paper.link} target="_blank" rel="noopener noreferrer">{paper.title}</a>
+    </li>
+  ))}</ul>;
+}
+
 function PaperRow({ paper }: { paper: Publication }) {
   return (
     <article className="paper-row">
@@ -197,5 +213,7 @@ const explorerStyles = `
   .publication-meta{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:28px;color:var(--text-3);font:10px 'SF Mono',monospace}.publication-meta a{margin-left:auto;color:var(--accent)}.paper-list{display:flex;flex-direction:column}.year-divider{display:flex;align-items:center;gap:16px;padding:24px 16px 10px;font-size:11px;letter-spacing:3px;color:var(--text-3);font-family:'SF Mono',monospace}.year-divider:after{content:'';flex:1;height:1px;background:var(--border)}
   .paper-row{display:grid;grid-template-columns:44px 1fr auto;gap:20px;align-items:start;padding:20px 16px;border-radius:8px;transition:background .15s}.paper-row:hover{background:var(--bg-elevated)}.pr-num{font:11px 'SF Mono',monospace;color:var(--text-3);padding-top:3px}.pr-title{display:block;font-size:15px;font-weight:550;line-height:1.55;margin-bottom:6px;color:var(--text)}.pr-title:hover{color:var(--accent)}.pr-authors{font-size:12px;color:var(--text-3);line-height:1.6}.paper-researchers{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0 9px}.paper-researchers span{font-size:10px;padding:2px 7px;border-radius:999px;background:var(--accent-dim);color:var(--accent)}.pr-tags{display:flex;flex-wrap:wrap;gap:5px}.pr-tag{font:10px 'SF Mono',monospace;padding:2px 7px;border-radius:4px}.pr-tag.venue{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-dim)}.pr-tag.if,.pr-tag.rank{background:var(--bg-elevated);color:var(--text-2)}.pr-tag.if.gold{background:rgba(196,143,25,.09);color:var(--accent)}.pr-tag.if.blue{background:var(--accent-dim);color:var(--accent)}.pr-tag.rank.top{background:rgba(40,180,100,.08);color:var(--success)}.pr-tag.topic{color:var(--text-3);border:1px solid var(--border)}.pr-year{font:11px 'SF Mono',monospace;color:var(--accent);padding-top:3px}.no-results{text-align:center;color:var(--text-3);font-size:13px;padding:50px 16px}
   .pr-tag.source{color:var(--text-2);background:var(--bg-elevated)}.pr-tag.source.confirmed{color:var(--success);background:rgba(40,180,100,.08)}.pr-tag.citation{color:var(--accent);background:rgba(196,143,25,.08)}
+  .pr-body{min-width:0;overflow-wrap:anywhere}
+  .pr-tags,.pr-tags>span,.paper-researchers>span{min-width:0;max-width:100%;overflow-wrap:anywhere}
   @media(max-width:760px){.publication-toolbar{display:grid}.paper-search{min-width:0}.publication-meta a{margin-left:0}.paper-row{grid-template-columns:1fr;gap:8px}.pr-num,.pr-year{display:none}}
 `;
