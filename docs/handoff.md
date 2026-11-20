@@ -1,5 +1,6 @@
-# 统一官网本地分支交接增量
-本次本地实现见 ../CLAUDE_HANDOFF.md、../FINAL_INTEGRATION_REPORT.md。下文生产信息是历史原站记录，本轮未部署或线上验证。只允许功能分支；不得按下文历史操作自行发布。
+# 当前本地交接
+
+2026-11-19 的统一站使用 [Windows 交接](../CLAUDE_HANDOFF.md) 和 [视觉说明](../CLAUDE_CODE_VISUAL_BRIEF.md)。当前成品在本机回环地址预览。下方原站记录保留用于溯源，涉及生产操作须另行授权。
 
 # 项目接管说明
 

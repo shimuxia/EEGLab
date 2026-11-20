@@ -1,7 +1,8 @@
-# 统一网站前端增量（2026-11-15）
-当前13页：/、/about、/research、/team、/achievements、/join、/contact、/research/brain-computer-interface 和五个既有研究详情。
-默认论文端点 /api/group/papers；已有本地配置若写 /api 请改为 /api/group，避免绕过课题组安全策略。统计默认关闭；PUBLIC_ENABLE_ANALYTICS=true 才启用原统计代码。
-首页、导师、七方向、成员、招生采用 data/group.ts；实验室详情/奖项/图库继续使用原数据。原首页视频位于脑机接口总览。旧开发说明保留在下方，当前运行命令以 CLAUDE_HANDOFF.md 为准。
+# 统一官网前端
+
+当前首页采用课题组题头、真实实验视频与导师团队入口。七方向、成员、招生及静态代表论文沿用 src/data/group.ts 等现有数据。脑机接口总览链接五个实验专题。成果页优先展示论文，可用章节导航切换奖项与图录。
+
+默认读取 /api/group/papers。基础地址 /api 会规范为 /api/group。刷新、分页校验、空目录及断线回退位于 src/lib/publications.ts 和论文组件。故障时展示三篇已有代表作，状态与远端总数分开呈现。样式和本机验证见 [视觉交接](../CLAUDE_CODE_VISUAL_BRIEF.md)。以下为历史运行记录。
 
 # 网站前端
 

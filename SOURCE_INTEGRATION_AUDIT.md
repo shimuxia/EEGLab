@@ -38,3 +38,7 @@ EEGLab AGENTS、README、docs/handoff、publications-platform、tencent-makers�
 
 ## 2026-11-16 前端精华融合增量
 从原官网公开页面js/script.js的RESEARCH_VISUALS选择性迁移7套手绘科研SVG至research-visuals.json；未复制私有业务代码。复用实验室现有视频、真实现场/设备/获奖影像、五方向图片与顾问肖像。共享内容与后端审核逻辑不变。
+
+## 2026-11-19 本地复核
+
+两条历史误收规则按原官网记录核对，统一站在研究者范围内应用。原工程的十项排除回归独立复跑。预览仅将同一研究者已有的接受决定与种子 DOI 精确配对；两条公开记录仅描述本次临时数据库。学术内容、人物照片、影像与设备图均沿用已有材料。原始文件、许可证与署名可对照本轮基点 ef4720e 和 ASSET_SOURCE_MAP.md。正式公开前仍需确认人物现状及图片授权。

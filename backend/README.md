@@ -1,8 +1,8 @@
-# 统一课题组只读适配（2026-11-15）
-新增 GET /api/group/papers，参数沿用原 /api/papers。对 ying-yan 仅公开 confirmed 关联，独立代码基线保护两篇已确认误收论文；exclude 优先，研究者级过滤发生在搜索/统计/分页之前。其他研究者按自身规则保留。原API、种子、同步任务、COS/SCF配置均未迁移。
-group_policy.validate_recovery_rules 仅供备份副本预检：缺少两条完整排除规则或有accept冲突时拒绝；它不自动修复数据库，也未接管生产恢复启动流程。
-测试使用临时数据库、mock上游和内存COS。本分支没有访问真实生产COS。
-正式恢复/迁移仍须完整备份和人工审核；不能直接把现有种子视为迁移完成。
+# 统一官网后端
+
+/api/group/papers 先按研究者范围检查归属与排除，再筛选、计数、分页。/api/papers 保留原目录来源策略。HTTP 适配器共用参数验证；服务状态公开摘要，管理操作需要有效鉴权。同步发布校验起始版本，失败保留完整快照，重复初始化保留人工决定。
+
+已有独立备份副本可在 WSL 仓库根运行 `PYTHONPATH=backend .venv/bin/python scripts/check_publication_recovery.py /path/to/standalone-backup.db`。此工具只读检查数据库完整性、外键和研究者排除规则。生产数据验收需要另行授权取得备份。以下是原架构与运维背景。
 
 # 论文同步与访问统计后端
 
