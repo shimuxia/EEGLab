@@ -1,6 +1,7 @@
 ---
 import { directions } from "../data/group";
 import ResearchArtwork from "./ResearchArtwork.astro";
+import { researchTaglines } from "../data/source-extras";
 ---
 
 <div class="research-workbench" data-research-workbench>
@@ -41,6 +42,7 @@ import ResearchArtwork from "./ResearchArtwork.astro";
         </div>
         <ResearchArtwork index={i} />
         <div class="research-panel-copy">
+          <p class="panel-tagline">{researchTaglines[i]}</p>
           <h3>{r.title}</h3>
           <p>{r.desc}</p>
           <ul class="tag-list research-panel-tags">

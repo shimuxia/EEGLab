@@ -1,5 +1,6 @@
 ---
 import { advisor } from "../data/group";
+import { advisorBioMore, advisorFacts, advisorFigures } from "../data/source-extras";
 ---
 
 <div class="group-advisor">
@@ -13,8 +14,23 @@ import { advisor } from "../data/group";
     <p class="kicker">课题组负责人</p>
     <h2>{advisor.name} <span class="en" lang="en">{advisor.nameEn}</span></h2>
     <p class="advisor-role">{advisor.affiliation} · {advisor.role}</p>
-    <p class="advisor-bio">{advisor.biography}</p>
+    <p class="advisor-bio">严颖，{advisor.biography}</p>
+    {advisorBioMore.map((para) => <p class="advisor-bio-more">{para}</p>)}
+    <dl class="figures advisor-figures">
+      {advisorFigures.map((f) => (
+        <div>
+          <dt>{f.label}</dt>
+          <dd class="tnum"><span data-count={f.value}>{f.value}</span>{f.suffix}</dd>
+        </div>
+      ))}
+    </dl>
     <dl class="advisor-facts">
+      {advisorFacts.map((f) => (
+        <div>
+          <dt>{f.label}</dt>
+          <dd>{f.value}</dd>
+        </div>
+      ))}
       <div>
         <dt>研究兴趣</dt>
         <dd>

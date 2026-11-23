@@ -91,6 +91,10 @@
 | `award-jiangsu-energy-3rd.webp` | 2025年第五届江苏省大学生节能减排社会实践与科技竞赛 **三等奖**——NeuroSync Home：智能热舒适优化脑电驱动节能系统设计，指导老师：严颖、蔡骏，2025年5月 |
 | `award-tiaozhanbei-anhui-2nd.webp` | 第十一届"挑战杯·华安证券"安徽省大学生课外学术科技作品竞赛 **二等奖**——脑电图灵：智能临床脑科疾病辅助诊断决策系统，指导老师：严颖、咸鹏、Adrian David Cheok，2025年6月 |
 
+## 首页图片墙缩略图
+
+`wall/` 目录下的 30 张图是 `gallery.toml` 中 `waterfall_a`、`waterfall_b` 的同名派生图（高 400 px，WebP 质量 80），只给首页滚动图片墙使用，原图仍用于成果图录。原图合计约 6.9 MB，派生图合计约 0.56 MB。更换原图时，在仓库根目录运行 `python scripts/make_wall_thumbs.py` 重新生成（需要 Pillow）。
+
 ## 视频
 
 | 文件名 | 位置 | 内容 |

@@ -4,21 +4,25 @@ import GroupLayout from "../../layouts/GroupLayout.astro";
 import GroupResearch from "../../components/GroupResearch.astro";
 import { directions } from "../../data/group";
 import { research } from "../../data/research";
+import { researchIntro } from "../../data/source-extras";
 ---
 
 <GroupLayout title="研究方向">
   <SectionHeader title="研究方向" english="Research" links={[{ href: "#fields", label: "七个研究方向" }, { href: "#lab-topics", label: "脑机实验室专题" }]}>
-    从复杂系统诊断到脑机交互，以可解释方法、时序建模与优化连接真实场景。
+    {researchIntro.desc}
   </SectionHeader>
   <section class="group-section" id="fields" aria-labelledby="fields-title">
-    <h2 class="sr-only" id="fields-title">七个研究方向</h2>
+    <h2 class="sr-only" id="fields-title">{researchIntro.title}</h2>
     <div class="wrap field-atlas">
       <nav class="atlas-list" aria-label="研究章节">
         {directions.map((d) => (
           <a href={`#${d.id}`}><small class="tnum">{d.no}</small>{d.title}</a>
         ))}
       </nav>
-      <GroupResearch />
+      <div>
+        <GroupResearch />
+        <p class="research-note">{researchIntro.note}</p>
+      </div>
     </div>
   </section>
   <section class="group-section surface" id="lab-topics" aria-labelledby="lab-topics-title">
@@ -40,6 +44,7 @@ import { research } from "../../data/research";
               <span class="topic-copy">
                 <span class="tnum topic-no">{r.num}</span>
                 <h3>{r.title}</h3>
+                <p class="topic-sub">{r.subtitle}</p>
                 <p>{r.desc}</p>
                 <span class="topic-more">研究详情 <span aria-hidden="true">→</span></span>
               </span>

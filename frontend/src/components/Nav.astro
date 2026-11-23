@@ -91,14 +91,14 @@ const links = [
     position: fixed;
     inset: 0 0 auto;
     z-index: 100;
-    background: rgb(255 255 255 / 0.94);
+    background: rgb(242 243 239 / 0.96);
     border-bottom: 1px solid transparent;
     transition: border-color var(--dur) var(--ease-std);
     view-transition-name: site-nav;
   }
   @supports (backdrop-filter: blur(1px)) {
     #navbar {
-      background: rgb(255 255 255 / 0.86);
+      background: rgb(242 243 239 / 0.86);
       backdrop-filter: saturate(1.4) blur(14px);
     }
   }
@@ -233,7 +233,7 @@ const links = [
       height: calc(100dvh - var(--nav-h));
       overflow-y: auto;
       overscroll-behavior: contain;
-      background: #fff;
+      background: var(--canvas);
       padding: 12px var(--gutter) 40px;
       gap: 0;
       align-items: stretch;

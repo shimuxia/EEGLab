@@ -2,6 +2,8 @@
 import SectionHeader from "../../components/SectionHeader.astro";
 import GroupLayout from "../../layouts/GroupLayout.astro";
 import { research } from "../../data/research";
+import { labSlogan, labFigures } from "../../data/source-extras";
+import PublicationCount from "../../components/PublicationCount";
 ---
 
 <GroupLayout title="脑机接口 · 金牛湖脑机实验室">
@@ -14,7 +16,25 @@ import { research } from "../../data/research";
     金牛湖脑机实验室是严颖课题组的脑机接口研究与实验平台，连接脑电信号分析、运动意图解码与智能控制。
   </SectionHeader>
 
-  <section class="lab-film on-dark" id="lab-film" aria-labelledby="lab-film-title">
+  <section class="lab-statement" aria-label="实验室理念">
+    <div class="wrap lab-statement-grid">
+      <p class="lab-statement-line"><strong>{labSlogan.line.split("，")[0]}，<br />{labSlogan.line.split("，")[1]}</strong><span lang="en">{labSlogan.en}</span></p>
+      <dl class="figures">
+        <div>
+          <dt>期刊论文</dt>
+          <dd class="tnum"><PublicationCount type="journal" client:load /></dd>
+        </div>
+        {labFigures.map((f) => (
+          <div>
+            <dt>{f.label}</dt>
+            <dd class="tnum"><span data-count={f.value}>{f.value}</span>{f.suffix}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="lab-film band-mist" id="lab-film" aria-labelledby="lab-film-title">
     <div class="wrap">
       <div class="lab-film-head">
         <h2 id="lab-film-title">实验影像</h2>
@@ -41,6 +61,7 @@ import { research } from "../../data/research";
         <div>
           <p class="kicker">研究专题 <span class="num">05</span></p>
           <h2 id="topics-title">研究专题</h2>
+          <p class="section-desc">{labSlogan.researchIntro}</p>
         </div>
       </header>
       <ol class="topic-stories">
@@ -52,7 +73,11 @@ import { research } from "../../data/research";
             <div class="topic-story-copy">
               <span class="tnum topic-no">{r.num} / 05</span>
               <h3>{r.title}<span class="en" lang="en">{r.titleEn}</span></h3>
+              <p class="topic-sub">{r.subtitle}</p>
               <p>{r.overview}</p>
+              <ol class="method-titles" aria-label="研究方法">
+                {r.methods.map((m, j) => <li><span class="tnum">{String(j + 1).padStart(2, "0")}</span>{m.title}</li>)}
+              </ol>
               <ul class="tag-list" aria-label="关键词">{r.tags.map((t) => <li>{t}</li>)}</ul>
               <a class="link" href={`/research/${r.slug}`}>研究方法与相关论文 <span class="arrow" aria-hidden="true">→</span></a>
             </div>

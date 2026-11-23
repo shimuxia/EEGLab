@@ -3,6 +3,7 @@ import SectionHeader from "../components/SectionHeader.astro";
 import GroupLayout from "../layouts/GroupLayout.astro";
 import GroupMembers from "../components/GroupMembers.astro";
 import { advisor, labTeam } from "../data/group";
+import content from "../data/group-content.json";
 ---
 
 <GroupLayout title="团队成员">
@@ -23,6 +24,7 @@ import { advisor, labTeam } from "../data/group";
         <p class="kicker">课题组导师</p>
         <h2 id="advisor-name">{advisor.name} <span class="en" lang="en">{advisor.nameEn}</span></h2>
         <p>{advisor.affiliation} · {advisor.role}</p>
+        <p>{content.team.advisor.note}</p>
         <p class="team-lead-bio">{advisor.biography}</p>
         <a class="link" href="/about#advisor">导师介绍与学术经历 <span class="arrow" aria-hidden="true">↗</span></a>
       </div>
@@ -59,6 +61,7 @@ import { advisor, labTeam } from "../data/group";
               <h3>{m.name}</h3>
               <p class="core-meta">{m.title} · {m.affil}</p>
               <p>{m.bio}</p>
+              <ul class="tag-list" aria-label="工作内容">{m.tags.map((t) => <li>{t}</li>)}</ul>
             </div>
           </article>
         ))}

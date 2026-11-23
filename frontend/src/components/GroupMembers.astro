@@ -1,6 +1,10 @@
 ---
-import { members, studentGroups } from "../data/group";
+import { members, studentGroups, labTeam } from "../data/group";
+import { moreAlumni, openPosition } from "../data/source-extras";
 const { compact = false } = Astro.props;
+// The lab site lists the same graduate students with cohort, major and interests.
+const labGrads = new Map(labTeam.grads.map((g: any) => [g.name, g]));
+const lastGroup = studentGroups.length - 1;
 ---
 
 <div data-member-directory>
@@ -23,13 +27,25 @@ const { compact = false } = Astro.props;
           )}
           <h4>{m.name}</h4>
           <p>{m.stage}</p>
+          {labGrads.get(m.name) && <p class="person-extra">{labGrads.get(m.name).badge}</p>}
+          {labGrads.get(m.name)?.focuses?.length > 0 && <p>{labGrads.get(m.name).focuses.join(" · ")}</p>}
           {m.note && <p>{m.note}</p>}
         </li>
       ))}
+      {!compact && (
+        <li class="person person-open">
+          <a href="/join">
+            <span class="open-mark" aria-hidden="true">+</span>
+            <h4>{openPosition.name}</h4>
+            <p>{openPosition.stage}</p>
+            <p>{openPosition.note}</p>
+          </a>
+        </li>
+      )}
     </ul>
   </section>
   {!compact &&
-    studentGroups.map((g) => (
+    studentGroups.map((g, gi) => (
       <section class="member-group group-subsection" data-member-group="projects">
         <h3>{g.dir} · 本科生 / 项目参与与校友 <span class="tnum">{g.students.length}</span></h3>
         <ul class="people-grid">
@@ -45,6 +61,13 @@ const { compact = false } = Astro.props;
               {m.note && <p>{m.note}</p>}
             </li>
           ))}
+          {gi === lastGroup && (
+            <li class="person person-text">
+              <h4>{moreAlumni.name}</h4>
+              <p>{moreAlumni.stage}</p>
+              <p>{moreAlumni.note}</p>
+            </li>
+          )}
         </ul>
       </section>
     ))}

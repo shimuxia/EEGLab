@@ -26,12 +26,69 @@
   gap: 1rem 2rem;
   margin-bottom: clamp(2rem, 4vw, 3.5rem);
 }
+.section-head {
+  margin-bottom: var(--space-head);
+}
 .section-head h2,
 .section-title {
   margin-top: 0.85rem;
-  font-size: var(--fs-3xl);
+  font-size: var(--fs-h2);
   font-weight: 700;
-  line-height: var(--lh-tight);
+  line-height: 1.2;
+}
+.section-desc {
+  margin-top: 0.85rem;
+  max-width: 36em;
+  color: var(--text-2);
+}
+
+/* ── Surfaces ──────────────────────────────────────────────── */
+.band-mist {
+  background: var(--bg-surface);
+}
+.sheet {
+  width: calc(100% - var(--gutter) * 2);
+  max-width: var(--content);
+  margin-inline: auto;
+  padding: clamp(2rem, 5vw, 4.5rem) clamp(1.25rem, 4vw, 4rem);
+  background: var(--bg);
+}
+
+/* ── Research illustrations (teacher site) ─────────────────── */
+.research-glyph {
+  display: block;
+}
+.research-art .research-glyph,
+.field-trace .research-glyph {
+  height: 100%;
+}
+.research-glyph svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.research-glyph :is(.stroke, .stroke-dim) {
+  fill: none;
+  stroke-width: 1.4px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.research-glyph .stroke {
+  stroke: var(--graph);
+}
+.research-glyph .stroke-dim {
+  stroke: var(--graph-dim);
+}
+.research-glyph .dot {
+  fill: var(--graph);
+}
+.research-glyph :is(.dot-accent, .glowdot) {
+  fill: var(--signal);
+}
+.research-glyph circle.stroke.anim-pulse {
+  stroke: var(--signal);
+  opacity: 0.45;
 }
 .on-dark {
   background: var(--bg-dark);
@@ -102,7 +159,7 @@
 }
 .research-selector {
   display: grid;
-  border-top: 1px solid var(--text);
+  border-top: 1px solid var(--border-md);
 }
 .research-selector button {
   position: relative;
@@ -168,7 +225,6 @@
 }
 .research-panel {
   background: var(--bg);
-  border: 1px solid var(--border);
   padding: clamp(1.25rem, 3vw, 2.5rem);
 }
 .research-panel[hidden],
@@ -184,14 +240,21 @@
   letter-spacing: 0.04em;
 }
 .research-art {
-  height: clamp(120px, 14vw, 180px);
-  margin-block: clamp(1.25rem, 2.5vw, 2rem);
-  color: var(--text);
+  height: clamp(150px, 16vw, 210px);
+  margin-block: clamp(1rem, 2vw, 1.5rem);
+  padding-block: 0.5rem;
+}
+.panel-tagline {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--graph-text);
+  margin-bottom: 0.35rem;
 }
 .research-panel-copy h3 {
-  font-size: var(--fs-2xl);
+  font-size: var(--fs-h3);
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 1.3;
 }
 .research-panel-copy p {
   margin-top: 0.85rem;
@@ -205,7 +268,7 @@
 /* ── Honors list ───────────────────────────────────────────── */
 .group-honors {
   list-style: none;
-  border-top: 1px solid var(--text);
+  border-top: 1px solid var(--border-md);
 }
 .group-honors li {
   display: grid;
@@ -247,7 +310,7 @@
 .page-mast h1,
 .group-header h1 {
   margin-block: 1rem 1.1rem;
-  font-size: var(--fs-3xl);
+  font-size: var(--fs-h1);
   font-weight: 700;
   line-height: var(--lh-tight);
 }
@@ -266,7 +329,7 @@
 }
 .chapter-links {
   display: grid;
-  border-top: 1px solid var(--text);
+  border-top: 1px solid var(--border-md);
   font-size: var(--fs-sm);
 }
 .chapter-links a {
@@ -303,7 +366,7 @@
 }
 .group-section > .wrap > h2,
 .group-section h2.block-title {
-  font-size: var(--fs-2xl);
+  font-size: var(--fs-h2);
   font-weight: 700;
   line-height: 1.25;
   margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
@@ -331,7 +394,7 @@
   display: block;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  background: var(--bg-surface);
+  background: #fff;
   margin-bottom: 0.75rem;
 }
 .portrait img {

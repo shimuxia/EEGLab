@@ -71,6 +71,25 @@ const {
         }
       }, { threshold: 0, rootMargin: "0px 0px -6% 0px" });
       targets.forEach(target => observer.observe(target));
+      // Count-up for restored source figures; markup already holds the final value.
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const counters = new IntersectionObserver(entries => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const el = entry.target as HTMLElement;
+            counters.unobserve(el);
+            const end = Number(el.dataset.count);
+            const t0 = performance.now();
+            const step = (t: number) => {
+              const k = Math.min(1, (t - t0) / 1100);
+              el.textContent = String(Math.round(end * (1 - Math.pow(1 - k, 3))));
+              if (k < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+          }
+        }, { threshold: 0.6 });
+        document.querySelectorAll<HTMLElement>("[data-count]").forEach(el => counters.observe(el));
+      }
     } else {
       targets.forEach(target => target.classList.add("is-visible"));
     }

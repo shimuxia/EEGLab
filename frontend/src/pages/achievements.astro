@@ -1,6 +1,7 @@
 ---
 import GroupHonors from '../components/GroupHonors.astro';
 import { representativePapers } from '../data/group';
+import { projectPatentNote } from '../data/source-extras';
 import GroupLayout from '../layouts/GroupLayout.astro';
 import GalleryFilter from '../components/GalleryFilter.astro';
 import PublicationCount from '../components/PublicationCount';
@@ -83,7 +84,7 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
         <div class="section-header">
           <h2 class="section-heading" id="awards-heading">荣誉奖项</h2>
         </div>
-        <div class="mentor-honors"><h3>导师学术荣誉</h3><GroupHonors /></div>
+        <div class="mentor-honors"><h3>导师学术荣誉</h3><GroupHonors /><p class="project-note"><b>{projectPatentNote.kind}</b>{projectPatentNote.title}：{projectPatentNote.meta}<small>{projectPatentNote.source}</small></p></div>
         <div class="award-timeline">
           {awards.map((award, i) => (
             <div class="award-row">

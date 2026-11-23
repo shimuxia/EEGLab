@@ -1,0 +1,12 @@
+---
+// The teacher site's seven research illustrations (js/script.js RESEARCH_VISUALS),
+// one per direction, in the same order as the directions.
+import visuals from "../data/research-visuals.json";
+interface Props {
+  index: number;
+  class?: string;
+}
+const { index, class: className } = Astro.props;
+---
+
+<span class:list={["research-glyph", className]} set:html={visuals[index % visuals.length]} />

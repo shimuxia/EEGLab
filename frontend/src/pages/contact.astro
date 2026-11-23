@@ -1,6 +1,7 @@
 ---
 import GroupLayout from "../layouts/GroupLayout.astro";
 import { advisor } from "../data/group";
+import { labDomain } from "../data/source-extras";
 ---
 
 <GroupLayout title="联系与交流">
@@ -36,6 +37,7 @@ import { advisor } from "../data/group";
           <h2>实验平台</h2>
           <p>金牛湖产教融合园区 · 金牛湖脑机实验室</p>
           <p><a href="/research/brain-computer-interface">脑机接口研究与实验室 →</a></p>
+          <p><a href={labDomain.href} target="_blank" rel="noopener">{labDomain.label} ↗</a></p>
         </article>
       </div>
       <div class="page-actions">

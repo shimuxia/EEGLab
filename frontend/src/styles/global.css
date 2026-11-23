@@ -7,28 +7,35 @@
 :root {
   color-scheme: light;
 
-  /* Neutrals */
+  /* Surfaces: one soft canvas, a mist band, white only for content sheets.
+     Full-bleed black is reserved for nothing but video frames. */
+  --canvas: #f2f3ef;
   --bg: #ffffff;
-  --bg-surface: #f3f3f0;
-  --bg-elevated: #e9e9e4;
-  --bg-dark: #141618;
-  --bg-dark-2: #1d2023;
-  --text: #16181b;
-  --text-2: #45494f;
-  --text-3: #6a6f76;
-  --text-inv: #ecebe6;
-  --text-inv-2: #a5aab1;
-  --border: #e3e3de;
-  --border-md: #c9c9c2;
-  --border-dark: #2f3337;
+  --bg-surface: #e8ebe6;
+  --bg-elevated: #dde1db;
+  --bg-dark: #20272b;
+  --bg-dark-2: #2a3236;
+  --text: #1c2125;
+  --text-2: #4a5157;
+  --text-3: #5d6469;
+  --text-inv: #eef0ec;
+  --text-inv-2: #b4bbbf;
+  --border: #dcdfd9;
+  --border-md: #c2c7c0;
+  --border-dark: #3a4246;
 
-  /* One accent. Text uses --accent (5.2:1 on white); graphics use --signal. */
-  --accent: #c2410c;
-  --signal: #e8590c;
-  --signal-on-dark: #ff7a2f;
-  --accent-dim: #fbeee6;
-  --accent-mid: #f3c9ae;
-  --focus: #c2410c;
+  /* Science graphics: the teacher site's slate-teal line work. */
+  --graph: #5f7f87;
+  --graph-dim: #a8b8bb;
+  --graph-text: #46646c;
+
+  /* One accent, used sparingly. Text uses --accent (≥4.5:1 on canvas and mist). */
+  --accent: #b33c0b;
+  --signal: #e0601a;
+  --signal-on-dark: #ff8a45;
+  --accent-dim: #f6e6dc;
+  --accent-mid: #efc6ad;
+  --focus: #b33c0b;
 
   /* States */
   --success: #2f6b4f;
@@ -50,7 +57,11 @@
   --fs-xl: clamp(1.375rem, 1.1rem + 0.9vw, 1.75rem);
   --fs-2xl: clamp(1.75rem, 1.25rem + 1.9vw, 2.75rem);
   --fs-3xl: clamp(2.375rem, 1.5rem + 3.6vw, 4.25rem);
-  --fs-display: clamp(3.25rem, 1.2rem + 8.4vw, 9.25rem);
+  --fs-display: clamp(3.5rem, 2rem + 9vw, 8rem);
+  /* Heading ladder: every page uses these three steps. */
+  --fs-h1: clamp(2.5rem, 1.7rem + 3vw, 4rem);
+  --fs-h2: clamp(1.875rem, 1.35rem + 1.7vw, 2.75rem);
+  --fs-h3: clamp(1.25rem, 1.05rem + 0.7vw, 1.625rem);
 
   --lh-tight: 1.12;
   --lh-snug: 1.35;
@@ -66,7 +77,8 @@
   --space-3: 1.5rem;
   --space-4: 2.25rem;
   --space-5: clamp(2.5rem, 4vw, 3.5rem);
-  --space-section: clamp(4.5rem, 9vw, 9rem);
+  --space-section: clamp(4rem, 7vw, 7rem);
+  --space-head: clamp(2rem, 3.5vw, 3rem);
 
   --radius: 2px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -85,7 +97,7 @@
   padding: 0;
 }
 html {
-  background: var(--bg);
+  background: var(--canvas);
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--nav-h) + 24px);
   -webkit-text-size-adjust: 100%;
@@ -96,7 +108,7 @@ body {
   font-size: var(--fs-md);
   line-height: var(--lh-body);
   color: var(--text);
-  background: var(--bg);
+  background: var(--canvas);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -150,11 +162,11 @@ p {
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg);
+  background: var(--canvas);
 }
 ::-webkit-scrollbar-thumb {
-  background: #c9c9c2;
-  border: 3px solid var(--bg);
+  background: var(--border-md);
+  border: 3px solid var(--canvas);
   border-radius: 10px;
 }
 
@@ -193,7 +205,7 @@ p {
   content: "";
   width: 18px;
   height: 2px;
-  background: var(--signal);
+  background: var(--graph);
 }
 .kicker .num {
   font-variant-numeric: tabular-nums;
@@ -241,7 +253,7 @@ p {
     border-color var(--dur-fast) var(--ease-std);
 }
 .btn:hover {
-  --btn-bg: #000;
+  --btn-bg: #0e1214;
 }
 .btn:active {
   transform: translateY(1px);
@@ -266,7 +278,7 @@ p {
   --btn-bg: var(--accent);
 }
 .btn-signal:hover {
-  --btn-bg: #9a3409;
+  --btn-bg: #8f3009;
 }
 .on-dark .btn {
   --btn-bg: #fff;
@@ -294,7 +306,7 @@ p {
   font-weight: 600;
   color: var(--text);
   text-decoration: none;
-  background: linear-gradient(var(--signal), var(--signal)) 0 100% / 100% 1px no-repeat;
+  background: linear-gradient(var(--graph-dim), var(--graph-dim)) 0 100% / 100% 1px no-repeat;
   padding-bottom: 2px;
   transition:
     background-size var(--dur) var(--ease-out),
@@ -306,6 +318,7 @@ p {
 }
 .link:hover {
   color: var(--accent);
+  background-image: linear-gradient(var(--signal), var(--signal));
 }
 .link:hover .arrow,
 .link:focus-visible .arrow {

@@ -1,6 +1,7 @@
 ---
 import { directions } from "../data/group";
-import SignalTrace from "./SignalTrace.astro";
+import ResearchGlyph from "./ResearchGlyph.astro";
+import { researchTaglines } from "../data/source-extras";
 ---
 
 <div class="research-overview">
@@ -9,6 +10,7 @@ import SignalTrace from "./SignalTrace.astro";
       <header class="field-head">
         <span class="field-number tnum" aria-hidden="true">{r.no}</span>
         <div>
+          <p class="field-tagline">{researchTaglines[i]}</p>
           <h3>{r.title}</h3>
           <p class="field-en" lang="en">{r.en}</p>
         </div>
@@ -30,7 +32,7 @@ import SignalTrace from "./SignalTrace.astro";
         </a>
       ) : (
         <div class="field-trace">
-          <SignalTrace index={i} grid />
+          <ResearchGlyph index={i} />
         </div>
       )}
     </article>

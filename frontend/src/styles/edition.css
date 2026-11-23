@@ -27,18 +27,18 @@
     clip-path: inset(-12px 0 -12px 0);
   }
 }
-@keyframes sweep {
-  0% {
-    transform: translateX(0);
-    opacity: 0;
-  }
-  4%,
-  94% {
-    opacity: 0.6;
-  }
+@keyframes pulse-once {
+  0%,
   100% {
-    transform: translateX(100%);
-    opacity: 0;
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.6);
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
   }
 }
 @keyframes wipe {
@@ -101,32 +101,42 @@
   .hero-pi {
     animation-delay: 340ms;
   }
-  .montage-head {
+  .index-head {
     animation: fade-up 600ms 300ms var(--ease-out) both;
   }
-  .montage li {
+  .focus-index li {
     animation: fade-up 560ms var(--ease-out) both;
     animation-delay: calc(360ms + var(--i) * 55ms);
   }
-  .channel-trace .signal-trace {
-    animation: draw 1400ms var(--ease-std) both;
-    animation-delay: calc(420ms + var(--i) * 70ms);
+  .focus-index .research-glyph svg {
+    animation: draw 1200ms var(--ease-std) both;
+    animation-delay: calc(480ms + var(--i) * 80ms);
   }
-  /* EEG-style sweep cursor, synchronized across channels. Runs only while
-     the montage is on screen (.is-live set by IntersectionObserver). */
-  .channel-trace {
-    overflow-x: clip;
+  /* The single orange point in each illustration breathes once after drawing. */
+  .research-glyph :is(.glowdot, .dot-accent) {
+    transform-box: fill-box;
+    transform-origin: center;
   }
-  .channel-trace::after {
-    content: "";
-    position: absolute;
-    inset: -14px 0;
-    background: linear-gradient(var(--signal), var(--signal)) 0 0 / 1px 100% no-repeat;
-    opacity: 0;
-    animation: sweep 9s linear infinite paused;
-    animation-delay: 2.4s;
+  .focus-index .research-glyph :is(.glowdot, .dot-accent) {
+    animation: pulse-once 900ms var(--ease-out) both;
+    animation-delay: calc(1500ms + var(--i) * 80ms);
   }
-  .is-live .channel-trace::after {
+  .focus:hover .research-glyph :is(.glowdot, .dot-accent) {
+    animation: pulse-once 700ms var(--ease-out);
+  }
+
+  /* Lab-site image wall: slow, continuous, paused off screen or on hover. */
+  .wall-track {
+    animation: marquee 90s linear infinite paused;
+  }
+  .wall-row.reverse .wall-track {
+    animation-direction: reverse;
+    animation-duration: 110s;
+  }
+  .image-wall:not(.is-looping) .wall-track {
+    animation: none;
+  }
+  .image-wall.is-live:not(.is-paused):not(:hover) .wall-track {
     animation-play-state: running;
   }
 
@@ -165,13 +175,19 @@
   .research-panel:not([hidden]) .research-panel-copy {
     animation: fade-up 460ms var(--ease-out) both;
   }
-  .research-panel:not([hidden]) .research-art .signal-trace {
-    animation: draw 1100ms var(--ease-std) both;
+  .research-panel:not([hidden]) .research-art svg {
+    animation: draw 1000ms var(--ease-std) both;
+  }
+  .research-panel:not([hidden]) .research-art :is(.glowdot, .dot-accent) {
+    animation: pulse-once 800ms 900ms var(--ease-out) both;
   }
 
   /* Research atlas and detail pages */
-  .research-overview article.is-visible .field-trace .signal-trace {
-    animation: draw 1300ms 160ms var(--ease-std) both;
+  .research-overview article.is-visible .field-trace svg {
+    animation: draw 1200ms 160ms var(--ease-std) both;
+  }
+  .research-overview article.is-visible .field-trace :is(.glowdot, .dot-accent) {
+    animation: pulse-once 800ms 1300ms var(--ease-out) both;
   }
   .js-reveal .research-overview article:not(.is-visible) {
     opacity: 0;

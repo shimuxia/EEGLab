@@ -2,27 +2,16 @@
 import GroupLayout from "../layouts/GroupLayout.astro";
 import HomeResearch from "../components/HomeResearch.astro";
 import GroupHonors from "../components/GroupHonors.astro";
-import SignalTrace from "../components/SignalTrace.astro";
+import ResearchGlyph from "../components/ResearchGlyph.astro";
+import PublicationCount from "../components/PublicationCount";
 import { advisor, directions, members, representativePapers } from "../data/group";
 import { research } from "../data/research";
+import { advisorQuote, labFigures, labSlogan, researchIntro, researchTaglines } from "../data/source-extras";
+import galleryData from "../data/gallery.toml";
 
-const media = [
-  {
-    src: "/images/achievements/demo-lab-setup.webp",
-    label: "闭环脑机接口实验现场",
-    tag: "实验现场",
-  },
-  {
-    src: "/images/achievements/award-phm-hangzhou-bestpaper-ceremony.webp",
-    label: "IEEE PHM 最佳论文颁奖现场",
-    tag: "学术交流",
-  },
-  {
-    src: "/images/achievements/device-eeg-cap.webp",
-    label: "脑电信号采集设备",
-    tag: "实验设备",
-  },
-];
+// Image wall uses 400px-tall derivatives in /images/achievements/wall/ (originals stay in the gallery).
+const wallA = (galleryData as any).waterfall_a as { src: string }[];
+const wallB = (galleryData as any).waterfall_b as { src: string }[];
 ---
 
 <GroupLayout
@@ -40,7 +29,7 @@ const media = [
         <p class="hero-lead">用机器学习读懂复杂系统与脑电信号，<br />让数据变成诊断和决策。</p>
         <div class="hero-actions">
           <a class="btn" href="#research">探索研究方向 <span class="arrow" aria-hidden="true">↓</span></a>
-          <a class="btn btn-ghost" href="/about">关于课题组</a>
+          <a class="btn btn-ghost" href="/join">了解招生</a>
         </div>
       </div>
       <a class="hero-pi" href="/about">
@@ -53,26 +42,21 @@ const media = [
       </a>
     </div>
 
-    <nav class="hero-bottom" aria-label="研究方向索引" data-montage>
+    <nav class="hero-bottom" aria-label="研究方向索引">
       <div class="wrap">
-        <div class="montage-head">
-          <h2>研究索引</h2>
-          <p>七个方向，七种数据形态</p>
+        <div class="index-head">
+          <h2>研究焦点</h2>
+          <p lang="en">Research Focus</p>
         </div>
-        <ol class="montage">
+        <ol class="focus-index">
           {directions.map((r, i) => (
             <li style={`--i:${i}`}>
-              <a class="channel" href={i === 1 ? "/research/brain-computer-interface" : `/research#${r.id}`}>
-                <span class="channel-no tnum">{r.no}</span>
-                <span class="channel-name">
-                  <strong>{r.title}</strong>
-                  <small lang="en">{r.en}</small>
-                </span>
-                <span class="channel-trace">
-                  <SignalTrace index={i} />
-                </span>
-                {i === 1 ? <span class="channel-tag">金牛湖脑机实验室</span> : <span class="channel-tag" aria-hidden="true"></span>}
-                <span class="channel-arrow" aria-hidden="true">→</span>
+              <a class="focus" href={i === 1 ? "/research/brain-computer-interface" : `/research#${r.id}`}>
+                <ResearchGlyph index={i} class="focus-glyph" />
+                <span class="focus-no tnum">{r.no}</span>
+                <strong class="focus-name">{r.title}</strong>
+                <span class="focus-line">{researchTaglines[i]}</span>
+                {i === 1 && <span class="focus-tag">金牛湖脑机实验室</span>}
               </a>
             </li>
           ))}
@@ -92,12 +76,13 @@ const media = [
     </div>
   </section>
 
-  <section class="home-research" id="research" aria-labelledby="research-title">
+  <section class="home-research band-mist" id="research" aria-labelledby="research-title">
     <div class="wrap">
       <header class="section-head" data-reveal>
         <div>
           <p class="kicker">研究方向 <span class="num">07</span></p>
-          <h2 id="research-title">七个研究方向</h2>
+          <h2 id="research-title">{researchIntro.title}</h2>
+          <p class="section-desc">{researchIntro.desc}</p>
         </div>
         <a class="link" href="/research">全部研究方向 <span class="arrow" aria-hidden="true">↗</span></a>
       </header>
@@ -105,13 +90,26 @@ const media = [
     </div>
   </section>
 
-  <section class="home-lab on-dark" aria-labelledby="lab-title">
+  <section class="home-lab" aria-labelledby="lab-title">
     <div class="wrap">
       <div class="lab-grid" data-reveal>
         <div class="lab-copy">
           <p class="kicker">研究平台 · 脑机接口</p>
           <h2 id="lab-title">金牛湖脑机实验室</h2>
+          <p class="lab-slogan">{labSlogan.line}<span lang="en">{labSlogan.en}</span></p>
           <p>作为课题组的脑机接口研究与实验平台，金牛湖脑机实验室连接脑电信号分析、运动意图解码与智能控制。</p>
+          <dl class="figures lab-figures">
+            <div>
+              <dt>期刊论文</dt>
+              <dd class="tnum"><PublicationCount type="journal" client:load /></dd>
+            </div>
+            {labFigures.map((f) => (
+              <div>
+                <dt>{f.label}</dt>
+                <dd class="tnum"><span data-count={f.value}>{f.value}</span>{f.suffix}</dd>
+              </div>
+            ))}
+          </dl>
           <div class="lab-actions">
             <a class="btn" href="/research/brain-computer-interface">走进实验室 <span class="arrow" aria-hidden="true">→</span></a>
           </div>
@@ -144,7 +142,7 @@ const media = [
 
       <div class="lab-topics-head">
         <h3>五个实验专题</h3>
-        <p>从脑疾病诊断到脑控外设，每个专题都有对应的实验装置。</p>
+        <p>{labSlogan.researchIntro}</p>
       </div>
       <ol class="device-rail">
         {research.map((r, i) => (
@@ -156,7 +154,7 @@ const media = [
               <span class="device-meta">
                 <span class="tnum">{r.num}</span>
                 <strong>{r.title}</strong>
-                <small lang="en">{r.titleEn}</small>
+                <small>{r.subtitle}</small>
               </span>
             </a>
           </li>
@@ -165,8 +163,8 @@ const media = [
     </div>
   </section>
 
-  <section class="home-advisor" aria-labelledby="advisor-title">
-    <div class="wrap advisor-grid">
+  <section class="home-advisor sheet" aria-labelledby="advisor-title">
+    <div class="advisor-grid">
       <div class="advisor-copy" data-reveal>
         <p class="kicker">课题组负责人</p>
         <h2 id="advisor-title">严颖 <span class="en" lang="en">Ying Yan</span></h2>
@@ -184,28 +182,30 @@ const media = [
     </div>
   </section>
 
-  <section class="home-evidence" id="achievements" aria-labelledby="evidence-title">
+  <section class="home-evidence band-mist" id="achievements" aria-labelledby="evidence-title">
     <div class="wrap">
       <header class="section-head" data-reveal>
         <div>
           <p class="kicker">科研现场</p>
           <h2 id="evidence-title">实验与学术交流</h2>
+          <p class="section-desc">实验现场、临床合作、学术会议与获奖证书影像。</p>
         </div>
-        <a class="link" href="/achievements#gallery">科研成果与影像 <span class="arrow" aria-hidden="true">↗</span></a>
+        <a class="link" href="/achievements#gallery">全部成果图录 <span class="arrow" aria-hidden="true">↗</span></a>
       </header>
-      <div class="evidence-gallery">
-        {media.map((m, i) => (
-          <a class:list={["evidence-item", { "evidence-item-wide": i === 0 }]} href="/achievements#gallery" data-reveal style={`--i:${i}`}>
-            <span class="evidence-frame">
-              <img src={m.src} alt={m.label} width="900" height="600" loading="lazy" />
-            </span>
-            <span class="evidence-caption">
-              <small>{m.tag}</small>
-              <strong>{m.label}</strong>
-            </span>
-          </a>
-        ))}
-      </div>
+    </div>
+    <div class="image-wall" data-image-wall aria-hidden="true">
+      {[wallA, wallB].map((row, r) => (
+        <div class:list={["wall-row", { reverse: r === 1 }]}>
+          <div class="wall-track">
+            {row.map((img) => (
+              <img src={img.src.replace("/images/achievements/", "/images/achievements/wall/")} alt="" loading="lazy" decoding="async" height="200" />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+    <div class="wrap wall-controls">
+      <button type="button" class="wall-toggle" data-wall-toggle aria-pressed="false">暂停图片滚动</button>
     </div>
   </section>
 
@@ -223,7 +223,7 @@ const media = [
             <a href={p.link} target="_blank" rel="noopener noreferrer">
               <span class="paper-index tnum">0{i + 1}</span>
               <span class="paper-body">
-                <span class="paper-venue">{p.venue} · {p.year}</span>
+                <span class="paper-venue">{(p as any).isNew && <b class="paper-new">最新</b>}{p.venue} · {p.year}</span>
                 <strong>{p.title}</strong>
                 <span class="paper-direction">{p.direction}</span>
               </span>
@@ -235,12 +235,12 @@ const media = [
     </div>
   </section>
 
-  <section class="home-team" id="team" aria-labelledby="team-title">
-    <div class="wrap team-grid">
+  <section class="home-team sheet" id="team" aria-labelledby="team-title">
+    <div class="team-grid">
       <div class="team-story" data-reveal>
         <p class="kicker">团队</p>
-        <h2 id="team-title">课题组成员</h2>
-        <p>了解团队成员的研究方向，以及参与脑机接口项目的临床合作者与学术顾问。</p>
+        <h2 id="team-title">在交叉研究中共同成长</h2>
+        <p>导师与研究生构成研究主力，本科生按研究方向参与课题、竞赛与毕设，在真实问题中训练成长。</p>
         <a class="link" href="/team">认识课题组与实验室协作团队 <span class="arrow" aria-hidden="true">↗</span></a>
       </div>
       <ul class="team-contact-sheet">
@@ -257,30 +257,54 @@ const media = [
     </div>
   </section>
 
-  <section class="home-join" id="admission" aria-labelledby="join-title">
+  <section class="home-join band-mist" id="admission" aria-labelledby="join-title">
     <div class="wrap join-grid" data-reveal>
       <div>
-        <p class="kicker">招生</p>
-        <h2 id="join-title">加入课题组</h2>
-      </div>
-      <div class="join-body">
-        <p>欢迎有科研热情与动手能力的你，一起面对真实问题，寻找新的答案。</p>
+        <p class="kicker">招生 · 硕士生 5–7 人 / 年</p>
+        <h2 id="join-title">欢迎加入严颖课题组</h2>
         <div class="join-actions">
           <a class="btn btn-signal" href="/join">招生与加入 <span class="arrow" aria-hidden="true">→</span></a>
           <a class="link" href={`mailto:${advisor.email}`}>{advisor.email}</a>
         </div>
       </div>
+      <figure class="advisor-quote">
+        <blockquote><p>{advisorQuote.text}</p></blockquote>
+        <figcaption>{advisorQuote.label} —— {advisorQuote.cite}</figcaption>
+      </figure>
     </div>
   </section>
 </GroupLayout>
 
 <script>
-  // Hero montage: the sweep only runs while the index is on screen.
-  const montage = document.querySelector<HTMLElement>("[data-montage]");
-  if (montage && "IntersectionObserver" in window) {
-    new IntersectionObserver(([entry]) => montage.classList.toggle("is-live", entry.isIntersecting), {
-      threshold: 0.1,
-    }).observe(montage);
+  // Image wall (from the lab site's scrolling gallery): runs only on screen,
+  // pauses on hover/focus, and can be paused by the visitor (WCAG 2.2.2).
+  const wall = document.querySelector<HTMLElement>("[data-image-wall]");
+  const wallToggle = document.querySelector<HTMLButtonElement>("[data-wall-toggle]");
+  if (wall && wallToggle) {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => {
+      wallToggle.hidden = reduce.matches;
+      const paused = wallToggle.getAttribute("aria-pressed") === "true";
+      wallToggle.textContent = paused ? "继续图片滚动" : "暂停图片滚动";
+      wall.classList.toggle("is-paused", paused);
+    };
+    wallToggle.addEventListener("click", () => {
+      wallToggle.setAttribute("aria-pressed", String(wallToggle.getAttribute("aria-pressed") !== "true"));
+      sync();
+    });
+    reduce.addEventListener("change", sync);
+    sync();
+    // A second copy makes the loop seamless; only added when motion is allowed,
+    // so the static page holds each picture once.
+    if (!reduce.matches) {
+      wall.querySelectorAll<HTMLElement>(".wall-track").forEach((track) => {
+        [...track.children].forEach((img) => track.appendChild(img.cloneNode(true)));
+      });
+      wall.classList.add("is-looping");
+    }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(([entry]) => wall.classList.toggle("is-live", entry.isIntersecting)).observe(wall);
+    }
   }
 
   const video = document.querySelector<HTMLVideoElement>("[data-hero-video]");
