@@ -7,28 +7,46 @@ import { research } from "../../data/research";
 ---
 
 <GroupLayout title="研究方向">
-  <SectionHeader title="研究方向" english="RESEARCH" links={[{"href": "#fields", "label": "七个研究方向"}, {"href": "#lab-topics", "label": "脑机实验室专题"}]}>
+  <SectionHeader title="研究方向" english="Research" links={[{ href: "#fields", label: "七个研究方向" }, { href: "#lab-topics", label: "脑机实验室专题" }]}>
     从复杂系统诊断到脑机交互，以可解释方法、时序建模与优化连接真实场景。
   </SectionHeader>
-  <section class="group-section" id="fields">
-    <div class="field-atlas">
+  <section class="group-section" id="fields" aria-labelledby="fields-title">
+    <h2 class="sr-only" id="fields-title">七个研究方向</h2>
+    <div class="wrap field-atlas">
       <nav class="atlas-list" aria-label="研究章节">
-        {directions.map(d => <a href={`#${d.id}`}><small>{d.no}</small>{d.title}</a>)}
+        {directions.map((d) => (
+          <a href={`#${d.id}`}><small class="tnum">{d.no}</small>{d.title}</a>
+        ))}
       </nav>
       <GroupResearch />
     </div>
   </section>
-  <section class="group-section" id="lab-topics">
-    <h2>脑机实验室研究专题</h2>
-    <div class="group-grid">
-      {research.map((r) => (
-        <article class="group-card">
-          <img class="topic-photo" src={`/images/research/${r.slug}.webp`} alt={r.title} loading="lazy" width="600" height="360" />
-          <h3>{r.title}</h3>
-          <p>{r.desc}</p>
-          <a href={`/research/${r.slug}`}>研究详情 →</a>
-        </article>
-      ))}
+  <section class="group-section surface" id="lab-topics" aria-labelledby="lab-topics-title">
+    <div class="wrap">
+      <header class="section-head">
+        <div>
+          <p class="kicker">金牛湖脑机实验室</p>
+          <h2 id="lab-topics-title">脑机实验室研究专题</h2>
+        </div>
+        <a class="link" href="/research/brain-computer-interface">实验室总览 <span class="arrow" aria-hidden="true">↗</span></a>
+      </header>
+      <ol class="topic-grid">
+        {research.map((r, i) => (
+          <li style={`--i:${i}`} data-reveal>
+            <a class="topic-card" href={`/research/${r.slug}`}>
+              <span class="topic-img">
+                <img src={`/images/research/${r.slug}-diagram.webp`} alt={`${r.title}实验装置示意`} loading="lazy" width="620" height="420" />
+              </span>
+              <span class="topic-copy">
+                <span class="tnum topic-no">{r.num}</span>
+                <h3>{r.title}</h3>
+                <p>{r.desc}</p>
+                <span class="topic-more">研究详情 <span aria-hidden="true">→</span></span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ol>
     </div>
   </section>
 </GroupLayout>

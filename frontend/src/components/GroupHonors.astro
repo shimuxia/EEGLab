@@ -2,14 +2,14 @@
 import { honors } from "../data/group";
 ---
 
-<div class="group-honors">
+<ol class="group-honors">
   {honors.map((h) => (
-    <article>
-      <time>{h.year}</time>
+    <li>
+      <time class="tnum">{h.year}</time>
       <div>
-        <h3>{h.title}</h3>
+        <h4>{h.title}</h4>
         <p>{h.detail}</p>
       </div>
-    </article>
+    </li>
   ))}
-</div>
+</ol>

@@ -1,18 +1,26 @@
 ---
 interface Props {
   title: string;
+  /** English subtitle shown under the title. */
   english: string;
+  /** Small label above the title; defaults to the site name. */
+  kicker?: string;
   links: { href: string; label: string }[];
 }
-const { title, english, links } = Astro.props;
+const { title, english, kicker = "严颖课题组", links } = Astro.props;
 ---
-<header class="group-header section-masthead" data-section={english.toLowerCase()}>
-  <div>
-    <p class="group-kicker" lang="en">{english}</p>
-    <h1>{title}</h1>
-    <p class="masthead-lead"><slot /></p>
+
+<header class="group-header page-mast section-masthead" data-section={english.toLowerCase()}>
+  <div class="wrap">
+    <div>
+      <p class="kicker">{kicker}</p>
+      <h1>{title}<span class="en" lang="en">{english}</span></h1>
+      <p class="masthead-lead"><slot /></p>
+    </div>
+    {links.length > 0 && (
+      <nav class="chapter-links" aria-label="本页目录">
+        {links.map((link) => <a href={link.href}>{link.label}</a>)}
+      </nav>
+    )}
   </div>
-  <nav class="chapter-links" aria-label="本页目录">
-    {links.map(link => <a href={link.href}>{link.label}</a>)}
-  </nav>
 </header>

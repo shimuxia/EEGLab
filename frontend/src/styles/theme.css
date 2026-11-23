@@ -1,56 +1,430 @@
-/* One visual foundation for the group and its retained laboratory pages. */
+/* ─────────────────────────────────────────────────────────────
+   Shared components. Page-specific composition lives in group.css.
+   ───────────────────────────────────────────────────────────── */
 
-html {
-  background: var(--bg);
-  scroll-padding-top: 100px;
+.group-page {
+  padding-top: var(--nav-h);
+  min-height: 70vh;
 }
-body {
-  background: var(--bg);
-  font-family: var(--font-sans);
+.group-page :is(article, div, figure, nav, section, li) {
+  min-width: 0;
 }
-a {
-  color: inherit;
+.group-page :is(section, article)[id] {
+  scroll-margin-top: calc(var(--nav-h) + 16px);
 }
-button,
-input {
-  font: inherit;
+.group-page a {
+  overflow-wrap: anywhere;
+  text-underline-offset: 0.22em;
 }
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-[tabindex="0"]:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 6px;
+
+/* ── Section heading ───────────────────────────────────────── */
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
 }
-::selection {
-  background: var(--accent);
-  color: white;
+.section-head h2,
+.section-title {
+  margin-top: 0.85rem;
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+  line-height: var(--lh-tight);
 }
-::-webkit-scrollbar-track {
-  background: var(--bg);
+.on-dark {
+  background: var(--bg-dark);
+  color: var(--text-inv);
 }
-::-webkit-scrollbar-thumb {
-  background: #80766a;
+.on-dark .kicker {
+  color: var(--text-inv-2);
 }
-img {
-  max-width: 100%;
+.on-dark .kicker::before {
+  background: var(--signal-on-dark);
 }
-[data-reveal] {
+
+/* ── Tags: quiet text list, no pills ───────────────────────── */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0;
+  list-style: none;
+  font-size: var(--fs-sm);
+  color: var(--text-3);
+}
+.tag-list li + li::before {
+  content: "/";
+  margin-inline: 0.7em;
+  color: var(--border-md);
+}
+
+/* ── Signal trace ──────────────────────────────────────────── */
+.signal-trace {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.signal-trace .trace-line,
+.signal-trace .trace-dashed {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.signal-trace .trace-dashed {
+  stroke-dasharray: 4 5;
+  opacity: 0.55;
+}
+.signal-trace .trace-mark {
+  stroke: var(--signal);
+  stroke-width: 7;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.signal-trace .trace-grid line {
+  stroke: var(--border-md);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.signal-trace .trace-grid line:first-child {
+  stroke-dasharray: 2 4;
+}
+
+/* ── Research workbench (home tabs) ────────────────────────── */
+.research-workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(1.5rem, 4vw, 4.5rem);
+  align-items: start;
+}
+.research-selector {
+  display: grid;
+  border-top: 1px solid var(--text);
+}
+.research-selector button {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.75rem 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 60px;
+  padding: 0.85rem 0.25rem;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-2);
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--dur-fast);
+}
+.research-selector button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 100%;
+  background: var(--signal);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
+}
+.research-selector .tab-no {
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+}
+.research-selector strong {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  line-height: 1.4;
+}
+.research-tab-arrow {
+  color: var(--text-3);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity var(--dur-fast),
+    transform var(--dur) var(--ease-out);
+}
+.research-selector button:hover,
+.research-selector button[aria-selected="true"] {
+  color: var(--text);
+}
+.research-selector button[aria-selected="true"]::before {
+  transform: scaleX(1);
+}
+.research-selector button[aria-selected="true"] .tab-no {
+  color: var(--accent);
+}
+.research-selector button:is(:hover, [aria-selected="true"]) .research-tab-arrow {
   opacity: 1;
   transform: none;
 }
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+.research-selector button[aria-selected="true"] .research-tab-arrow {
+  color: var(--accent);
+}
+.research-panel {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+}
+.research-panel[hidden],
+.film-status[hidden] {
+  display: none;
+}
+.research-panel-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+  letter-spacing: 0.04em;
+}
+.research-art {
+  height: clamp(120px, 14vw, 180px);
+  margin-block: clamp(1.25rem, 2.5vw, 2rem);
+  color: var(--text);
+}
+.research-panel-copy h3 {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  line-height: 1.25;
+}
+.research-panel-copy p {
+  margin-top: 0.85rem;
+  color: var(--text-2);
+  max-width: 36em;
+}
+.research-panel-copy .tag-list {
+  margin-block: 1.1rem 1.5rem;
+}
+
+/* ── Honors list ───────────────────────────────────────────── */
+.group-honors {
+  list-style: none;
+  border-top: 1px solid var(--text);
+}
+.group-honors li {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.group-honors time {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1.6;
+}
+.group-honors h4 {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  line-height: 1.55;
+}
+.group-honors p {
+  margin-top: 0.15rem;
+  font-size: var(--fs-sm);
+  color: var(--text-3);
+}
+
+/* ── Inner-page masthead ───────────────────────────────────── */
+.page-mast,
+.group-header {
+  padding-block: clamp(3rem, 7vw, 6.5rem) clamp(2.25rem, 4vw, 3.5rem);
+  border-bottom: 1px solid var(--border);
+}
+.page-mast .wrap,
+.section-masthead > .wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  gap: 2rem clamp(2rem, 6vw, 6rem);
+  align-items: end;
+}
+.page-mast h1,
+.group-header h1 {
+  margin-block: 1rem 1.1rem;
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+}
+.page-mast h1 .en,
+.group-header h1 .en {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.36em;
+  font-weight: 400;
+}
+.masthead-lead {
+  font-size: var(--fs-lg);
+  line-height: 1.75;
+  color: var(--text-2);
+  max-width: 36em;
+}
+.chapter-links {
+  display: grid;
+  border-top: 1px solid var(--text);
+  font-size: var(--fs-sm);
+}
+.chapter-links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 46px;
+  padding-block: 0.6rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color var(--dur-fast);
+}
+.chapter-links a::after {
+  content: "↓";
+  color: var(--text-3);
+  transition: transform var(--dur) var(--ease-out);
+}
+.chapter-links a:hover {
+  color: var(--text);
+}
+.chapter-links a:hover::after {
+  color: var(--accent);
+  transform: translateY(2px);
+}
+
+/* ── Generic page sections ─────────────────────────────────── */
+.group-section {
+  padding-block: clamp(3.5rem, 7vw, 6.5rem);
+}
+.group-section + .group-section {
+  border-top: 1px solid var(--border);
+}
+.group-section > .wrap > h2,
+.group-section h2.block-title {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+.group-section p {
+  color: var(--text-2);
+}
+.surface {
+  background: var(--bg-surface);
+}
+
+/* ── Person cards ──────────────────────────────────────────── */
+.people-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 148px), 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 2vw, 1.75rem);
+}
+.person {
+  display: grid;
+  gap: 0.2rem;
+  align-content: start;
+}
+.portrait {
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--bg-surface);
+  margin-bottom: 0.75rem;
+}
+.portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 18%;
+  transition: transform 600ms var(--ease-out);
+}
+.person h4,
+.person h3 {
+  font-size: var(--fs-md);
+  font-weight: 650;
+  line-height: 1.45;
+}
+.person p {
+  font-size: var(--fs-xs);
+  line-height: 1.6;
+  color: var(--text-3);
+  overflow-wrap: anywhere;
+}
+@media (hover: hover) {
+  a:hover .portrait img,
+  .person:hover .portrait img {
+    transform: scale(1.035);
   }
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
-  }
-  .fade-up {
-    opacity: 1;
-    transform: none;
-  }
+}
+
+/* ── Filter controls (members, gallery) ────────────────────── */
+.segmented {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: var(--bg-surface);
+  border-radius: 3px;
+}
+.segmented button {
+  min-height: 40px;
+  padding: 0.4rem 1rem;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-fast),
+    color var(--dur-fast),
+    box-shadow var(--dur-fast);
+}
+.segmented button:hover {
+  color: var(--text);
+}
+.segmented button:is([aria-pressed="true"], .active) {
+  background: var(--bg);
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgb(22 24 27 / 0.1), 0 0 0 1px var(--border);
+}
+
+/* ── Status blocks ─────────────────────────────────────────── */
+.local-catalog-note {
+  border-left: 2px solid var(--signal);
+  padding: 0.35rem 0 0.35rem 0.9rem;
+  margin: 0 0 1.5rem;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+.static-selection {
+  list-style: none;
+  margin-block: 1rem;
+  border-top: 1px solid var(--border);
+}
+.static-selection li {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.static-selection small {
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+}
+.static-selection a {
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+}
+.static-selection a:hover {
+  color: var(--accent);
+}
+.catalog-empty {
+  padding: 0 0 1.5rem;
 }

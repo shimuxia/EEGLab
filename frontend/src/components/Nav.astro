@@ -10,66 +10,34 @@ const links = [
 ];
 ---
 
-<a class="skip-link" href="#main-content">
-  跳转至正文
-</a>
+<a class="skip-link" href="#main-content">跳转至正文</a>
 <nav id="navbar" aria-label="主导航">
-  <a class="nav-brand" href="/" aria-label="严颖课题组首页">
-    <svg
-      viewBox="0 0 40 40"
-      width="36"
-      height="36"
-      fill="none"
-      aria-hidden="true"
-    >
-      <rect
-        x=".5"
-        y=".5"
-        width="39"
-        height="39"
-        rx="1"
-        fill="currentColor"
-      />
-      <path
-        d="M7 21H12L15 14L20 28L24 12L28 21H33"
-        stroke="white"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-    <span class="nav-brand-copy">
-      <strong>严颖课题组</strong>
-      <small>YAN YING RESEARCH GROUP</small>
-    </span>
-  </a>
-  <div class="nav-right">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/" aria-label="严颖课题组首页">
+      <svg class="nav-mark" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
+        <rect width="32" height="32" rx="2" fill="currentColor" />
+        <path d="M5 18h5l2.5-6 4 11 3-14 2.5 9H27" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="27" cy="18" r="2.2" fill="#ff7a2f" />
+      </svg>
+      <span class="nav-brand-copy">
+        <strong>严颖课题组</strong>
+        <small>南京信息工程大学 · 自动化学院</small>
+      </span>
+    </a>
     <ul class="nav-links" id="nav-links">
-      {links.map((link) => (
-        <li>
+      {links.map((link, i) => (
+        <li style={`--i:${i}`}>
           <a
             href={link.href}
-            aria-current={
-              path === link.href || path.startsWith(link.href + "/")
-                ? "page"
-                : undefined
-            }
-            class:list={[{ "nav-contact": link.href === "/contact" }]}
+            aria-current={path === link.href || path.startsWith(link.href + "/") ? "page" : undefined}
           >
             <span>{link.label}</span>
-            <small>{link.en}</small>
-            {link.href === "/contact" && <b aria-hidden="true">↗</b>}
+            <small lang="en">{link.en}</small>
           </a>
         </li>
       ))}
     </ul>
-    <button
-      class="nav-toggle"
-      id="nav-toggle"
-      aria-label="菜单"
-      aria-expanded="false"
-      aria-controls="nav-links"
-    >
+    <button class="nav-toggle" id="nav-toggle" aria-label="菜单" aria-expanded="false" aria-controls="nav-links">
       <span></span>
       <span></span>
     </button>
@@ -82,19 +50,14 @@ const links = [
   const setOpen = (open: boolean) => {
     links.classList.toggle("open", open);
     toggle.classList.toggle("open", open);
+    navbar.classList.toggle("menu-open", open);
+    document.documentElement.classList.toggle("nav-locked", open);
     toggle.setAttribute("aria-expanded", String(open));
   };
-  toggle.addEventListener("click", () =>
-    setOpen(toggle.getAttribute("aria-expanded") !== "true"),
-  );
-  links
-    .querySelectorAll("a")
-    .forEach((a) => a.addEventListener("click", () => setOpen(false)));
+  toggle.addEventListener("click", () => setOpen(toggle.getAttribute("aria-expanded") !== "true"));
+  links.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
   document.addEventListener("keydown", (event) => {
-    if (
-      event.key === "Escape" &&
-      toggle.getAttribute("aria-expanded") === "true"
-    ) {
+    if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
       setOpen(false);
       toggle.focus();
     }
@@ -102,22 +65,23 @@ const links = [
   document.addEventListener("click", (event) => {
     if (!navbar.contains(event.target as Node)) setOpen(false);
   });
-  const scrolled = () =>
-    navbar.classList.toggle("scrolled", window.scrollY > 30);
+  matchMedia("(min-width: 1001px)").addEventListener("change", (e) => e.matches && setOpen(false));
+  const scrolled = () => navbar.classList.toggle("scrolled", window.scrollY > 8);
   window.addEventListener("scroll", scrolled, { passive: true });
   scrolled();
 </script>
 <style>
   .skip-link {
     position: fixed;
-    left: 15px;
+    left: 16px;
     top: 0;
     transform: translateY(-150%);
-    background: var(--accent);
-    color: white;
-    padding: 12px;
+    background: var(--text);
+    color: #fff;
+    padding: 12px 16px;
     z-index: 300;
     text-decoration: none;
+    font-weight: 600;
   }
   .skip-link:focus {
     transform: translateY(0);
@@ -127,84 +91,105 @@ const links = [
     position: fixed;
     inset: 0 0 auto;
     z-index: 100;
-    min-height: 78px;
-    height: auto;
-    padding: 16px 6vw;
+    background: rgb(255 255 255 / 0.94);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur) var(--ease-std);
+    view-transition-name: site-nav;
+  }
+  @supports (backdrop-filter: blur(1px)) {
+    #navbar {
+      background: rgb(255 255 255 / 0.86);
+      backdrop-filter: saturate(1.4) blur(14px);
+    }
+  }
+  #navbar.scrolled,
+  #navbar.menu-open {
+    border-bottom-color: var(--border);
+  }
+  .nav-inner {
+    max-width: calc(var(--content) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    min-height: var(--nav-h);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 30px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(20px);
-    transition: box-shadow 0.3s;
-  }
-  #navbar.scrolled {
-    box-shadow: 0 3px 12px #17284012;
+    gap: 32px;
   }
   .nav-brand {
     display: flex;
     align-items: center;
     gap: 12px;
     flex-shrink: 0;
-    color: var(--accent);
+    color: var(--text);
     text-decoration: none;
   }
+  .nav-mark {
+    flex-shrink: 0;
+  }
   .nav-brand-copy {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    display: grid;
+    gap: 1px;
   }
   .nav-brand-copy strong {
-    font-size: 17px;
-    line-height: 1.2;
-    color: var(--text);
-    font-weight: 650;
-    letter-spacing: .035em;
+    font-size: 1.0625rem;
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: 0.06em;
   }
   .nav-brand-copy small {
-    font: 10px var(--font-mono);
-    letter-spacing: 1.25px;
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
     color: var(--text-3);
   }
   .nav-links {
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: clamp(18px, 2.2vw, 34px);
     list-style: none;
   }
   .nav-links a {
-    font-size: 14px;
-    text-decoration: none;
-    color: var(--text-2);
-    transition: color 0.25s;
+    position: relative;
     display: flex;
-    align-items: center;
-    gap: 16px;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-2);
+    text-decoration: none;
+    transition: color var(--dur-fast);
+  }
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--signal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur) var(--ease-out);
   }
   .nav-links a:hover,
   .nav-links a[aria-current="page"] {
-    color: var(--accent);
+    color: var(--text);
+  }
+  .nav-links a:hover::after,
+  .nav-links a[aria-current="page"]::after {
+    transform: scaleX(1);
   }
   .nav-links a > small {
     display: none;
   }
-  .nav-links .nav-contact {
-    border: 1px solid var(--border-md);
-    border-radius: 5px;
-    padding: 12px 19px;
-    color: var(--text);
-  }
-  .nav-contact b {
-    font-size: 16px;
-    line-height: 1;
-    font-weight: 400;
-    color: var(--accent);
-  }
   .nav-toggle {
     display: none;
-    width: 35px;
-    height: 35px;
+    width: 44px;
+    height: 44px;
+    margin-right: -10px;
     background: none;
     border: 0;
     cursor: pointer;
@@ -212,29 +197,30 @@ const links = [
   }
   .nav-toggle > span {
     position: absolute;
-    height: 1px;
-    background: var(--accent);
-    width: 24px;
-    left: 5px;
+    left: 11px;
+    width: 22px;
+    height: 2px;
+    background: var(--text);
     transition:
-      transform 0.3s,
-      top 0.3s;
-    top: 13px;
+      transform var(--dur) var(--ease-out),
+      top var(--dur) var(--ease-out),
+      width var(--dur) var(--ease-out);
+    top: 17px;
   }
   .nav-toggle > span:last-child {
-    top: 21px;
-    width: 18px;
+    top: 25px;
+    width: 14px;
   }
   .nav-toggle.open > span:first-child {
     transform: rotate(45deg);
-    top: 17px;
+    top: 21px;
   }
   .nav-toggle.open > span:last-child {
     transform: rotate(-45deg);
-    top: 17px;
-    width: 24px;
+    top: 21px;
+    width: 22px;
   }
-  @media (max-width: 1100px) {
+  @media (max-width: 1000px) {
     .nav-toggle {
       display: block;
     }
@@ -244,57 +230,60 @@ const links = [
       top: 100%;
       left: 0;
       right: 0;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      padding: 22px 6vw 30px;
+      height: calc(100dvh - var(--nav-h));
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      background: #fff;
+      padding: 12px var(--gutter) 40px;
       gap: 0;
       align-items: stretch;
       flex-direction: column;
-      backdrop-filter: blur(24px);
     }
     .nav-links.open {
       display: flex;
     }
     .nav-links a {
-      font-size: 17px;
-      padding: 17px 0;
+      justify-content: space-between;
+      padding: 18px 0;
+      font-size: 1.375rem;
+      font-weight: 600;
+      color: var(--text);
       border-bottom: 1px solid var(--border);
+    }
+    .nav-links a::after {
+      bottom: -1px;
     }
     .nav-links a > small {
       display: block;
-      margin-left: auto;
-      font: 10px var(--font-mono);
+      font-size: var(--fs-xs);
+      font-weight: 400;
       color: var(--text-3);
     }
-    .nav-links .nav-contact {
-      border: 0;
-      border-bottom: 1px solid var(--border);
-      border-radius: 0;
-      padding: 17px 0;
-    }
-    .nav-contact b {
-      display: none;
+  }
+  @media (max-width: 1000px) and (prefers-reduced-motion: no-preference) {
+    .nav-links.open li {
+      animation: menu-item 420ms var(--ease-out) both;
+      animation-delay: calc(var(--i) * 40ms);
     }
   }
-  @media (max-width: 600px) {
-    #navbar {
-      min-height: 70px;
-      padding-block: 14px;
-      padding-inline: 7vw;
+  @keyframes menu-item {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
     }
-    .nav-brand-copy strong {
-      font-size: 15px;
-    }
+  }
+  @media (max-width: 420px) {
     .nav-brand-copy small {
-      font-size: 8px;
-      letter-spacing: .035em;
+      font-size: 0.625rem;
+      letter-spacing: 0.02em;
     }
-    .nav-brand svg {
-      width: 32px;
-      height: 32px;
+    .nav-brand {
+      gap: 10px;
     }
-    .nav-links {
-      top: 100%;
-    }
+  }
+</style>
+<style is:global>
+  html.nav-locked {
+    overflow: hidden;
   }
 </style>

@@ -5,39 +5,64 @@ import { research } from "../../data/research";
 ---
 
 <GroupLayout title="脑机接口 · 金牛湖脑机实验室">
-  <SectionHeader title="脑机接口" english="RESEARCH / BRAIN-COMPUTER INTERFACE" links={[{"href": "#lab-film", "label": "实验影像"}, {"href": "#lab-topics", "label": "五个研究专题"}]}>
+  <SectionHeader
+    title="脑机接口"
+    english="Brain-Computer Interface · Jinniu Lake BCI Lab"
+    kicker="研究方向 02 · 金牛湖脑机实验室"
+    links={[{ href: "#lab-film", label: "实验影像" }, { href: "#lab-topics", label: "五个研究专题" }]}
+  >
     金牛湖脑机实验室是严颖课题组的脑机接口研究与实验平台，连接脑电信号分析、运动意图解码与智能控制。
   </SectionHeader>
-  <section class="group-section" id="lab-film">
-    <h2>实验影像</h2>
-    <video
-      class="group-video"
-      controls
-      muted
-      playsinline
-      preload="metadata"
-      poster="/videos/promo-hero-poster-v1.webp"
-      aria-label="脑机实验室研究展示"
-    >
-      <source src="/videos/promo-hero-v1.mp4" type="video/mp4" />
-      您的浏览器不支持视频播放。
-    </video>
-  </section>
-  <section class="group-section" id="lab-topics">
-    <h2>研究专题</h2>
-    <div class="group-grid">
-      {research.map((r) => (
-        <article class="group-card">
-          <img class="topic-photo" src={`/images/research/${r.slug}.webp`} alt={r.title} loading="lazy" width="600" height="360" />
-          <h3>{r.title}</h3>
-          <p>{r.overview}</p>
-          <a href={`/research/${r.slug}`}>研究方法与相关论文 →</a>
-        </article>
-      ))}
+
+  <section class="lab-film on-dark" id="lab-film" aria-labelledby="lab-film-title">
+    <div class="wrap">
+      <div class="lab-film-head">
+        <h2 id="lab-film-title">实验影像</h2>
+        <p>脑电采集设备、气动手套与控制器的研究展示。影片无声，可随时暂停。</p>
+      </div>
+      <video
+        class="group-video"
+        controls
+        muted
+        playsinline
+        preload="metadata"
+        poster="/videos/promo-hero-poster-v1.webp"
+        aria-label="脑机实验室研究展示"
+      >
+        <source src="/videos/promo-hero-v1.mp4" type="video/mp4" />
+        您的浏览器不支持视频播放。
+      </video>
     </div>
-    <div class="group-actions">
-      <a href="/achievements">实验成果与影像 →</a>
-      <a href="/team#lab-team">实验室协作团队 →</a>
+  </section>
+
+  <section class="group-section" id="lab-topics" aria-labelledby="topics-title">
+    <div class="wrap">
+      <header class="section-head">
+        <div>
+          <p class="kicker">研究专题 <span class="num">05</span></p>
+          <h2 id="topics-title">研究专题</h2>
+        </div>
+      </header>
+      <ol class="topic-stories">
+        {research.map((r, i) => (
+          <li class:list={["topic-story", { flip: i % 2 === 1 }]} data-reveal>
+            <a class="topic-story-img" href={`/research/${r.slug}`} tabindex="-1" aria-hidden="true">
+              <img src={`/images/research/${r.slug}-diagram.webp`} alt="" loading="lazy" width="620" height="420" />
+            </a>
+            <div class="topic-story-copy">
+              <span class="tnum topic-no">{r.num} / 05</span>
+              <h3>{r.title}<span class="en" lang="en">{r.titleEn}</span></h3>
+              <p>{r.overview}</p>
+              <ul class="tag-list" aria-label="关键词">{r.tags.map((t) => <li>{t}</li>)}</ul>
+              <a class="link" href={`/research/${r.slug}`}>研究方法与相关论文 <span class="arrow" aria-hidden="true">→</span></a>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <div class="page-actions">
+        <a class="btn btn-ghost" href="/achievements">实验成果与影像 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="/team#lab-team">实验室协作团队 <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
 </GroupLayout>

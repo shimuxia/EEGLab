@@ -6,84 +6,91 @@ import { advisor, labTeam } from "../data/group";
 ---
 
 <GroupLayout title="团队成员">
-  <SectionHeader title="团队成员" english="PEOPLE" links={[{"href": "#advisor", "label": "导师"}, {"href": "#members", "label": "课题组成员"}, {"href": "#lab-team", "label": "实验室协作团队"}]}>
+  <SectionHeader
+    title="团队成员"
+    english="People"
+    links={[{ href: "#advisor", label: "导师" }, { href: "#members", label: "课题组成员" }, { href: "#lab-team", label: "实验室协作团队" }]}
+  >
     课题组成员与脑机实验室协作团队，共同连接学术研究与工程实践。
   </SectionHeader>
-  <section class="group-section people-surface" id="advisor">
-    <div class="team-lead">
-      <img src={advisor.photo} alt="严颖老师肖像" width="140" height="172" />
+
+  <section class="group-section people-surface" id="advisor" aria-labelledby="advisor-name">
+    <div class="wrap team-lead">
+      <span class="portrait">
+        <img src={advisor.photo} alt="严颖老师肖像" width="248" height="298" />
+      </span>
       <div>
-        <p class="group-kicker">课题组导师</p>
-        <h2>{advisor.name} <small lang="en">{advisor.nameEn}</small></h2>
+        <p class="kicker">课题组导师</p>
+        <h2 id="advisor-name">{advisor.name} <span class="en" lang="en">{advisor.nameEn}</span></h2>
         <p>{advisor.affiliation} · {advisor.role}</p>
-        <a href="/about#advisor">导师介绍与学术经历</a>
+        <p class="team-lead-bio">{advisor.biography}</p>
+        <a class="link" href="/about#advisor">导师介绍与学术经历 <span class="arrow" aria-hidden="true">↗</span></a>
       </div>
     </div>
   </section>
-  <section class="group-section people-surface" id="members">
-    <h2>课题组成员</h2>
-    <GroupMembers />
+
+  <section class="group-section people-surface" id="members" aria-labelledby="members-title">
+    <div class="wrap">
+      <header class="section-head">
+        <h2 id="members-title">课题组成员</h2>
+      </header>
+      <GroupMembers />
+    </div>
   </section>
-  <section class="group-section people-surface" id="lab-team">
-    <h2>脑机实验室协作团队</h2>
-    <p>
-      金牛湖脑机实验室的研究与临床伙伴、学术顾问及学生成员。
-    </p>
-    <div class="group-grid group-subsection">
-      {labTeam.coreTeam.slice(1).map((m) => (
-        <article class="group-card">
-          <img
-            src={m.img}
-            alt={m.name}
-            width="90"
-            height="110"
-            loading="lazy"
-          />
-          <h3>
-            {m.name} · {m.role}
-          </h3>
-          <p>
-            {m.title} · {m.affil}
-          </p>
-          <p>{m.bio}</p>
-        </article>
-      ))}
-    </div>
-    <h3 class="group-subsection">学术顾问</h3>
-    <div class="group-grid">
-      {labTeam.advisors.map((m) => (
-        <article class="group-card lab-advisor-card">
-          <img
-            src={m.img}
-            alt={m.name}
-            width="90"
-            height="110"
-            loading="lazy"
-          />
-          <h3>{m.name}</h3>
-          <p>
-            {m.title} · {m.affil}
-          </p>
-          <p>{m.desc}</p>
-        </article>
-      ))}
-    </div>
-    <h3 class="group-subsection">实验室本科成员与校友</h3>
-    <div class="group-grid group-people">
-      {labTeam.undergrads.map((m) => (
-        <article class="group-card">
-          <img
-            src={m.img}
-            alt={m.name}
-            width="90"
-            height="110"
-            loading="lazy"
-          />
-          <h3>{m.name}</h3>
-          <p>{m.badge}</p>
-          <p>{m.focuses.join(" · ")}</p>
-        </article>
-      ))}
+
+  <section class="group-section people-surface" id="lab-team" aria-labelledby="lab-team-title">
+    <div class="wrap">
+      <header class="section-head">
+        <div>
+          <p class="kicker">金牛湖脑机实验室</p>
+          <h2 id="lab-team-title">脑机实验室协作团队</h2>
+        </div>
+        <p class="section-note">金牛湖脑机实验室的研究与临床伙伴、学术顾问及学生成员。</p>
+      </header>
+
+      <div class="lab-core">
+        {labTeam.coreTeam.slice(1).map((m) => (
+          <article class="core-card">
+            <span class="portrait">
+              <img src={m.img} alt={m.name} width="240" height="300" loading="lazy" />
+            </span>
+            <div>
+              <p class="kicker">{m.role}</p>
+              <h3>{m.name}</h3>
+              <p class="core-meta">{m.title} · {m.affil}</p>
+              <p>{m.bio}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <h3 class="group-subsection sub-title">学术顾问 <span class="tnum">{labTeam.advisors.length}</span></h3>
+      <ul class="people-grid people-grid-lg">
+        {labTeam.advisors.map((m) => (
+          <li class="person lab-advisor-card">
+            <span class="portrait">
+              <img src={m.img} alt={m.name} width="180" height="225" loading="lazy" />
+            </span>
+            <h4>{m.name}</h4>
+            <p>{m.title} · {m.affil}</p>
+            <p>{m.desc}</p>
+          </li>
+        ))}
+      </ul>
+
+      <h3 class="group-subsection sub-title">实验室本科成员与校友 <span class="tnum">{labTeam.undergrads.length}</span></h3>
+      <ul class="people-grid">
+        {labTeam.undergrads.map((m) => (
+          <li class="person">
+            <span class="portrait">
+              <img src={m.img} alt={m.name} width="180" height="225" loading="lazy" />
+            </span>
+            <h4>{m.name}</h4>
+            <p>{m.badge}</p>
+            <p>{m.focuses.join(" · ")}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 </GroupLayout>

@@ -1,15 +1,25 @@
 ---
 import { admission, advisor } from "../data/group";
+const split = (title: string) => {
+  const [zh, en] = title.split(" / ");
+  return { zh, en };
+};
 ---
 
-<div class="admission-list">
-  {admission.map((item) => (
-    <article class="group-card">
-      <h3>{item.title}</h3>
-      <p>{item.text}</p>
-    </article>
-  ))}
-</div>
+<ol class="admission-list">
+  {admission.map((item, i) => {
+    const t = split(item.title);
+    return (
+      <li class="admission-item" data-reveal style={`--i:${i}`}>
+        <span class="admission-no tnum">{String(i + 1).padStart(2, "0")}</span>
+        <div>
+          <h3>{t.zh}{t.en && <span class="en" lang="en">{t.en}</span>}</h3>
+          <p>{item.text}</p>
+        </div>
+      </li>
+    );
+  })}
+</ol>
 <aside class="admission-contact">
   <h3>联系导师</h3>
   <p>

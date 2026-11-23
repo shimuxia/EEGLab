@@ -2,20 +2,59 @@
 import GroupLayout from "../layouts/GroupLayout.astro";
 import Advisor from "../components/Advisor.astro";
 import GroupHonors from "../components/GroupHonors.astro";
+import { directions } from "../data/group";
 ---
 
 <GroupLayout title="关于我们">
-  <section class="group-section people-surface profile-spread" id="advisor">
-    <header class="profile-heading">
-      <p class="group-kicker" lang="en">Principal investigator</p>
-      <h1>导师与课题组</h1>
-      <p>以模式识别与机器学习为方法基础，连接复杂系统故障诊断、时序预测、脑机接口与工程实践。</p>
-      <a href="#honors">学术荣誉 ↓</a>
-    </header>
-    <Advisor />
+  <header class="group-header page-mast profile-heading">
+    <div class="wrap">
+      <div>
+        <p class="kicker">关于我们</p>
+        <h1>导师与课题组<span class="en" lang="en">About the group</span></h1>
+        <p class="masthead-lead">以模式识别与机器学习为方法基础，连接复杂系统故障诊断、时序预测、脑机接口与工程实践。</p>
+      </div>
+      <nav class="chapter-links" aria-label="本页目录">
+        <a href="#advisor">导师</a>
+        <a href="#directions">研究方向</a>
+        <a href="#honors">学术荣誉</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="group-section people-surface profile-spread" id="advisor" aria-label="导师">
+    <div class="wrap">
+      <Advisor />
+    </div>
   </section>
-  <section class="group-section" id="honors">
-    <h2>学术荣誉</h2>
-    <GroupHonors />
+
+  <section class="group-section surface" id="directions" aria-labelledby="directions-title">
+    <div class="wrap about-directions">
+      <div>
+        <p class="kicker">研究方向 <span class="num">07</span></p>
+        <h2 id="directions-title" class="block-title">课题组的七个方向</h2>
+        <a class="link" href="/research">查看全部研究方向 <span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+      <ol class="about-direction-list">
+        {directions.map((d) => (
+          <li>
+            <a href={d.id === "research-bci" ? "/research/brain-computer-interface" : `/research#${d.id}`}>
+              <span class="tnum">{d.no}</span>
+              <strong>{d.title}</strong>
+              <small lang="en">{d.en}</small>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="group-section" id="honors" aria-labelledby="honors-title">
+    <div class="wrap about-honors">
+      <div>
+        <p class="kicker">学术荣誉</p>
+        <h2 id="honors-title" class="block-title">学术荣誉</h2>
+      </div>
+      <GroupHonors />
+    </div>
   </section>
 </GroupLayout>

@@ -36,16 +36,18 @@ export default function RelatedPublications({ tags, limit = 3, variant = 'detail
       </div>
       {variant === 'detail' && <a className="related-all" href="/achievements">查看全部成果 →</a>}
       <style>{`
-        .related-publications { margin-top:42px; padding-top:30px; border-top:1px solid var(--border); }
-        .related-publications h2 { margin:0 0 16px; font-size:12px; letter-spacing:.12em; color:var(--text-3); font-weight:600; }
-        .related-publications a:not(.related-all) { display:grid; grid-template-columns:48px 1fr minmax(100px,220px); gap:14px; align-items:start; padding:13px 8px; border-radius:7px; color:inherit; }
-        .related-publications a:not(.related-all):hover { background:var(--bg-elevated); }
-        .related-year { color:var(--accent); font:11px 'SF Mono',monospace; }
-        .related-title { font-size:13px; line-height:1.5; }
-        .related-journal { color:var(--text-3); font-size:11px; text-align:right; }
-        .related-all { display:inline-block; margin-top:16px; font-size:13px; color:var(--accent); }
-        .related-paper-loading { margin-top:32px; color:var(--text-3); font-size:12px; }
-        @media(max-width:640px){.related-publications a:not(.related-all){grid-template-columns:42px 1fr}.related-journal{display:none}}
+        .related-publications { margin-top:clamp(2.5rem,5vw,4rem); }
+        .related-publications h2 { margin:0 0 1rem; font-size:var(--fs-xs); letter-spacing:.08em; color:var(--text-2); font-weight:650; }
+        .related-publications > div { border-top:1px solid var(--text); }
+        .related-publications a:not(.related-all) { display:grid; grid-template-columns:4rem minmax(0,1fr) minmax(8rem,14rem); gap:1rem; align-items:baseline; padding:1rem 0; border-bottom:1px solid var(--border); color:var(--text); text-decoration:none; }
+        .related-publications a:not(.related-all):hover .related-title { color:var(--accent); }
+        .related-year { color:var(--text-3); font-size:var(--fs-xs); font-variant-numeric:tabular-nums; }
+        .related-title { font-size:var(--fs-md); font-weight:600; line-height:1.5; transition:color var(--dur-fast); }
+        .related-journal { color:var(--text-3); font-size:var(--fs-xs); text-align:right; }
+        .related-all { display:inline-flex; margin-top:1rem; font-size:var(--fs-sm); font-weight:600; color:var(--text); text-decoration:none; border-bottom:1px solid var(--signal); }
+        .related-all:hover { color:var(--accent); }
+        .related-paper-loading { margin-top:2rem; color:var(--text-3); font-size:var(--fs-sm); }
+        @media(max-width:640px){.related-publications a:not(.related-all){grid-template-columns:3rem minmax(0,1fr)}.related-journal{display:none}}
       `}</style>
     </section>
   );

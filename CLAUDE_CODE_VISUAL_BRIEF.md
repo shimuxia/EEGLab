@@ -1,5 +1,7 @@
 # 严颖课题组官网 V3 视觉交接
 
+> 历史文档：描述的是 V3（`feat/yanying-visual-v3-motion-first`）。当前候选版见 [DESIGN_RATIONALE.md](DESIGN_RATIONALE.md) 与 [CLAUDE_HANDOFF.md](CLAUDE_HANDOFF.md)。
+
 完整设计依据在同级 QA 目录 `qa/visual-v3-motion-first/DESIGN_SALVAGE_MATRIX.md`。其中的四站对照涵盖两个原站、V1 和 V2，均在本机浏览器渲染。启动方法见 [Windows 本地交接](CLAUDE_HANDOFF.md)。
 
 | 页面 | V3 构图与交互 | 精修时保留 |

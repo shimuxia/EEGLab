@@ -1,0 +1,32 @@
+---
+import { traceFor, TRACE_W, TRACE_H } from "../lib/signals";
+interface Props {
+  index: number;
+  class?: string;
+  /** Draw a light baseline grid behind the trace (used for large plates). */
+  grid?: boolean;
+}
+const { index, class: className, grid = false } = Astro.props;
+const trace = traceFor(index);
+const ticks = Array.from({ length: 13 }, (_, i) => (i * TRACE_W) / 12);
+---
+
+<svg
+  class:list={["signal-trace", className]}
+  viewBox={`0 0 ${TRACE_W} ${TRACE_H}`}
+  preserveAspectRatio="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  {grid && (
+    <g class="trace-grid">
+      <line x1="0" x2={TRACE_W} y1={TRACE_H / 2} y2={TRACE_H / 2} />
+      {ticks.map((x) => <line x1={x} x2={x} y1={TRACE_H - 4} y2={TRACE_H} />)}
+    </g>
+  )}
+  <path class="trace-line" d={trace.d} />
+  {trace.dashed && <path class="trace-dashed" d={trace.dashed} />}
+  {trace.marks.map(([x, y]) => (
+    <path class="trace-mark" d={`M${x} ${y}h0.01`} />
+  ))}
+</svg>

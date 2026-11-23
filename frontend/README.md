@@ -2,7 +2,7 @@
 
 当前首页采用课题组题头、真实实验视频与导师团队入口。七方向、成员、招生及静态代表论文沿用 src/data/group.ts 等现有数据。脑机接口总览链接五个实验专题。成果页优先展示论文，可用章节导航切换奖项与图录。
 
-默认读取 /api/group/papers。基础地址 /api 会规范为 /api/group。刷新、分页校验、空目录及断线回退位于 src/lib/publications.ts 和论文组件。故障时展示三篇已有代表作，状态与远端总数分开呈现。样式和本机验证见 [视觉交接](../CLAUDE_CODE_VISUAL_BRIEF.md)。以下为历史运行记录。
+默认读取 /api/group/papers。基础地址 /api 会规范为 /api/group。刷新、分页校验、空目录及断线回退位于 src/lib/publications.ts 和论文组件。故障时展示三篇已有代表作，状态与远端总数分开呈现。样式分层（global → theme → group → pages → edition）和本机验证见 [本地交接](../CLAUDE_HANDOFF.md)。以下为历史运行记录。
 
 # 网站前端
 

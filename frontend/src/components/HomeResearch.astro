@@ -19,11 +19,9 @@ import ResearchArtwork from "./ResearchArtwork.astro";
         tabindex={i === 0 ? 0 : -1}
         data-research-tab={i}
       >
-        <span>{r.no}</span>
+        <span class="tab-no tnum">{r.no}</span>
         <strong>{r.title}</strong>
-        <span class="research-tab-arrow" aria-hidden="true">
-          ↗
-        </span>
+        <span class="research-tab-arrow" aria-hidden="true">→</span>
       </button>
     ))}
   </div>
@@ -38,27 +36,27 @@ import ResearchArtwork from "./ResearchArtwork.astro";
         tabindex="0"
       >
         <div class="research-panel-top">
-          <span>{r.en}</span>
-          <span>FIELD {r.no} / 07</span>
+          <span lang="en">{r.en}</span>
+          <span class="tnum">{r.no} / 07</span>
         </div>
         <ResearchArtwork index={i} />
         <div class="research-panel-copy">
           <h3>{r.title}</h3>
           <p>{r.desc}</p>
-          <div class="research-panel-tags">
+          <ul class="tag-list research-panel-tags">
             {r.tags.map((t) => (
-              <span>{t}</span>
+              <li>{t}</li>
             ))}
-          </div>
+          </ul>
           <a
-            class="text-link"
+            class="link"
             href={
               i === 1
                 ? "/research/brain-computer-interface"
                 : `/research#${r.id}`
             }
           >
-            探索这一方向 <span>↗</span>
+            {i === 1 ? "进入脑机实验室" : "探索这一方向"} <span class="arrow" aria-hidden="true">↗</span>
           </a>
         </div>
       </article>

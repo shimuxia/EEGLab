@@ -4,13 +4,19 @@ import Admission from "../components/Admission.astro";
 ---
 
 <GroupLayout title="招生与加入">
-  <div class="group-section admissions-spread">
+  <div class="wrap admissions-spread">
     <header>
-      <p class="group-kicker" lang="en">Admissions</p>
-      <h1>招生与加入</h1>
+      <p class="kicker">招生</p>
+      <h1>招生与加入<span class="en" lang="en">Admissions</span></h1>
       <p>欢迎有科研热情、扎实基础和动手能力的同学，参与交叉学科研究与实际应用。</p>
-      <a class="text-link" href="/contact">联系导师 ↗</a>
+      <div class="admissions-actions">
+        <a class="btn" href="/contact">联系导师 <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="link" href="/research">先了解研究方向 <span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
     </header>
-    <section id="admission-info"><h2>招生信息</h2><Admission /></section>
+    <section id="admission-info" aria-labelledby="admission-title">
+      <h2 id="admission-title" class="sr-only">招生信息</h2>
+      <Admission />
+    </section>
   </div>
 </GroupLayout>

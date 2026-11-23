@@ -3,29 +3,36 @@ import { advisor } from "../data/group";
 ---
 
 <div class="group-advisor">
-  <img
-    src={advisor.photo}
-    alt="严颖老师肖像"
-    width="440"
-    height="520"
-    loading="lazy"
-  />
-  <div>
-    <p class="group-kicker">PRINCIPAL INVESTIGATOR</p>
-    <h2>
-      {advisor.name} <small>{advisor.nameEn}</small>
-    </h2>
-    <p>
-      {advisor.affiliation} · {advisor.role}
-    </p>
-    <p>{advisor.biography}</p>
-    <div class="group-tags">
-      {advisor.interests.map((tag) => (
-        <span>{tag}</span>
-      ))}
+  <figure class="advisor-figure">
+    <span class="portrait">
+      <img src={advisor.photo} alt="严颖老师肖像" width="248" height="298" loading="lazy" />
+    </span>
+    <figcaption>严颖 · 南京信息工程大学自动化学院</figcaption>
+  </figure>
+  <div class="advisor-text">
+    <p class="kicker">课题组负责人</p>
+    <h2>{advisor.name} <span class="en" lang="en">{advisor.nameEn}</span></h2>
+    <p class="advisor-role">{advisor.affiliation} · {advisor.role}</p>
+    <p class="advisor-bio">{advisor.biography}</p>
+    <dl class="advisor-facts">
+      <div>
+        <dt>研究兴趣</dt>
+        <dd>
+          <ul class="tag-list">{advisor.interests.map((tag) => <li>{tag}</li>)}</ul>
+        </dd>
+      </div>
+      <div>
+        <dt>办公地点</dt>
+        <dd>{advisor.office}</dd>
+      </div>
+      <div>
+        <dt>电子邮箱</dt>
+        <dd><a href={`mailto:${advisor.email}`}>{advisor.email}</a></dd>
+      </div>
+    </dl>
+    <div class="advisor-links">
+      <a class="btn" href={advisor.homepage} target="_blank" rel="noopener noreferrer">官方个人主页 <span class="arrow" aria-hidden="true">↗</span></a>
+      <a class="btn btn-ghost" href={advisor.scholar} target="_blank" rel="noopener noreferrer">Google Scholar <span class="arrow" aria-hidden="true">↗</span></a>
     </div>
-    <a href={advisor.homepage} target="_blank" rel="noopener noreferrer">
-      官方个人主页 ↗
-    </a>
   </div>
 </div>
