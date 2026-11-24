@@ -1,12 +1,47 @@
 # Claude 视觉候选版 · 最终报告
 
-> 状态：**Claude 视觉候选版 r2**，等待用户亲眼确认审美。只做了本地提交，没有 push、PR、merge、部署，也没有访问服务器、EdgeOne、备案或生产数据。
+> 状态：**Claude 视觉候选版 r3**，等待用户亲眼确认审美。只做了本地提交，没有 push、PR、merge、部署，也没有访问服务器、EdgeOne、备案或生产数据。
+
+## r3（2026-11-24）
+
+| 项 | 值 |
+|---|---|
+| 分支 | `feat/yanying-claude-art-direction-r3`（本文件所在提交即 HEAD） |
+| 回退基线 | r2 `753402bfaef2a7dc56764bc6935fb24479c3e976`；第一版 `1e509fb`；V3 `89acaf4`（均未改动） |
+| 本地预览 | http://127.0.0.1:4327/ |
+
+**做了什么**：按 Claude 的审美重做视觉层（理由见 DESIGN_RATIONALE.md 的 r3 一节）。
+
+- 自托管开源字体：思源黑体可变字体 4.6 MB，分 101 片，按页面需要加载；Inter 140 KB。
+- 新色板：纸、墨、石板蓝、暖橙；实验室相关区块使用冷色调。
+- 形态卡片化：圆角卡片、胶囊控件、轻阴影；减少线框。
+- 首屏改为“七个方向，一条主线”动画索引，手机上为竖向时间轴。
+- 内页全部按同一套语言重排。
+
+内容和逻辑未变：路由、测试契约、论文与后端逻辑都没有改动。
+
+**本轮实际运行的检查**（证据在 `qa/claude-art-direction-20261122/r3/`）：
+
+- `npm run build`、`test:frontend`、`tsc`、`test:backend`、`check_deployment`、`check_group_site`、`check_original_people`、`check_adversarial_site`（含 axe WCAG 2.2 AA）全部通过，日志在 `r3/regression-final/`。
+- 自查中发现并修正一处对比度问题：成果页侧栏计数原来用了透明度，已改为实色。
+- 源站内容完整性 331/331，见 `r3/content-check.log`。
+- 图片墙状态检查通过，见 `r3/wall-check.log`。
+
+**证据**：
+
+- `r3/GALLERY.html`：r2 与 r3 同视口对比，46 组。
+- `r3/MOTION.html`：4 段实录。
+- `r3/Open-Preview-r3.ps1`：一键打开以上页面。
+
+**未解决与待确认**：同 r2 一节（奖项日期冲突、实验室电话、未确认的统计数字、Safari/iOS 未实机验收）。另外，字体分片在首次访问时按需下载，下载完成前会短暂显示系统字体（`font-display: swap`）。
+
+---
 
 ## r2（2026-11-23）
 
 | 项 | 值 |
 |---|---|
-| 分支 | `feat/yanying-claude-art-direction-r2`（本文件所在提交即 HEAD，用 `git rev-parse HEAD` 查看） |
+| 分支 | `feat/yanying-claude-art-direction-r2` @ `753402bfaef2a7dc56764bc6935fb24479c3e976` |
 | 回退基线 | `feat/yanying-claude-art-direction` @ `1e509fbbbd693a22f06fe1dd75c519e0170dbeb5`（未改动）；V3 `89acaf4`（未改动） |
 | 本地预览 | http://127.0.0.1:4327/ |
 

@@ -42,21 +42,24 @@ const wallB = (galleryData as any).waterfall_b as { src: string }[];
       </a>
     </div>
 
-    <nav class="hero-bottom" aria-label="研究方向索引">
+    <nav class="hero-bottom" aria-label="研究方向索引" data-thread>
       <div class="wrap">
-        <div class="index-head">
-          <h2>研究焦点</h2>
-          <p lang="en">Research Focus</p>
+        <div class="thread-head">
+          <h2>{researchIntro.title}</h2>
+          <p lang="en">Seven directions, one thread</p>
         </div>
-        <ol class="focus-index">
+        <ol class="thread">
           {directions.map((r, i) => (
             <li style={`--i:${i}`}>
-              <a class="focus" href={i === 1 ? "/research/brain-computer-interface" : `/research#${r.id}`}>
-                <ResearchGlyph index={i} class="focus-glyph" />
-                <span class="focus-no tnum">{r.no}</span>
-                <strong class="focus-name">{r.title}</strong>
-                <span class="focus-line">{researchTaglines[i]}</span>
-                {i === 1 && <span class="focus-tag">金牛湖脑机实验室</span>}
+              <a class="thread-node" href={i === 1 ? "/research/brain-computer-interface" : `/research#${r.id}`}>
+                <ResearchGlyph index={i} class="thread-glyph" />
+                <span class="thread-dot" aria-hidden="true"></span>
+                <span class="thread-text">
+                  <span class="thread-no tnum">{r.no}</span>
+                  <strong>{r.title}</strong>
+                  <span class="thread-tagline">{researchTaglines[i]}</span>
+                  {i === 1 && <span class="thread-tag">金牛湖脑机实验室</span>}
+                </span>
               </a>
             </li>
           ))}
@@ -81,7 +84,7 @@ const wallB = (galleryData as any).waterfall_b as { src: string }[];
       <header class="section-head" data-reveal>
         <div>
           <p class="kicker">研究方向 <span class="num">07</span></p>
-          <h2 id="research-title">{researchIntro.title}</h2>
+          <h2 id="research-title">七个研究方向</h2>
           <p class="section-desc">{researchIntro.desc}</p>
         </div>
         <a class="link" href="/research">全部研究方向 <span class="arrow" aria-hidden="true">↗</span></a>

@@ -1,6 +1,6 @@
 # 严颖课题组统一官网
 
-本地 Claude 视觉候选版 r2（2026-11-23，分支 `feat/yanying-claude-art-direction-r2`，基于上一版 Claude 分支与 V3）覆盖导师、团队、七个研究方向、招生、联系和科研成果，设计依据见 [DESIGN_RATIONALE.md](DESIGN_RATIONALE.md)，源站内容核对见 [SOURCE_CONTENT_MATRIX.md](SOURCE_CONTENT_MATRIX.md)。金牛湖脑机实验室位于研究方向之下。Astro 生成 13 个内容页和一个 404，React 负责论文交互，Python 提供只读目录和同步、审核能力。
+本地 Claude 视觉候选版 r3（2026-11-24，分支 `feat/yanying-claude-art-direction-r3`，基于 r2、第一版 Claude 分支与 V3）覆盖导师、团队、七个研究方向、招生、联系和科研成果，设计依据见 [DESIGN_RATIONALE.md](DESIGN_RATIONALE.md)，源站内容核对见 [SOURCE_CONTENT_MATRIX.md](SOURCE_CONTENT_MATRIX.md)。金牛湖脑机实验室位于研究方向之下。Astro 生成 13 个内容页和一个 404，React 负责论文交互，Python 提供只读目录和同步、审核能力。
 
 在 Windows 重开官网、V3/新版对比画廊和动效实录，或复跑检查，见 [本地交接](CLAUDE_HANDOFF.md)。以下为原实验室项目的历史说明。
 

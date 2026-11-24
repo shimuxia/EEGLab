@@ -2,9 +2,10 @@
 
 Windows 仓库 `D:/AI-Agent-Workspace/Projects/YanYing-EEGLab-Merge/repo`，WSL 对应 `/mnt/d/AI-Agent-Workspace/Projects/YanYing-EEGLab-Merge/repo`。开发、Git、构建和测试都在 WSL 中进行。交接时用 `git rev-parse HEAD` 核对。
 
-## 当前：Claude 视觉候选版 r2（2026-11-23）
+## 当前：Claude 视觉候选版 r3（2026-11-24）
 
-- 分支 `feat/yanying-claude-art-direction-r2`，基于上一版 `feat/yanying-claude-art-direction` @ `1e509fb`（保留为回退基线），后者基于 V3 `89acaf446a5205169643be81fda5dd67e67bc073`。
+- 分支 `feat/yanying-claude-art-direction-r3`，基于 r2 `feat/yanying-claude-art-direction-r2` @ `753402b`。更早的回退点：`feat/yanying-claude-art-direction` @ `1e509fb`，V3 `89acaf4`。
+- r3 重做了视觉层：自托管开源字体、纸/墨/石板蓝色板、卡片化形态、首屏“七个方向，一条主线”。说明见 DESIGN_RATIONALE.md 的 r3 一节。
 - r2 补回了源站内容，并修订了色彩、背景层级、标题比例和研究图形。逐项核对见 [SOURCE_CONTENT_MATRIX.md](SOURCE_CONTENT_MATRIX.md)。
 - 状态：**待用户审美确认的候选版**，只做了本地提交，没有 push、PR、merge 或部署。
 - 设计依据见 [DESIGN_RATIONALE.md](DESIGN_RATIONALE.md)，修改清单与证据路径见 [CLAUDE_VISUAL_FINAL_REPORT.md](CLAUDE_VISUAL_FINAL_REPORT.md)。
@@ -14,13 +15,14 @@ Windows 仓库 `D:/AI-Agent-Workspace/Projects/YanYing-EEGLab-Merge/repo`，WSL 
 
 | 文件 | 内容 |
 |---|---|
-| `global.css` | 设计 token（颜色、字体、字阶、标题三档、间距、时长、缓动）、reset、基础排版、按钮 `.btn`、链接 `.link`、小标 `.kicker` |
+| `fonts.css` | 自托管字体：思源黑体可变字体（101 个 unicode-range 分片）+ Inter（latin、latin-ext），文件在 `public/fonts/`，附许可证 |
+| `global.css` | 设计 token（颜色、字体、字阶、标题三档、间距、圆角、阴影、时长、缓动）、reset、基础排版、胶囊按钮 `.btn`、链接 `.link`、小标 `.kicker` |
 | `theme.css` | 共享组件：区块标题、`.band-mist` / `.sheet` 背景层、研究科学图形 `.research-glyph`、研究选项卡、荣誉列表、页头、人像卡、分段筛选、状态块 |
 | `group.css` | 首页构图 |
 | `pages.css` | 内页构图（研究、实验室、专题详情、团队、关于、招生、联系、成果、404） |
 | `edition.css` | 动效（入场、描线、扫描线、滚动显现、跨页过渡），全部受 `prefers-reduced-motion` 约束 |
 
-主要 token（r2）：`--canvas #f2f3ef`（页面底色）、`--bg #fff`（内容纸面）、`--bg-surface #e8ebe6`（雾灰带）、`--bg-dark #20272b`（只用于视频画框）、`--text #1c2125`、`--text-2 #4a5157`、`--text-3 #5d6469`、`--graph #5f7f87` / `--graph-dim #a8b8bb`（科学图形线条）、`--graph-text #46646c`（青色文字）、`--accent #b33c0b`（文字橙）、`--signal #e0601a`（图形焦点橙）；标题三档 `--fs-h1/h2/h3`，间距 `--space-section`、`--space-head`。字体只用系统栈：Windows 为 Segoe UI Variable + 微软雅黑，macOS 为 PingFang SC，Linux 为 Noto Sans CJK，没有打包任何字体文件。
+主要 token（r3）：`--canvas #f7f6f3`（纸）、`--bg-surface #efeee9`（次级纸）、`--lab #eaeef2`（实验室冷色）、`--bg #fff`（卡片）、`--text #142030`（墨）、`--text-2 #475260`、`--text-3 #5f6874`、`--graph #5b7488` / `--graph-dim #b5c2cc` / `--graph-text #44596b`（石板蓝）、`--accent #b4430f`、`--signal #e2611c`；`--radius 14px`、`--radius-lg 22px`、`--shadow-1/2`；标题 `--fs-h1/h2/h3`，间距 `--space-section`、`--space-head`。字体栈 `"Inter Variable", "Noto Sans SC Variable", …`。字体只用系统栈：Windows 为 Segoe UI Variable + 微软雅黑，macOS 为 PingFang SC，Linux 为 Noto Sans CJK，没有打包任何字体文件。
 
 ### 新增与重写的组件
 
@@ -51,14 +53,14 @@ nohup .venv/bin/python ../qa/claude-art-direction-20261122/v3_preview.py 4328 >/
 Windows 一键打开（新版官网、对比画廊、动效实录）：
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "D:/AI-Agent-Workspace/Projects/YanYing-EEGLab-Merge/qa/claude-art-direction-20261122/r2/Open-Preview-r2.ps1"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "D:/AI-Agent-Workspace/Projects/YanYing-EEGLab-Merge/qa/claude-art-direction-20261122/r3/Open-Preview-r3.ps1"
 ```
 
 ### 检查命令
 
 ```bash
 # WSL，仓库根目录；需要 4327 指向当前构建
-bash ../qa/claude-art-direction-20261122/regression.sh r2/regression-final
+bash ../qa/claude-art-direction-20261122/regression.sh r3/regression-final
 # 源站内容完整性（331 项）：
 python -I ../qa/claude-art-direction-20261122/r2/check_content.py
 #   test:frontend、tsc、test:backend、check_deployment、check_group_site、
@@ -81,7 +83,8 @@ python3 -I ../qa/claude-art-direction-20261122/encode.py ../qa/claude-art-direct
 ## 回退到上一版或 V3
 
 ```bash
-git switch feat/yanying-claude-art-direction     # 1e509fb，r2 之前的 Claude 版
+git switch feat/yanying-claude-art-direction-r2  # 753402b，r3 之前的版本
+git switch feat/yanying-claude-art-direction     # 1e509fb，第一版 Claude 设计
 ```
 
 

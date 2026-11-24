@@ -1,91 +1,80 @@
 /* ─────────────────────────────────────────────────────────────
-   严颖课题组 · design tokens and base layer
-   Graphite neutrals + one signal-orange accent taken from the lab's
-   own hardware. Layers: global (tokens/base) → theme (components)
-   → group (home) → pages (inner pages) → edition (motion).
+   严颖课题组 · tokens and base (r3)
+   Paper and ink, slate line work, one warm focal colour.
+   The group lives on warm paper; the BCI lab gets a cool tint.
+   Layers: fonts → global → theme (components) → group (home)
+           → pages (inner pages) → edition (motion).
    ───────────────────────────────────────────────────────────── */
 :root {
   color-scheme: light;
 
-  /* Surfaces: one soft canvas, a mist band, white only for content sheets.
-     Full-bleed black is reserved for nothing but video frames. */
-  --canvas: #f2f3ef;
+  /* Surfaces */
+  --canvas: #f7f6f3;
   --bg: #ffffff;
-  --bg-surface: #e8ebe6;
-  --bg-elevated: #dde1db;
-  --bg-dark: #20272b;
-  --bg-dark-2: #2a3236;
-  --text: #1c2125;
-  --text-2: #4a5157;
-  --text-3: #5d6469;
-  --text-inv: #eef0ec;
-  --text-inv-2: #b4bbbf;
-  --border: #dcdfd9;
-  --border-md: #c2c7c0;
-  --border-dark: #3a4246;
+  --bg-surface: #efeee9;
+  --bg-elevated: #e6e4dd;
+  --lab: #eaeef2;
+  --lab-2: #e1e7ed;
+  --bg-dark: #142030;
 
-  /* Science graphics: the teacher site's slate-teal line work. */
-  --graph: #5f7f87;
-  --graph-dim: #a8b8bb;
-  --graph-text: #46646c;
+  /* Ink */
+  --text: #142030;
+  --text-2: #475260;
+  --text-3: #5f6874;
+  --text-inv: #f4f6f8;
+  --border: #e4e2dc;
+  --border-md: #d2cfc7;
+  --border-lab: #d4dce4;
 
-  /* One accent, used sparingly. Text uses --accent (≥4.5:1 on canvas and mist). */
-  --accent: #b33c0b;
-  --signal: #e0601a;
-  --signal-on-dark: #ff8a45;
-  --accent-dim: #f6e6dc;
-  --accent-mid: #efc6ad;
-  --focus: #b33c0b;
+  /* Science line work (teacher site lineage) */
+  --graph: #5b7488;
+  --graph-dim: #b5c2cc;
+  --graph-text: #44596b;
 
-  /* States */
+  /* Focal colour, used sparingly */
+  --accent: #b4430f;
+  --signal: #e2611c;
+  --accent-dim: #fbebe0;
+  --focus: #b4430f;
   --success: #2f6b4f;
   --danger: #b42318;
 
   /* Type */
-  --font-sans: "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue",
-    "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Microsoft YaHei UI", "Microsoft YaHei",
-    "Noto Sans CJK SC", "Noto Sans SC", "Source Han Sans SC", "WenQuanYi Micro Hei", sans-serif;
-  --font-display: "Segoe UI Variable Display", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue",
-    "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Microsoft YaHei UI", "Microsoft YaHei",
-    "Noto Sans CJK SC", "Noto Sans SC", "Source Han Sans SC", sans-serif;
-  --font-mono: "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono", monospace;
+  --font-sans: "Inter Variable", "Noto Sans SC Variable", "PingFang SC", "HarmonyOS Sans SC",
+    "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: "Cascadia Mono", "SF Mono", Consolas, monospace;
 
   --fs-xs: 0.8125rem;
-  --fs-sm: 0.875rem;
-  --fs-md: 1rem;
+  --fs-sm: 0.9375rem;
+  --fs-md: 1.0625rem;
   --fs-lg: 1.1875rem;
-  --fs-xl: clamp(1.375rem, 1.1rem + 0.9vw, 1.75rem);
-  --fs-2xl: clamp(1.75rem, 1.25rem + 1.9vw, 2.75rem);
-  --fs-3xl: clamp(2.375rem, 1.5rem + 3.6vw, 4.25rem);
-  --fs-display: clamp(3.5rem, 2rem + 9vw, 8rem);
-  /* Heading ladder: every page uses these three steps. */
-  --fs-h1: clamp(2.5rem, 1.7rem + 3vw, 4rem);
-  --fs-h2: clamp(1.875rem, 1.35rem + 1.7vw, 2.75rem);
-  --fs-h3: clamp(1.25rem, 1.05rem + 0.7vw, 1.625rem);
-
-  --lh-tight: 1.12;
-  --lh-snug: 1.35;
+  --fs-xl: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  --fs-display: clamp(3.25rem, 1.6rem + 7.6vw, 7.5rem);
+  --fs-h1: clamp(2.375rem, 1.6rem + 2.9vw, 4rem);
+  --fs-h2: clamp(1.875rem, 1.35rem + 1.7vw, 2.875rem);
+  --fs-h3: clamp(1.25rem, 1.08rem + 0.6vw, 1.5rem);
+  --fs-2xl: var(--fs-h2);
+  --fs-3xl: var(--fs-h1);
   --lh-body: 1.8;
-  --measure: 38em;
+  --measure: 36em;
 
-  /* Space and layout */
+  /* Space and shape */
   --gutter: clamp(20px, 5vw, 72px);
-  --content: 1360px;
+  --content: 1280px;
   --nav-h: 72px;
-  --space-1: 0.5rem;
-  --space-2: 1rem;
-  --space-3: 1.5rem;
-  --space-4: 2.25rem;
-  --space-5: clamp(2.5rem, 4vw, 3.5rem);
-  --space-section: clamp(4rem, 7vw, 7rem);
-  --space-head: clamp(2rem, 3.5vw, 3rem);
+  --space-section: clamp(5rem, 9vw, 8.5rem);
+  --space-head: clamp(2.25rem, 4vw, 3.5rem);
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --shadow-1: 0 1px 2px rgb(20 32 48 / 0.04), 0 6px 20px rgb(20 32 48 / 0.05);
+  --shadow-2: 0 2px 6px rgb(20 32 48 / 0.06), 0 18px 48px rgb(20 32 48 / 0.1);
 
-  --radius: 2px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-std: cubic-bezier(0.4, 0, 0.2, 1);
   --dur-fast: 160ms;
-  --dur: 280ms;
-  --dur-slow: 720ms;
+  --dur: 300ms;
 }
 
 /* ── Reset ─────────────────────────────────────────────────── */
@@ -112,8 +101,8 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  font-feature-settings: "kern";
+  font-feature-settings: "kern", "cv11";
+  font-synthesis: none;
 }
 img,
 video,
@@ -141,21 +130,25 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 650;
-  line-height: var(--lh-snug);
-  letter-spacing: -0.005em;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
   text-wrap: balance;
 }
 p {
   text-wrap: pretty;
 }
+strong {
+  font-weight: 600;
+}
 ::selection {
-  background: var(--signal);
+  background: var(--graph);
   color: #fff;
 }
 :focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar {
   width: 10px;
@@ -181,8 +174,6 @@ p {
   white-space: nowrap;
   border: 0;
 }
-
-/* ── Layout primitives ─────────────────────────────────────── */
 .wrap,
 .container {
   width: 100%;
@@ -195,22 +186,23 @@ p {
 .kicker {
   display: inline-flex;
   align-items: center;
-  gap: 0.7em;
+  gap: 0.6em;
   font-size: var(--fs-xs);
   font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--text-2);
+  letter-spacing: 0.06em;
+  color: var(--graph-text);
 }
 .kicker::before {
   content: "";
-  width: 18px;
-  height: 2px;
-  background: var(--graph);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--signal);
 }
 .kicker .num {
-  font-variant-numeric: tabular-nums;
-  color: var(--text-3);
   font-weight: 500;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
 }
 .lead {
   font-size: var(--fs-lg);
@@ -219,7 +211,6 @@ p {
   max-width: var(--measure);
 }
 .en {
-  font-family: var(--font-display);
   font-weight: 400;
   letter-spacing: 0;
   color: var(--text-3);
@@ -232,81 +223,70 @@ p {
 .btn {
   --btn-bg: var(--text);
   --btn-fg: #fff;
-  position: relative;
+  --btn-bd: var(--text);
   display: inline-flex;
   align-items: center;
-  gap: 0.75em;
+  gap: 0.65em;
   min-height: 48px;
-  padding: 0.7em 1.35em;
-  border: 1px solid var(--btn-bg);
-  border-radius: var(--radius);
+  padding: 0.6em 1.4em;
+  border: 1px solid var(--btn-bd);
+  border-radius: 999px;
   background: var(--btn-bg);
   color: var(--btn-fg);
   font-size: var(--fs-sm);
   font-weight: 600;
-  letter-spacing: 0.02em;
   text-decoration: none;
   cursor: pointer;
   transition:
     background-color var(--dur-fast) var(--ease-std),
+    border-color var(--dur-fast) var(--ease-std),
     color var(--dur-fast) var(--ease-std),
-    border-color var(--dur-fast) var(--ease-std);
+    box-shadow var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out);
 }
 .btn:hover {
-  --btn-bg: #0e1214;
+  --btn-bg: #0b1420;
+  box-shadow: 0 8px 22px rgb(20 32 48 / 0.18);
+  transform: translateY(-1px);
 }
 .btn:active {
-  transform: translateY(1px);
+  transform: translateY(0);
+  box-shadow: none;
 }
 .btn .arrow {
   transition: transform var(--dur) var(--ease-out);
 }
 .btn:hover .arrow,
 .btn:focus-visible .arrow {
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 .btn-ghost {
   --btn-bg: transparent;
   --btn-fg: var(--text);
-  border-color: var(--border-md);
+  --btn-bd: var(--border-md);
 }
 .btn-ghost:hover {
-  --btn-bg: var(--bg-surface);
-  border-color: var(--text);
+  --btn-bg: var(--bg);
+  --btn-bd: var(--bg);
+  box-shadow: var(--shadow-1);
 }
 .btn-signal {
   --btn-bg: var(--accent);
+  --btn-bd: var(--accent);
 }
 .btn-signal:hover {
-  --btn-bg: #8f3009;
-}
-.on-dark .btn {
-  --btn-bg: #fff;
-  --btn-fg: var(--bg-dark);
-}
-.on-dark .btn:hover {
-  --btn-bg: var(--signal-on-dark);
-  border-color: var(--signal-on-dark);
-}
-.on-dark .btn-ghost {
-  --btn-bg: transparent;
-  --btn-fg: #fff;
-  border-color: #5b6066;
-}
-.on-dark .btn-ghost:hover {
-  --btn-bg: transparent;
-  --btn-fg: #fff;
-  border-color: #fff;
+  --btn-bg: #963609;
+  --btn-bd: #963609;
 }
 
 .link {
   display: inline-flex;
   align-items: baseline;
-  gap: 0.45em;
+  gap: 0.4em;
   font-weight: 600;
   color: var(--text);
   text-decoration: none;
-  background: linear-gradient(var(--graph-dim), var(--graph-dim)) 0 100% / 100% 1px no-repeat;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
   padding-bottom: 2px;
   transition:
     background-size var(--dur) var(--ease-out),
@@ -317,22 +297,14 @@ p {
   transition: transform var(--dur) var(--ease-out);
 }
 .link:hover {
-  color: var(--accent);
-  background-image: linear-gradient(var(--signal), var(--signal));
+  background-size: 100% 1px;
 }
 .link:hover .arrow,
 .link:focus-visible .arrow {
   transform: translate(2px, -2px);
 }
-.on-dark .link {
-  color: #fff;
-}
-.on-dark .link .arrow,
-.on-dark .link:hover {
-  color: var(--signal-on-dark);
-}
 
-/* Legacy helpers kept for retained laboratory components. */
+/* Retained helpers for older components. */
 .arrow-link {
   display: inline-flex;
   align-items: center;

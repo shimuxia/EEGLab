@@ -53,7 +53,8 @@ const views = [
     position: relative;
     aspect-ratio: 1.35;
     background: #fff;
-    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-2);
     overflow: hidden;
   }
   .device-views img {
@@ -81,9 +82,9 @@ const views = [
   .plate-switch {
     display: inline-flex;
     gap: 0.25rem;
-    padding: 0.2rem;
-    background: var(--bg-surface);
-    border-radius: 3px;
+    padding: 0.25rem;
+    background: rgb(255 255 255 / 0.7);
+    border-radius: 999px;
   }
   .plate-switch[hidden] {
     display: none;
@@ -92,17 +93,16 @@ const views = [
     min-height: 36px;
     padding: 0.3rem 0.85rem;
     border: 0;
-    border-radius: 2px;
+    border-radius: 999px;
     background: transparent;
     color: var(--text-2);
     font-size: var(--fs-xs);
     cursor: pointer;
   }
   button[aria-pressed="true"] {
-    background: #fff;
-    color: var(--text);
+    background: var(--text);
+    color: #fff;
     font-weight: 600;
-    box-shadow: 0 0 0 1px var(--border);
   }
   @media (prefers-reduced-motion: no-preference) {
     img {

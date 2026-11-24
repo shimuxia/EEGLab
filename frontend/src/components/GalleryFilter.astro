@@ -79,8 +79,8 @@ const galleryTags = Array.from(new Set(items.map(i => i.tag)));
     gap: 0.25rem;
     padding: 0.25rem;
     margin-bottom: 1.75rem;
-    background: var(--bg-surface);
-    border-radius: 3px;
+    background: var(--canvas);
+    border-radius: 999px;
   }
   #gallery-filter-root .gf-chip {
     min-height: 36px;
@@ -89,7 +89,7 @@ const galleryTags = Array.from(new Set(items.map(i => i.tag)));
     font-size: var(--fs-sm);
     font-weight: 500;
     border: 0;
-    border-radius: 2px;
+    border-radius: 999px;
     background: transparent;
     color: var(--text-2);
     cursor: pointer;
@@ -99,10 +99,9 @@ const galleryTags = Array.from(new Set(items.map(i => i.tag)));
     color: var(--text);
   }
   #gallery-filter-root .gf-chip.active {
-    background: var(--bg);
-    color: var(--text);
+    background: var(--text);
+    color: #fff;
     font-weight: 600;
-    box-shadow: 0 0 0 1px var(--border), 0 1px 2px rgb(22 24 27 / 0.08);
   }
   #gallery-filter-root .gf-grid {
     display: grid;
@@ -120,7 +119,8 @@ const galleryTags = Array.from(new Set(items.map(i => i.tag)));
     object-fit: contain;
     object-position: center;
     display: block;
-    background: var(--bg-surface);
+    background: var(--canvas);
+    border-radius: var(--radius);
     transition: transform 600ms var(--ease-out);
   }
   #gallery-filter-root .gf-caption {

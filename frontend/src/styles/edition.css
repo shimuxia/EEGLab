@@ -36,6 +36,21 @@
     transform: scale(1.6);
   }
 }
+@keyframes thread-in {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes thread-in-v {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes dot-in {
+  from {
+    transform: scale(0);
+  }
+}
 @keyframes marquee {
   to {
     transform: translateX(-50%);
@@ -99,30 +114,47 @@
     animation-delay: 280ms;
   }
   .hero-pi {
-    animation-delay: 340ms;
+    animation-delay: 360ms;
   }
-  .index-head {
-    animation: fade-up 600ms 300ms var(--ease-out) both;
+  /* The thread draws left to right; each node lights up as it is reached. */
+  .thread-head {
+    animation: fade-up 600ms 280ms var(--ease-out) both;
   }
-  .focus-index li {
-    animation: fade-up 560ms var(--ease-out) both;
-    animation-delay: calc(360ms + var(--i) * 55ms);
+  .thread::before {
+    animation: thread-in 1700ms 420ms var(--ease-std) both;
   }
-  .focus-index .research-glyph svg {
-    animation: draw 1200ms var(--ease-std) both;
-    animation-delay: calc(480ms + var(--i) * 80ms);
+  .thread li {
+    --at: calc(520ms + var(--i) * 210ms);
+  }
+  .thread-dot {
+    animation: dot-in 420ms var(--ease-out) backwards;
+    animation-delay: var(--at);
+  }
+  .thread-glyph svg {
+    animation: draw 1100ms var(--ease-std) both;
+    animation-delay: calc(var(--at) + 60ms);
+  }
+  .thread-text {
+    animation: fade-up 600ms var(--ease-out) both;
+    animation-delay: calc(var(--at) + 120ms);
   }
   /* The single orange point in each illustration breathes once after drawing. */
   .research-glyph :is(.glowdot, .dot-accent) {
     transform-box: fill-box;
     transform-origin: center;
   }
-  .focus-index .research-glyph :is(.glowdot, .dot-accent) {
+  .thread .research-glyph :is(.glowdot, .dot-accent) {
     animation: pulse-once 900ms var(--ease-out) both;
-    animation-delay: calc(1500ms + var(--i) * 80ms);
+    animation-delay: calc(var(--at) + 1000ms);
   }
-  .focus:hover .research-glyph :is(.glowdot, .dot-accent) {
+  .thread-node:hover .research-glyph :is(.glowdot, .dot-accent) {
     animation: pulse-once 700ms var(--ease-out);
+  }
+
+  @media (max-width: 760px) {
+    .thread::before {
+      animation-name: thread-in-v;
+    }
   }
 
   /* Lab-site image wall: slow, continuous, paused off screen or on hover. */
