@@ -42,9 +42,7 @@
 }
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
-  gap: 2rem clamp(2rem, 5vw, 5rem);
-  align-items: end;
+  grid-template-columns: minmax(0, 1fr);
 }
 .hero-title {
   margin-top: clamp(1.25rem, 2.4vw, 2rem);
@@ -503,37 +501,66 @@
   }
 }
 
-/* ══ Advisor sheet ═══════════════════════════════════════════ */
+/* ══ Advisor: the group's principal investigator, right after the hero ══ */
+.home-advisor {
+  margin-top: 0;
+}
 .advisor-grid {
   display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: 3rem clamp(2rem, 6vw, 6rem);
+  grid-template-columns: 248px minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 2.5rem clamp(2rem, 4.5vw, 4.5rem);
   align-items: start;
 }
+.advisor-portrait {
+  margin: 0;
+}
+.advisor-portrait img {
+  width: 248px;
+  aspect-ratio: 248 / 298;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgb(20 32 48 / 0.06);
+}
+.advisor-portrait figcaption {
+  margin-top: 0.75rem;
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+}
 .advisor-copy h2 {
-  margin-block: 0.9rem 0.4rem;
-  font-size: var(--fs-h2);
+  margin-block: 0.9rem 0.5rem;
+  font-size: var(--fs-h1);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
 }
 .advisor-copy h2 .en {
-  font-size: 0.42em;
-  margin-left: 0.45em;
+  font-size: 0.4em;
+  margin-left: 0.4em;
+  letter-spacing: 0;
 }
 .advisor-role {
   font-size: var(--fs-sm);
   color: var(--text-3);
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 }
-.advisor-copy > p:not(.kicker, .advisor-role) {
-  max-width: 34em;
-  color: var(--text-2);
+.advisor-copy .advisor-summary {
+  font-size: var(--fs-lg);
+  line-height: 1.85;
+  color: var(--text);
+  max-width: 32em;
 }
 .advisor-copy .tag-list {
-  margin-block: 1.5rem 1.75rem;
+  margin-block: 1.5rem 2rem;
+}
+.advisor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
 }
 .advisor-honors {
-  padding: clamp(1.25rem, 2.5vw, 2rem);
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
   border-radius: var(--radius);
   background: var(--canvas);
 }
@@ -543,6 +570,33 @@
   letter-spacing: 0.04em;
   color: var(--graph-text);
   margin-bottom: 1rem;
+}
+.advisor-honors .group-honors li {
+  grid-template-columns: 4.25rem minmax(0, 1fr);
+  gap: 0.75rem;
+}
+.advisor-honors .group-honors h4 {
+  font-size: var(--fs-sm);
+}
+@media (max-width: 1180px) {
+  .advisor-grid {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+  .advisor-portrait img {
+    width: 220px;
+  }
+  .advisor-honors {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 700px) {
+  .advisor-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+  }
+  .advisor-portrait img {
+    width: min(200px, 60vw);
+  }
 }
 
 /* ══ Image wall (lab site) ═══════════════════════════════════ */
@@ -788,15 +842,11 @@
   .hero-grid,
   .intro-grid,
   .lab-grid,
-  .advisor-grid,
   .papers-grid,
   .team-grid,
   .join-grid,
   .research-workbench {
     grid-template-columns: minmax(0, 1fr);
-  }
-  .hero-pi {
-    justify-self: start;
   }
 }
 /* Thread turns vertical on narrow screens. */

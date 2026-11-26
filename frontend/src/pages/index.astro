@@ -32,14 +32,6 @@ const wallB = (galleryData as any).waterfall_b as { src: string }[];
           <a class="btn btn-ghost" href="/join">了解招生</a>
         </div>
       </div>
-      <a class="hero-pi" href="/about">
-        <img src={advisor.photo} alt="严颖老师肖像" width="248" height="298" fetchpriority="high" />
-        <span class="hero-pi-copy">
-          <span class="hero-pi-label">课题组负责人</span>
-          <strong>严颖 <span lang="en">Ying Yan</span></strong>
-          <span>副教授 · 硕士生导师</span>
-        </span>
-      </a>
     </div>
 
     <nav class="hero-bottom" aria-label="研究方向索引" data-thread>
@@ -66,6 +58,32 @@ const wallB = (galleryData as any).waterfall_b as { src: string }[];
         </ol>
       </div>
     </nav>
+  </section>
+
+  <section class="home-advisor sheet" aria-labelledby="advisor-title">
+    <div class="advisor-grid">
+      <figure class="advisor-portrait" data-reveal>
+        <img src={advisor.photo} alt="严颖老师肖像" width="248" height="298" loading="lazy" />
+        <figcaption>严颖 · 南京信息工程大学自动化学院</figcaption>
+      </figure>
+      <div class="advisor-copy" data-reveal>
+        <p class="kicker">课题组负责人</p>
+        <h2 id="advisor-title">严颖 <span class="en" lang="en">Ying Yan</span></h2>
+        <p class="advisor-role">{advisor.role} · {advisor.affiliation}</p>
+        <p class="advisor-summary">{advisor.biography}</p>
+        <ul class="tag-list" aria-label="研究兴趣">
+          {advisor.interests.slice(0, 6).map((t) => <li>{t}</li>)}
+        </ul>
+        <div class="advisor-actions">
+          <a class="btn" href="/about">导师介绍与学术经历 <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="link" href={advisor.homepage} target="_blank" rel="noopener noreferrer">官方个人主页 <span class="arrow" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div class="advisor-honors" data-reveal>
+        <h3>学术荣誉</h3>
+        <GroupHonors />
+      </div>
+    </div>
   </section>
 
   <section class="home-intro" id="about" data-reveal>
@@ -163,25 +181,6 @@ const wallB = (galleryData as any).waterfall_b as { src: string }[];
           </li>
         ))}
       </ol>
-    </div>
-  </section>
-
-  <section class="home-advisor sheet" aria-labelledby="advisor-title">
-    <div class="advisor-grid">
-      <div class="advisor-copy" data-reveal>
-        <p class="kicker">课题组负责人</p>
-        <h2 id="advisor-title">严颖 <span class="en" lang="en">Ying Yan</span></h2>
-        <p class="advisor-role">{advisor.role} · {advisor.affiliation}</p>
-        <p>{advisor.biography}</p>
-        <ul class="tag-list" aria-label="研究兴趣">
-          {advisor.interests.slice(0, 6).map((t) => <li>{t}</li>)}
-        </ul>
-        <a class="link" href="/about">导师介绍与学术经历 <span class="arrow" aria-hidden="true">↗</span></a>
-      </div>
-      <div class="advisor-honors" data-reveal>
-        <h3>学术荣誉</h3>
-        <GroupHonors />
-      </div>
     </div>
   </section>
 
