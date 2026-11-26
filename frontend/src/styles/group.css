@@ -70,31 +70,8 @@
     box-shadow var(--dur) var(--ease-out),
     transform 500ms var(--ease-out);
 }
-/* A slate line and the accent point frame the portrait like the research illustrations. */
-.hero-portrait-frame::before {
-  content: "";
-  position: absolute;
-  left: 9%;
-  right: 9%;
-  top: 9%;
-  bottom: 0;
-  border: 1.5px solid var(--graph-dim);
-  border-bottom: 0;
-  border-radius: 999px 999px 0 0;
-}
-.hero-portrait-frame::after {
-  content: "";
-  position: absolute;
-  top: calc(9% - 5px);
-  left: calc(50% - 5px);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--signal);
-}
 .hero-portrait-frame img {
   position: relative;
-  mix-blend-mode: multiply;
   width: 76%;
   height: auto;
   display: block;
