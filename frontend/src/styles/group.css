@@ -42,7 +42,99 @@
 }
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 2.5rem clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+
+/* The principal investigator, given the same weight as the group's name. */
+.hero-portrait {
+  justify-self: end;
+  width: min(100%, 440px);
+  display: grid;
+  gap: 1.1rem;
+  color: var(--text);
+  text-decoration: none;
+}
+.hero-portrait-frame {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  aspect-ratio: 440 / 480;
+  overflow: hidden;
+  border-radius: 28px;
+  background: #fff;
+  box-shadow: var(--shadow-2);
+  transition:
+    box-shadow var(--dur) var(--ease-out),
+    transform 500ms var(--ease-out);
+}
+/* A slate line and the accent point frame the portrait like the research illustrations. */
+.hero-portrait-frame::before {
+  content: "";
+  position: absolute;
+  left: 9%;
+  right: 9%;
+  top: 9%;
+  bottom: 0;
+  border: 1.5px solid var(--graph-dim);
+  border-bottom: 0;
+  border-radius: 999px 999px 0 0;
+}
+.hero-portrait-frame::after {
+  content: "";
+  position: absolute;
+  top: calc(9% - 5px);
+  left: calc(50% - 5px);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--signal);
+}
+.hero-portrait-frame img {
+  position: relative;
+  mix-blend-mode: multiply;
+  width: 76%;
+  height: auto;
+  display: block;
+  transition: transform 700ms var(--ease-out);
+}
+.hero-portrait-caption {
+  display: grid;
+  gap: 0.15rem;
+  padding-inline: 0.25rem;
+}
+.hero-portrait-label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--graph-text);
+}
+.hero-portrait-caption strong {
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.35;
+}
+.hero-portrait-caption strong span {
+  font-size: var(--fs-sm);
+  font-weight: 400;
+  color: var(--text-3);
+  margin-left: 0.4em;
+}
+.hero-portrait-caption > span:last-child {
+  font-size: var(--fs-sm);
+  color: var(--text-3);
+}
+.hero-portrait:hover .hero-portrait-frame {
+  box-shadow: 0 4px 10px rgb(20 32 48 / 0.08), 0 28px 64px rgb(20 32 48 / 0.14);
+  transform: translateY(-3px);
+}
+.hero-portrait:hover .hero-portrait-frame img {
+  transform: scale(1.02);
+}
+.hero-portrait:hover strong {
+  color: var(--accent);
 }
 .hero-title {
   margin-top: clamp(1.25rem, 2.4vw, 2rem);
@@ -507,7 +599,7 @@
 }
 .advisor-grid {
   display: grid;
-  grid-template-columns: 248px minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   gap: 2.5rem clamp(2rem, 4.5vw, 4.5rem);
   align-items: start;
 }
@@ -578,24 +670,24 @@
 .advisor-honors .group-honors h4 {
   font-size: var(--fs-sm);
 }
-@media (max-width: 1180px) {
+@media (max-width: 1000px) {
   .advisor-grid {
-    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
   }
-  .advisor-portrait img {
-    width: 220px;
+}
+@media (max-width: 1000px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.75fr);
+    gap: 2rem;
   }
-  .advisor-honors {
-    grid-column: 1 / -1;
+  .hero-title {
+    font-size: clamp(3rem, 8.6vw, 5.5rem);
   }
 }
 @media (max-width: 700px) {
-  .advisor-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1.75rem;
-  }
-  .advisor-portrait img {
-    width: min(200px, 60vw);
+  .hero-portrait {
+    justify-self: start;
+    width: min(100%, 360px);
   }
 }
 
@@ -838,8 +930,12 @@
     display: none;
   }
 }
+@media (max-width: 700px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 @media (max-width: 860px) {
-  .hero-grid,
   .intro-grid,
   .lab-grid,
   .papers-grid,
@@ -850,7 +946,7 @@
   }
 }
 /* Thread turns vertical on narrow screens. */
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .hero-bottom {
     --glyph-h: 64px;
   }

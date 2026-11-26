@@ -32,6 +32,16 @@ const wallB = (galleryData as any).waterfall_b as { src: string }[];
           <a class="btn btn-ghost" href="/join">了解招生</a>
         </div>
       </div>
+      <a class="hero-portrait" href="/about">
+        <span class="hero-portrait-frame">
+          <img src="/group/assets/yan-ying-portrait-hero.webp" alt="严颖老师肖像" width="744" height="894" fetchpriority="high" />
+        </span>
+        <span class="hero-portrait-caption">
+          <span class="hero-portrait-label">课题组负责人</span>
+          <strong>严颖 <span lang="en">Ying Yan</span></strong>
+          <span>副教授 · 硕士生导师 · 南京信息工程大学自动化学院</span>
+        </span>
+      </a>
     </div>
 
     <nav class="hero-bottom" aria-label="研究方向索引" data-thread>
@@ -62,12 +72,8 @@ const wallB = (galleryData as any).waterfall_b as { src: string }[];
 
   <section class="home-advisor sheet" aria-labelledby="advisor-title">
     <div class="advisor-grid">
-      <figure class="advisor-portrait" data-reveal>
-        <img src={advisor.photo} alt="严颖老师肖像" width="248" height="298" loading="lazy" />
-        <figcaption>严颖 · 南京信息工程大学自动化学院</figcaption>
-      </figure>
       <div class="advisor-copy" data-reveal>
-        <p class="kicker">课题组负责人</p>
+        <p class="kicker">导师简介</p>
         <h2 id="advisor-title">严颖 <span class="en" lang="en">Ying Yan</span></h2>
         <p class="advisor-role">{advisor.role} · {advisor.affiliation}</p>
         <p class="advisor-summary">{advisor.biography}</p>

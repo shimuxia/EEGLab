@@ -98,7 +98,7 @@
   .hero-en,
   .hero-lead,
   .hero-actions,
-  .hero-pi {
+  .hero-portrait {
     animation: fade-up 640ms var(--ease-out) both;
   }
   .hero-kicker {
@@ -113,7 +113,7 @@
   .hero-actions {
     animation-delay: 280ms;
   }
-  .hero-pi {
+  .hero-portrait {
     animation-delay: 360ms;
   }
   /* The thread draws left to right; each node lights up as it is reached. */
@@ -151,7 +151,7 @@
     animation: pulse-once 700ms var(--ease-out);
   }
 
-  @media (max-width: 760px) {
+  @media (max-width: 900px) {
     .thread::before {
       animation-name: thread-in-v;
     }
