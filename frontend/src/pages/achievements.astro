@@ -39,7 +39,7 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
       <div class="stats-row">
         <div class="stat-item">
           <div class="stat-num"><PublicationCount client:load /></div>
-          <div class="stat-label">当前目录论文</div>
+          <div class="stat-label">收录论文</div>
         </div>
         <div class="stat-item">
           <div class="stat-num">{awards.length}</div>
@@ -69,7 +69,6 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
       <section id="papers" class="ach-section" aria-labelledby="papers-heading">
         <div class="section-header">
           <h2 class="section-heading" id="papers-heading">期刊与会议论文</h2>
-          <span class="section-note">由课题组论文服务在访问时提供</span>
         </div>
         <PublicationsExplorer client:load />
         <noscript>
@@ -84,7 +83,7 @@ const galleryGrid = (galleryData as any).grid as { src: string; label: string; t
         <div class="section-header">
           <h2 class="section-heading" id="awards-heading">荣誉奖项</h2>
         </div>
-        <div class="mentor-honors"><h3>导师学术荣誉</h3><GroupHonors /><p class="project-note"><b>{projectPatentNote.kind}</b>{projectPatentNote.title}：{projectPatentNote.meta}<small>{projectPatentNote.source}</small></p></div>
+        <div class="mentor-honors"><h3>导师学术荣誉</h3><GroupHonors /><p class="project-note"><b>{projectPatentNote.kind}</b>{projectPatentNote.title}：{projectPatentNote.meta}</p></div>
         <div class="award-timeline">
           {awards.map((award, i) => (
             <div class="award-row">
